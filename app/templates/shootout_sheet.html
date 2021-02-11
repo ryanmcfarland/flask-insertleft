@@ -5,20 +5,23 @@
     <div class="py-5 text-center">
         <h2>Sheriffs & Shootouts - Form fillable Character Sheet</h2>
     </div>
+    <form action="/shootout/sheet/{{ sheet.id }}" method="post">
     <div class="row">
         <div class="col">
             <ul class="list-group mb-3">
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
-                    <div><h6 class="my-0">Name</h6></div><span class="text-muted">John Londonderry</span></li>
+                    <div><h6 class="my-0">Name</h6></div><input type="text" name="name" value={{ sheet.name }}></li>
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
-                    <div><h6 class="my-0">Class</h6></div><span class="text-muted">Witch Hunter</span></li>
+                    <div><h6 class="my-0">Class</h6></div><input type="text" name="character_class" value={{ sheet.character_class }}></li>
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
-                    <div><h6 class="my-0">Background</h6></div><span class="text-muted">Inquistor</span></li>
+                    <div><h6 class="my-0">Background</h6></div><input type="text" name="background" value={{ sheet.background }}></li>
             </ul>
         </div>
     </div>
     <div class="row">
-
+        <div class="col-sm-2 my-1">
+        <button type="submit" class="btn btn-primary btn-block">Save</button>
+        </div>
     </div>
     <!-- Tabs for Character Stats -->
     <div class="row">
@@ -36,46 +39,29 @@
                 <table class="table table-hover">
                     <thead><tr><th scope="col">Attribute</th><th scope="col">Level</th></tr></thead>
                     <tbody>
-                        <tr><td>Level</td><td><input type="text" value=5></td></tr>
-                        <tr><td>XP</td><td><input type="text" value=2350></td></tr>
-                        <tr><td>Max Hit Points</td><td><input type="text" value=29></td></tr>
-                        <tr><td>Current Hit Points</td><td><input type="text" value=29></td></tr>
-                        <tr><td>Attack Bonus</td><td><input type="text" value=+2></td></tr>
-                        <tr><td>System Strain</td><td><input type="text" value=1></td></tr>
-                        <tr><td>Armour Class 1</td><td><input type="text" value=15></td></tr>
-                        <tr><td>Armour Class 2</td><td><input type="text" value=15></td></tr>
-                        <tr><td>Mental Save</td><td><input type="text" value=10></td></tr>
-                        <tr><td>Evasion Save</td><td><input type="text" value=9></td></tr>
-                        <tr><td>Physical Save</td><td><input type="text" value=10></td></tr>
+                        <tr><td>Level</td><td><input type="text" name="level" value={{ sheet.level }}></td></tr>
+                        <tr><td>XP</td><td><input type="text" name="xp" value={{ sheet.xp }}></td></tr>
+                        <tr><td>Max Hit Points</td><td><input type="text" name = "max_hp" value={{ sheet.max_hp }}></td></tr
+                        <tr><td>Current Hit Points</td><td><input type="text" name ="current_hp" value={{ sheet.current_hp }}></td></tr>
+                        <tr><td>Attack Bonus</td><td><input type="text" name="attack_bonus" value={{ sheet.attack_bonus }}></td></tr>
+                        <tr><td>System Strain</td><td><input type="text" name="system_strain" value={{ sheet.system_strain }}></td></tr>
+                        <tr><td>Armour Class 1</td><td><input type="text" name="ac1" value={{ sheet.ac1 }}></td></tr>
+                        <tr><td>Armour Class 2</td><td><input type="text" name="ac2" value={{ sheet.ac2 }}></td></tr>
+                        <tr><td>Mental Save</td><td><input type="text" name ="mental_save" value={{ sheet.mental_save }}></td></tr>
+                        <tr><td>Evasion Save</td><td><input type="text" name="evasion_save" value={{ sheet.evasion_save }}></td></tr>
+                        <tr><td>Physical Save</td><td><input type="text" name="physical_save" value={{ sheet.physical_save }}></td></tr>
                     </tbody>
                 </table>
             </div>
             <div class="tab-pane container fade" id="AStats">
-                <table class="table table-hover">
-                    <thead><tr><th scope="col">Attribute</th><th scope="col">Level</th></tr></thead>
-                    <tbody>
-                        <tr><td>Strength</td><td><input type="text" value=10></td></tr>
-                        <tr><td>Dexterity</td><td><input type="text" value=14></td></tr>
-                        <tr><td>Constitution</td><td><input type="text" value=13></td></tr>
-                        <tr><td>Intelligence</td><td><input type="text" value=8></td></tr>
-                        <tr><td>Wisdom</td><td><input type="text" value=8></td></tr>
-                        <tr><td>Charisma</td><td><input type="text" value=7></td></tr>
-                    </tbody>
-                </table>
             </div>
             <div class="tab-pane container fade" id="WStats">
-                <table class="table table-hover">
-                    <thead><tr><th scope="col">Weapon</th><th scope="col">Bonus</th><th scope="col">Damage</th><th scope="col">Range</th><th scope="col">Edit</th><th scope="col">Delete</th></tr></thead>
-                    <tbody>
-                        <tr><td>Bone Rifle</td><td>0</td><td>1d12+2</td><td>200/400</td><td><a class="btn btn-info" href="" role="button">Edit</a></td><td><a class="btn btn-danger" href="" role="button">Delete</a></td></tr>
-                        <tr><td>Revolver</td><td>0</td><td>1d8</td><td></td><td><a class="btn btn-info" href="" role="button">Edit</a></td><td><a class="btn btn-danger" href="" role="button">Delete</a></td></tr>                    
-                    </tbody>
-                </table>
             </div>
             <div class="tab-pane container fade" id="SStats">...</div>
             <div class="tab-pane container fade" id="Items">...</div>
         </div>
         </div>
     </div>
+    </form>
 </div>
 {% endblock %}

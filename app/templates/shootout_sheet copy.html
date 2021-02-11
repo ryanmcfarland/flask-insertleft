@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>Sheriffs & Shootouts - Form fillable Character Sheet</h2>
+    </div>
+    <div class="row">
+        <div class="col">
+            <ul class="list-group mb-3">
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div><h6 class="my-0">Name</h6></div><span class="text-muted">John Londonderry</span></li>
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div><h6 class="my-0">Class</h6></div><span class="text-muted">Witch Hunter</span></li>
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div><h6 class="my-0">Background</h6></div><span class="text-muted">Inquistor</span></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+
+    </div>
+    <!-- Tabs for Character Stats -->
+    <div class="row">
+        <div class="container">
+        <ul class="nav nav-tabs">
+            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#CStats">Current Stats</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#AStats">Attributes</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#WStats">Weapons</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#SStats">Skills</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#Items">Items</a></li>
+        </ul>  
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane container active" id="CStats">
+                <table class="table table-hover">
+                    <thead><tr><th scope="col">Attribute</th><th scope="col">Level</th></tr></thead>
+                    <tbody>
+                        <tr><td>Level</td><td><input type="text" value=5></td></tr>
+                        <tr><td>XP</td><td><input type="text" value=2350></td></tr>
+                        <tr><td>Max Hit Points</td><td><input type="text" value=29></td></tr>
+                        <tr><td>Current Hit Points</td><td><input type="text" value=29></td></tr>
+                        <tr><td>Attack Bonus</td><td><input type="text" value=+2></td></tr>
+                        <tr><td>System Strain</td><td><input type="text" value=1></td></tr>
+                        <tr><td>Armour Class 1</td><td><input type="text" value=15></td></tr>
+                        <tr><td>Armour Class 2</td><td><input type="text" value=15></td></tr>
+                        <tr><td>Mental Save</td><td><input type="text" value=10></td></tr>
+                        <tr><td>Evasion Save</td><td><input type="text" value=9></td></tr>
+                        <tr><td>Physical Save</td><td><input type="text" value=10></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane container fade" id="AStats">
+                <table class="table table-hover">
+                    <thead><tr><th scope="col">Attribute</th><th scope="col">Level</th></tr></thead>
+                    <tbody>
+                        <tr><td>Strength</td><td><input type="text" value=10></td></tr>
+                        <tr><td>Dexterity</td><td><input type="text" value=14></td></tr>
+                        <tr><td>Constitution</td><td><input type="text" value=13></td></tr>
+                        <tr><td>Intelligence</td><td><input type="text" value=8></td></tr>
+                        <tr><td>Wisdom</td><td><input type="text" value=8></td></tr>
+                        <tr><td>Charisma</td><td><input type="text" value=7></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane container fade" id="WStats">
+                <table class="table table-hover">
+                    <thead><tr><th scope="col">Weapon</th><th scope="col">Bonus</th><th scope="col">Damage</th><th scope="col">Range</th><th scope="col">Edit</th><th scope="col">Delete</th></tr></thead>
+                    <tbody>
+                        <tr><td>Bone Rifle</td><td>0</td><td>1d12+2</td><td>200/400</td><td><a class="btn btn-info" href="" role="button">Edit</a></td><td><a class="btn btn-danger" href="" role="button">Delete</a></td></tr>
+                        <tr><td>Revolver</td><td>0</td><td>1d8</td><td></td><td><a class="btn btn-info" href="" role="button">Edit</a></td><td><a class="btn btn-danger" href="" role="button">Delete</a></td></tr>                    
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane container fade" id="SStats">...</div>
+            <div class="tab-pane container fade" id="Items">...</div>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

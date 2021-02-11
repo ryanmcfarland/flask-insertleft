@@ -4,6 +4,8 @@ from flask_login import current_user, login_required
 from app import db
 from app.models import Grocery, User, Sheet
 from app.main import bp
+from app.main.forms import SheetForm
+
 
 import logging
 
@@ -27,8 +29,38 @@ def index():
 @bp.route('/shootout', methods=['GET','POST'])
 @login_required
 def shootout():
-    user1 = {'username': 'Ryan'}
-    return render_template('shootout_sheet.html', title="hello", user=user1)
+    sheets = Sheet.query.filter_by(user_id=current_user.id).all()
+    return render_template('shootout.html', title="Shootout", sheets=sheets)
+
+@bp.route('/shootout/sheet/<int:id>', methods=['GET','POST'])
+@login_required
+def shootout_edit(id):
+    print(request.method)
+    print(id)
+    form = SheetForm(request.form)
+    if request.method == "POST" and form.validate():
+        sheet = Sheet(obj=form)
+        user = User(username=form.username.data, email=form.email.data)
+        user = User(username=form.username.data, email=form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('Congratulations, you are now a registered user!')
+        return redirect(url_for('main.shootout_edit'))
+    sheet = Sheet.query.get_or_404(id)
+    return render_template('shootout_sheet.html', title="Shootout - Sheet", sheet=sheet)
+
+@bp.route('/shootout/delete/<int:id>', methods=['GET','POST'])
+@login_required
+def shootout_delete(id):
+    sheet = Sheet.query.get_or_404(id)
+    try:
+        db.session.delete(sheet)
+        db.session.commit()
+        return redirect('/shootout')
+    except:
+        return "Problem with deleting data - please try again"
+    return redirect('/shootout')
 
 @bp.route('/random', methods=['GET','POST'])
 def random():
