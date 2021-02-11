@@ -31,21 +31,49 @@ class User(UserMixin, db.Model):
 
 class Sheet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(128))
-    character_class = db.Column(db.String(128))
-    background = db.Column(db.String(128))
-    level = db.Column(db.Integer)
-    xp = db.Column(db.Integer)
-    max_hp = db.Column(db.Integer)
-    current_hp = db.Column(db.Integer)
-    attack_bonus = db.Column(db.Integer)
-    system_strain = db.Column(db.Integer)
-    ac1 = db.Column(db.Integer)
-    ac2 = db.Column(db.Integer)
-    mental_save = db.Column(db.Integer)
-    evasion_save = db.Column(db.Integer)
-    physical_save = db.Column(db.Integer)
+    name = db.Column(db.String(128), default="insert_name")
+    character_class = db.Column(db.String(128), default="")
+    background = db.Column(db.String(128), default="")
+    level = db.Column(db.Integer, default=1)
+    xp = db.Column(db.Integer, default=0)
+    max_hp = db.Column(db.Integer,default=1)
+    current_hp = db.Column(db.Integer,default=1)
+    attack_bonus = db.Column(db.Integer,default=0)
+    system_strain = db.Column(db.Integer, default=0)
+    ac1 = db.Column(db.Integer, default=10)
+    ac2 = db.Column(db.Integer,default=10)
+    mental_save = db.Column(db.Integer,default=15)
+    evasion_save = db.Column(db.Integer, default=15)
+    physical_save = db.Column(db.Integer, default=15)
+    strength = db.Column(db.Integer, default=0)
+    dexterity = db.Column(db.Integer, default=0)
+    constitution = db.Column(db.Integer, default=0)
+    intelligence = db.Column(db.Integer, default=0)
+    wisdom = db.Column(db.Integer, default=0)
+    charisma = db.Column(db.Integer, default=0)
+    administer = db.Column(db.Integer, default=0)
+    cast_magic = db.Column(db.Integer, default=-1)
+    connect = db.Column(db.Integer, default=-1)
+    exert = db.Column(db.Integer, default=-1)
+    fix = db.Column(db.Integer, default=-1)
+    heal = db.Column(db.Integer, default=-1)
+    horsemanship = db.Column(db.Integer, default=-1)
+    know = db.Column(db.Integer, default=-1)
+    know_magic = db.Column(db.Integer, default=-1)
+    lead = db.Column(db.Integer, default=-1)
+    notice = db.Column(db.Integer, default=-1)
+    perform = db.Column(db.Integer, default=-1)
+    punch = db.Column(db.Integer, default=-1)
+    sail = db.Column(db.Integer, default=-1)   
+    shoot = db.Column(db.Integer, default=-1)   
+    sneak = db.Column(db.Integer, default=-1)   
+    stab = db.Column(db.Integer, default=-1)   
+    survive = db.Column(db.Integer, default=-1)   
+    talk = db.Column(db.Integer, default=-1)   
+    trade = db.Column(db.Integer, default=-1)   
+    work = db.Column(db.Integer, default=-1)     
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    last_update = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def process_form(self, form):
@@ -63,6 +91,32 @@ class Sheet(db.Model):
         self.mental_save=form.mental_save.data
         self.physical_save=form.physical_save.data
         self.evasion_save=form.evasion_save.data
+        self.strength=form.strength.data
+        self.dexterity=form.dexterity.data
+        self.constitution=form.constitution.data
+        self.intelligence=form.intelligence.data
+        self.wisdom=form.wisdom.data
+        self.administer=form.administer.data
+        self.cast_magic=form.cast_magic.data
+        self.connect=form.connect.data
+        self.exert=form.exert.data
+        self.fix=form.fix.data
+        self.heal=form.heal.data
+        self.horsemanship=form.horsemanship.data
+        self.know=form.know.data
+        self.know_magic=form.know_magic.data
+        self.lead=form.lead.data
+        self.notice=form.notice.data
+        self.perform=form.perform.data
+        self.punch=form.punch.data
+        self.sail=form.sail.data
+        self.shoot=form.shoot.data
+        self.sneak=form.sneak.data
+        self.stab=form.stab.data
+        self.talk=form.talk.data
+        self.trade=form.trade.data
+        self.work=form.work.data
+
 
     def __repr__(self):
         return '<Sheet {}>'.format(self.name)

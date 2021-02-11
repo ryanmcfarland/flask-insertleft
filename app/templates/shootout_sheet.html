@@ -29,8 +29,8 @@
         <ul class="nav nav-tabs">
             <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#CStats">Current Stats</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#AStats">Attributes</a></li>
-            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#WStats">Weapons</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#SStats">Skills</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#WStats">Weapons</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#Items">Items</a></li>
         </ul>  
         <!-- Tab panes -->
@@ -54,10 +54,47 @@
                 </table>
             </div>
             <div class="tab-pane container fade" id="AStats">
+                <table class="table table-hover">
+                    <thead><tr><th scope="col">Attribute</th><th scope="col">Level</th></tr></thead>
+                    <tbody>
+                        <tr><td>Strength</td><td><input type="text" name="strength" value={{ sheet.strength }}></td></tr>
+                        <tr><td>Dexterity</td><td><input type="text" name="dexterity" value={{ sheet.dexterity }}></td></tr>
+                        <tr><td>Constitution</td><td><input type="text" name="constitution" value={{ sheet.constitution }}></td></tr>
+                        <tr><td>Intelligence</td><td><input type="text" name="intelligence" value={{ sheet.intelligence }}></td></tr>
+                        <tr><td>Wisdom</td><td><input type="text" name="wisdom" value={{ sheet.wisdom }}></td></tr>
+                        <tr><td>Charisma</td><td><input type="text" name="charisma" value={{ sheet.charisma }}></td></tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="tab-pane container fade" id="WStats">
+            <div class="tab-pane container fade" id="SStats">
+                <table class="table table-hover">
+                    <thead><tr><th scope="col">Attribute</th><th scope="col">Level</th></tr></thead>
+                    <tbody>
+                        <tr><td>Administer</td><td><input type="text" name="administer" value={{ sheet.administer }}></td></tr>
+                        <tr><td>Cast Magic</td><td><input type="text" name="cast_magic" value={{ sheet.cast_magic }}></td></tr>
+                        <tr><td>Connect</td><td><input type="text" name="connect" value={{ sheet.connect }}></td></tr>
+                        <tr><td>Exert</td><td><input type="text" name="exert" value={{ sheet.exert }}></td></tr>
+                        <tr><td>Fix</td><td><input type="text" name="fix" value={{ sheet.fix }}></td></tr>
+                        <tr><td>Heal</td><td><input type="text" name="heal" value={{ sheet.heal }}></td></tr>
+                        <tr><td>Horsemanship</td><td><input type="text" name="horsemanship" value={{ sheet.horsemanship }}></td></tr>
+                        <tr><td>Know</td><td><input type="text" name="know" value={{ sheet.know }}></td></tr>
+                        <tr><td>Know Magic</td><td><input type="text" name="know_magic" value={{ sheet.know_magic }}></td></tr>
+                        <tr><td>Lead</td><td><input type="text" name="lead" value={{ sheet.lead }}></td></tr>
+                        <tr><td>Notice</td><td><input type="text" name="notice" value={{ sheet.notice }}></td></tr>
+                        <tr><td>Perform</td><td><input type="text" name="perform" value={{ sheet.perform }}></td></tr>
+                        <tr><td>Punch</td><td><input type="text" name="punch" value={{ sheet.punch }}></td></tr>
+                        <tr><td>Sail</td><td><input type="text" name="sail" value={{ sheet.sail }}></td></tr>
+                        <tr><td>Shoot</td><td><input type="text" name="shoot" value={{ sheet.shoot }}></td></tr>
+                        <tr><td>Sneak</td><td><input type="text" name="sneak" value={{ sheet.sneak }}></td></tr>
+                        <tr><td>Stab</td><td><input type="text" name="stab" value={{ sheet.stab }}></td></tr>
+                        <tr><td>Talk</td><td><input type="text" name="talk" value={{ sheet.talk }}></td></tr>
+                        <tr><td>Trade</td><td><input type="text" name="trade" value={{ sheet.trade }}></td></tr>
+                        <tr><td>Work</td><td><input type="text" name="work" value={{ sheet.work }}></td></tr>
+                    </tbody>
+                </table>
+            </table>                
             </div>
-            <div class="tab-pane container fade" id="SStats">...</div>
+            <div class="tab-pane container fade" id="WStats">...</div>
             <div class="tab-pane container fade" id="Items">...</div>
         </div>
         </div>

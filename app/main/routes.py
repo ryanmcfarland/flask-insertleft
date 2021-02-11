@@ -42,12 +42,21 @@ def shootout_edit(id):
     if request.method == "POST" and form.validate():
         sheet = db.session.query(Sheet).get(id)
         sheet.process_form(form)
+        sheet.last_update = datetime.utcnow()
         db.session.add(sheet)
         db.session.commit()
-        flash('DB has been successfully updated')
+        flash('Sheet has been successfully updated')
         return redirect(url_for('main.shootout'))
     sheet = Sheet.query.get_or_404(id)
     return render_template('shootout_sheet.html', title="Shootout - Sheet", sheet=sheet)
+
+@bp.route('/shootout/create', methods=['GET'])
+@login_required
+def shootout_create():
+    sheet = Sheet(author=current_user)
+    db.session.add(sheet)
+    db.session.commit()
+    return redirect(url_for('main.shootout'))
 
 @bp.route('/shootout/delete/<int:id>', methods=['GET','POST'])
 @login_required
@@ -60,18 +69,6 @@ def shootout_delete(id):
     except:
         return "Problem with deleting data - please try again"
     return redirect('/shootout')
-
-@bp.route('/random', methods=['GET','POST'])
-def random():
-    user = {'username': 'Ryan'}
-    if request.method == "POST":
-        text = request.form['text']
-        processed_text = text.upper()
-        print(processed_text)
-        text = request.form['text1']
-        processed_text = text.upper()
-        print(processed_text)
-    return render_template('random.html', title="hello", user=user)
 
 @bp.route('/shootout/<int:id>/', methods=['GET','POST'])
 def sheet():
@@ -93,7 +90,22 @@ def sheet():
         groceries = Grocery.query.order_by(Grocery.created_at).all()
         return render_template('crud.html', groceries=groceries) 
 
+@bp.route('/random', methods=['GET','POST'])
+def random():
+    user = {'username': 'Ryan'}
+    if request.method == "POST":
+        text = request.form['text']
+        processed_text = text.upper()
+        print(processed_text)
+        text = request.form['text1']
+        processed_text = text.upper()
+        print(processed_text)
+    return render_template('random.html', title="hello", user=user)
 
+@bp.route('/shootout_old', methods=['GET','POST'])
+def shootout_old():
+    user = {'username': 'Ryan'}
+    return render_template('shootout_old.html', title="hello", user=user)
 
 @bp.route('/crud', methods=['GET','POST'])
 def crud():
