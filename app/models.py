@@ -48,6 +48,22 @@ class Sheet(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+    def process_form(self, form):
+        self.name=form.name.data
+        self.character_class=form.character_class.data
+        self.background=form.background.data
+        self.level=form.level.data
+        self.xp=form.xp.data
+        self.max_hp=form.max_hp.data
+        self.current_hp=form.current_hp.data
+        self.attack_bonus=form.attack_bonus.data
+        self.system_strain=form.system_strain.data
+        self.ac1=form.ac1.data
+        self.ac2=form.ac2.data
+        self.mental_save=form.mental_save.data
+        self.physical_save=form.physical_save.data
+        self.evasion_save=form.evasion_save.data
+
     def __repr__(self):
         return '<Sheet {}>'.format(self.name)
 

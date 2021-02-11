@@ -32,21 +32,20 @@ def shootout():
     sheets = Sheet.query.filter_by(user_id=current_user.id).all()
     return render_template('shootout.html', title="Shootout", sheets=sheets)
 
+## process form from sheet, get specific row from sheet 
+## and update variabels based on form data and commit
+## will not save data if not validated
 @bp.route('/shootout/sheet/<int:id>', methods=['GET','POST'])
 @login_required
 def shootout_edit(id):
-    print(request.method)
-    print(id)
     form = SheetForm(request.form)
     if request.method == "POST" and form.validate():
-        sheet = Sheet(obj=form)
-        user = User(username=form.username.data, email=form.email.data)
-        user = User(username=form.username.data, email=form.email.data)
-        user.set_password(form.password.data)
-        db.session.add(user)
+        sheet = db.session.query(Sheet).get(id)
+        sheet.process_form(form)
+        db.session.add(sheet)
         db.session.commit()
-        flash('Congratulations, you are now a registered user!')
-        return redirect(url_for('main.shootout_edit'))
+        flash('DB has been successfully updated')
+        return redirect(url_for('main.shootout'))
     sheet = Sheet.query.get_or_404(id)
     return render_template('shootout_sheet.html', title="Shootout - Sheet", sheet=sheet)
 

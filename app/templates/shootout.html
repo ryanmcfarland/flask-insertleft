@@ -19,9 +19,9 @@
         {% for sheet in sheets %}
             <tr>
             <td>{{ sheet.name }}</td>
-            <td>{{ sheet.chr_cls }}</td>
-            <td>{{ sheet.bckgrnd }}</td>
-            <td>{{ sheet.lvl }}</td>
+            <td>{{ sheet.character_class }}</td>
+            <td>{{ sheet.background }}</td>
+            <td>{{ sheet.level }}</td>
             <td class="text-right"><a class="btn btn-danger btn-sm" href="/shootout/sheet/{{ sheet.id }}" role="button">Show</a></td>
             <td class="text-right"><a class="btn btn-danger btn-sm" href="/shootout/delete/{{ sheet.id }}" role="button">Delete</a></td>
             </tr>

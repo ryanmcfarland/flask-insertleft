@@ -1,7 +1,5 @@
 from wtforms import Form, StringField, IntegerField, validators
 from wtforms.validators import ValidationError, DataRequired, EqualTo, Length
-from app.models import User
-
 
 class SheetForm(Form):
     name = StringField('name', validators=[DataRequired(), Length(max=128)])
