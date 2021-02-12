@@ -94,7 +94,30 @@
                 </table>
             </table>                
             </div>
-            <div class="tab-pane container fade" id="WStats">...</div>
+            <div class="tab-pane container fade" id="WStats">
+                {% if weapons |length < 1 %}
+                    <p>There are no weapons attached</p>
+                {% else %}
+                <table class="table">
+                    <thead>
+                    <t>
+                        <th>Weapons</th>
+                        <th>Id</th>
+                    <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>                    
+                    {% for weapon in weapons %}
+                    <tr>
+                    <td><a href="">{{ weapon.name }}</a></td>
+                    <td>{{ weapon.id }}</td>
+                    <td class="text-right"><a class="btn btn-danger btn-sm" href="" role="button">Delete</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %} 
+            </div>
             <div class="tab-pane container fade" id="Items">...</div>
         </div>
         </div>

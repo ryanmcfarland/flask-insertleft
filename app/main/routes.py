@@ -6,17 +6,9 @@ from app.models import Grocery, User, Sheet
 from app.main import bp
 from app.main.forms import SheetForm
 
-
 import logging
 
 LOG = logging.getLogger(__name__)
-
-#@bp.before_app_request
-#def before_request():
-#    if current_user.is_authenticated:
-#        g.user = current_user.get_id() # return username in get_id()
-#    else:
-#        g.user = None # or 'some fake value', whatever
 
 @bp.route('/', methods=['GET','POST'])
 @bp.route('/index',  methods=['GET','POST'])
@@ -48,7 +40,8 @@ def shootout_edit(id):
         flash('Sheet has been successfully updated')
         return redirect(url_for('main.shootout'))
     sheet = Sheet.query.get_or_404(id)
-    return render_template('shootout_sheet.html', title="Shootout - Sheet", sheet=sheet)
+    weapons = sheet.appended_weapons().all()
+    return render_template('shootout_sheet.html', title="Shootout - Sheet", sheet=sheet, weapons=weapons)
 
 @bp.route('/shootout/create', methods=['GET'])
 @login_required

@@ -29,6 +29,20 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
+## Many-to-many relationship table between weapon and sheet
+## allows for a sheet to have multiple weapons
+weapon_identifier = db.Table('weapon_identifier',
+    db.Column('sheet_id', db.Integer, db.ForeignKey('sheet.id')),
+    db.Column('weapon_id', db.Integer, db.ForeignKey('weapon.id'))
+)
+
+class Weapon(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128), default="insert_name")
+    bonus = db.Column(db.Integer,default=0)
+    damage = db.Column(db.String(128), default="1d8")
+    weapon_range = db.Column(db.String(128), default="200/400")
+
 class Sheet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), default="insert_name")
@@ -75,6 +89,22 @@ class Sheet(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     last_update = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    weapons = db.relationship("Weapon", secondary=weapon_identifier, backref=db.backref('weapons_list', lazy='dynamic'))
+
+    def append_weapon(self, weap):
+        if not self.check_appended_weapon(weap):
+            self.weapons.append(user)
+    
+    def remove_weapon(self, weap):
+        if self.check_appended_weapon(weap):
+            self.weapons.remove(user)
+
+    def check_appended_weapon(self, weap):
+        return self.weapons.filter(weapon_identifier.c.weapon_id == weap.id).count() > 0   
+
+    def appended_weapons(self):
+        weapons = Weapon.query.join(weapon_identifier, (weapon_identifier.c.weapon_id == Weapon.id)).filter(weapon_identifier.c.sheet_id == self.id)
+        return weapons.order_by(Weapon.id.desc())
 
     def process_form(self, form):
         self.name=form.name.data
@@ -116,7 +146,6 @@ class Sheet(db.Model):
         self.talk=form.talk.data
         self.trade=form.trade.data
         self.work=form.work.data
-
 
     def __repr__(self):
         return '<Sheet {}>'.format(self.name)
