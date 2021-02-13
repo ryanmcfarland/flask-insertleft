@@ -1,4 +1,4 @@
-name|type|bonus|damage|mag|weapon_range|attribute|weight|notes
+name|weapon_type|bonus|damage|mag|weapon_range|attribute|weight|notes
 Bow|Ranged|0|1d6|0|50/75|Dex|2|Does not require reload
 Derringer|Ranged|0|1d6|2|5/15|Dex|1|If concealed, requirs a full body search
 Revolver|Ranged|0|1d8|6|30/100|Dex|1

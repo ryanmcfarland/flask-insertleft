@@ -39,7 +39,7 @@ weapon_identifier = db.Table('weapon_identifier',
 class Weapon(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), default="insert_name")
-#    weapon_type = db.Column(db.String(128), default="Ranged")
+    weapon_type = db.Column(db.String(128), default="Ranged")
     bonus = db.Column(db.Integer,default=0)
     damage = db.Column(db.String(128), default="1d8")
     mag = db.Column(db.Integer, default=1)
