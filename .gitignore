@@ -1,7 +1,7 @@
 mtenv
 __pycache__/
 *.py[cod]
-migrations/versions
+#migrations/versions
 logs
 
 #Translation File
@@ -9,7 +9,7 @@ logs
 
 #sqllite db
 app.db
-migrations
+#migrations
 
 #Config
 .env
