@@ -1,1 +1,0 @@
-web: flask db init; flask db upgrade;python weapons.py;gunicorn myapp:app
