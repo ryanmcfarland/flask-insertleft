@@ -42,4 +42,9 @@ class SheetForm(Form):
     talk = IntegerField('talk', validators=[InputRequired()])
     trade = IntegerField('trade', validators=[InputRequired()])
     work = IntegerField('work', validators=[InputRequired()])
-       
+    submit = StringField('submit', validators=[InputRequired()])
+
+class WeaponForm(Form):
+    weapon = IntegerField('weapon', validators=[InputRequired()])
+    delete = IntegerField('delete', validators=[InputRequired()])
+

@@ -1,0 +1,10 @@
+name|type|bonus|damage|mag|weapon_range|attribute|weight|notes
+Bow|Ranged|0|1d6|0|50/75|Dex|2|Does not require reload
+Derringer|Ranged|0|1d6|2|5/15|Dex|1|If concealed, requirs a full body search
+Revolver|Ranged|0|1d8|6|30/100|Dex|1
+Shotgun|Ranged|0|3d4|2|10/30|Dex|2
+Rifle|Ranged|2|1d12|6|300/600|Dex|2
+Repeating Rifle|Ranged|2|1d10|6|200/400|Dex|2
+Dynamite|Ranged|0|2d10|1|5/10|Dex|1|Damage all atrgets in d6 meters
+Gatling Gun|Ranged|0|1d10|100|100/200|Dex|20|Fires 2d6 shots per round; jams on doubles
+Cannon|Ranged|0|5d10|1|100/200|Dex|20

@@ -39,9 +39,14 @@ weapon_identifier = db.Table('weapon_identifier',
 class Weapon(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), default="insert_name")
+#    weapon_type = db.Column(db.String(128), default="Ranged")
     bonus = db.Column(db.Integer,default=0)
     damage = db.Column(db.String(128), default="1d8")
+    mag = db.Column(db.Integer, default=1)
     weapon_range = db.Column(db.String(128), default="200/400")
+    attribute = db.Column(db.String(128), default="Dex")
+    weight = db.Column(db.Integer, default=1)
+    notes = db.Column(db.Text, default="Enter additional information here...")
 
 class Sheet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -89,22 +94,44 @@ class Sheet(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     last_update = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    weapons = db.relationship("Weapon", secondary=weapon_identifier, backref=db.backref('weapons_list', lazy='dynamic'))
+    weapons = db.relationship("Weapon", secondary=weapon_identifier, backref=db.backref('weapons_identifier', lazy='dynamic'),lazy='dynamic')
 
     def append_weapon(self, weap):
         if not self.check_appended_weapon(weap):
-            self.weapons.append(user)
+            self.weapons.append(weap)
     
     def remove_weapon(self, weap):
         if self.check_appended_weapon(weap):
-            self.weapons.remove(user)
+            self.weapons.remove(weap)
 
     def check_appended_weapon(self, weap):
         return self.weapons.filter(weapon_identifier.c.weapon_id == weap.id).count() > 0   
 
     def appended_weapons(self):
-        weapons = Weapon.query.join(weapon_identifier, (weapon_identifier.c.weapon_id == Weapon.id)).filter(weapon_identifier.c.sheet_id == self.id)
-        return weapons.order_by(Weapon.id.desc())
+        weaps = Weapon.query.join(weapon_identifier, (weapon_identifier.c.weapon_id == Weapon.id)).filter(weapon_identifier.c.sheet_id == self.id)
+        return weaps.all()
+
+    ## return records that do not have rows in the association table
+    def missing_weapons(self):
+        weaps = Weapon.query.join(weapon_identifier, (weapon_identifier.c.weapon_id == Weapon.id)).filter(weapon_identifier.c.sheet_id == self.id)
+        ids_found = []
+        for i in weaps.all():
+            ids_found.append(i.id)
+        weaps = Weapon.query.filter(Weapon.id.notin_(ids_found)).all()
+        return weaps
+
+    # form is request.form from a POSt request for sheet
+    def remove_form_weapons(self, form):
+        for i in self.appended_weapons():
+            if form.get("delete"+str(i.id)):
+                self.remove_weapon(i)
+
+    # loops through the form list and checks for any matching weapon ids (using getlist)
+    # will add relationship to the list to the sqlite database
+    def append_form_weapons(self, form):
+        if form['add']:
+            for i in Weapon.query.filter(Weapon.id.in_(form.getlist('add'))).all():
+                self.append_weapon(i)
 
     def process_form(self, form):
         self.name=form.name.data

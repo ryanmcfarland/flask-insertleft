@@ -20,7 +20,7 @@
     </div>
     <div class="row">
         <div class="col-sm-2 my-1">
-        <button type="submit" class="btn btn-primary btn-block">Save</button>
+        <input class="btn btn-primary" type="submit" name="submit" value="save">
         </div>
     </div>
     <!-- Tabs for Character Stats -->
@@ -94,34 +94,37 @@
                 </table>
             </table>                
             </div>
+            </form>
             <div class="tab-pane container fade" id="WStats">
+                <form action="/shootout/sheet/{{ sheet.id }}" method="post">
                 {% if weapons |length < 1 %}
                     <p>There are no weapons attached</p>
                 {% else %}
                 <table class="table">
-                    <thead>
-                    <t>
-                        <th>Weapons</th>
-                        <th>Id</th>
-                    <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>                    
-                    {% for weapon in weapons %}
+                <thead>
                     <tr>
-                    <td><a href="">{{ weapon.name }}</a></td>
-                    <td>{{ weapon.id }}</td>
-                    <td class="text-right"><a class="btn btn-danger btn-sm" href="" role="button">Delete</a></td>
+                    <th>Weapon</th><th>Damage</th><th>Bonus</th><th>Range</th><th>Magazine</th><th>Attribute</th><th>Weight</th><th>Notes</th><th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>                    
+                {% for weapon in weapons %}
+                    <tr>
+                        <td>{{ weapon.name }}</td><td>{{ weapon.damage }}</td><td>{{ weapon.bonus }}</td>
+                        <td>{{ weapon.weapon_range }}</td><td>{{ weapon.mag }}</td><td>{{ weapon.attribute }}</td>
+                        <td>{{ weapon.weight }}</td><td>{{ weapon.notes }}</td>
+                        <td><input type="checkbox" name="delete{{ weapon.id }}" value={{ weapon.id }}></td>
                     </tr>
                 {% endfor %}
-            </tbody>
-        </table>
-    {% endif %} 
+                </tbody>
+                </table>
+                {% endif %}
+                <a class="btn btn-danger btn-sm" href="/shootout/weapons/sheet/{{ sheet.id }}" role="button">Add Weapons</a>
+                <input class="btn btn-primary" type="submit" name="delete" value="delete">
+            </form>
             </div>
             <div class="tab-pane container fade" id="Items">...</div>
         </div>
         </div>
     </div>
-    </form>
 </div>
 {% endblock %}
