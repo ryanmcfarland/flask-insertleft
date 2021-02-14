@@ -1,4 +1,1 @@
-web: flask db init; 
-web: flask db upgrade;
-web: python weaponsPost.py;
-web: gunicorn myapp:app
+web: flask db upgrade; python weaponsPost.py; gunicorn myapp:app

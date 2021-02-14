@@ -26,6 +26,7 @@ def shootout():
     sheets = Sheet.query.filter_by(user_id=current_user.id).all()
     return render_template('shootout.html', title="Shootout", sheets=sheets)
 
+
 ## process form from sheet, get specific row from sheet and update variables based on form data and commit
 ## will also check if data for weapon relationship per sheet needs to be updated / deleted
 ## will not save data if not validated
@@ -37,18 +38,22 @@ def shootout_edit(id):
         sheet = db.session.query(Sheet).get(id)
         if form.validate() and form.submit.data == "save":
             sheet.process_form(form)
-        elif request.form["delete"] == "delete":
+        elif "delete" in request.form:
             sheet.remove_form_weapons(request.form)
         else:
-            ##TODO
-            print(1)
+            flash('Sheet was not updated, please check inputs', 'warning')
+            sheet.update_bonuses()
+            weapons = sheet.appended_weapons()
+            return render_template('shootout_sheet.html', title="Shootout - Sheet", sheet=sheet, weapons=weapons)
         
+        sheet.update_bonuses()
         sheet.last_update = datetime.utcnow()
         db.session.add(sheet)
         db.session.commit()
-        flash('Sheet has been successfully updated')
+        flash('Sheet has been successfully updated', 'info')
 
     sheet = Sheet.query.get_or_404(id)
+    sheet.update_bonuses()
     weapons = sheet.appended_weapons()
     return render_template('shootout_sheet.html', title="Shootout - Sheet", sheet=sheet, weapons=weapons)
 
@@ -100,11 +105,6 @@ def random():
         processed_text = text.upper()
         print(processed_text)
     return render_template('random.html', title="hello", user=user)
-
-@bp.route('/shootout_old', methods=['GET','POST'])
-def shootout_old():
-    user = {'username': 'Ryan'}
-    return render_template('shootout_old.html', title="hello", user=user)
 
 @bp.route('/crud', methods=['GET','POST'])
 def crud():

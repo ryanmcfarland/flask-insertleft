@@ -1,8 +1,8 @@
 """init
 
-Revision ID: c09fa3e9472b
+Revision ID: a1231caa41f9
 Revises: 
-Create Date: 2021-02-13 19:16:22.890404
+Create Date: 2021-02-14 01:25:59.505065
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'c09fa3e9472b'
+revision = 'a1231caa41f9'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -55,13 +55,9 @@ def upgrade():
     sa.Column('xp', sa.Integer(), nullable=True),
     sa.Column('max_hp', sa.Integer(), nullable=True),
     sa.Column('current_hp', sa.Integer(), nullable=True),
-    sa.Column('attack_bonus', sa.Integer(), nullable=True),
     sa.Column('system_strain', sa.Integer(), nullable=True),
     sa.Column('ac1', sa.Integer(), nullable=True),
     sa.Column('ac2', sa.Integer(), nullable=True),
-    sa.Column('mental_save', sa.Integer(), nullable=True),
-    sa.Column('evasion_save', sa.Integer(), nullable=True),
-    sa.Column('physical_save', sa.Integer(), nullable=True),
     sa.Column('strength', sa.Integer(), nullable=True),
     sa.Column('dexterity', sa.Integer(), nullable=True),
     sa.Column('constitution', sa.Integer(), nullable=True),

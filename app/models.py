@@ -1,3 +1,4 @@
+import math 
 from hashlib import md5
 from datetime import datetime
 from flask import current_app
@@ -57,13 +58,9 @@ class Sheet(db.Model):
     xp = db.Column(db.Integer, default=0)
     max_hp = db.Column(db.Integer,default=1)
     current_hp = db.Column(db.Integer,default=1)
-    attack_bonus = db.Column(db.Integer,default=0)
     system_strain = db.Column(db.Integer, default=0)
     ac1 = db.Column(db.Integer, default=10)
     ac2 = db.Column(db.Integer,default=10)
-    mental_save = db.Column(db.Integer,default=15)
-    evasion_save = db.Column(db.Integer, default=15)
-    physical_save = db.Column(db.Integer, default=15)
     strength = db.Column(db.Integer, default=0)
     dexterity = db.Column(db.Integer, default=0)
     constitution = db.Column(db.Integer, default=0)
@@ -95,6 +92,30 @@ class Sheet(db.Model):
     last_update = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     weapons = db.relationship("Weapon", secondary=weapon_identifier, backref=db.backref('weapons_identifier', lazy='dynamic'),lazy='dynamic')
+
+    def update_bonuses(self):
+        self.attack_bonus=math.ceil(self.level/2)
+        self.str_mod=self.update_modifiers(self.strength)
+        self.dex_mod=self.update_modifiers(self.dexterity)
+        self.con_mod=self.update_modifiers(self.constitution)
+        self.int_mod=self.update_modifiers(self.intelligence)
+        self.wis_mod=self.update_modifiers(self.wisdom)
+        self.chr_mod=self.update_modifiers(self.charisma)
+        self.mental_save=16-self.level-(max(self.wis_mod, self.chr_mod))
+        self.evasion_save=16-self.level-(max(self.int_mod, self.dex_mod))        
+        self.physical_save=16-self.level-(max(self.con_mod, self.str_mod))
+
+    def update_modifiers(self, attr):
+        if attr < 4:
+            return -2
+        elif attr < 8:
+            return -1
+        elif attr < 14:
+            return 0
+        elif attr < 18:
+            return 1
+        else:
+            return 2
 
     def append_weapon(self, weap):
         if not self.check_appended_weapon(weap):
@@ -141,13 +162,9 @@ class Sheet(db.Model):
         self.xp=form.xp.data
         self.max_hp=form.max_hp.data
         self.current_hp=form.current_hp.data
-        self.attack_bonus=form.attack_bonus.data
         self.system_strain=form.system_strain.data
         self.ac1=form.ac1.data
         self.ac2=form.ac2.data
-        self.mental_save=form.mental_save.data
-        self.physical_save=form.physical_save.data
-        self.evasion_save=form.evasion_save.data
         self.strength=form.strength.data
         self.dexterity=form.dexterity.data
         self.constitution=form.constitution.data
