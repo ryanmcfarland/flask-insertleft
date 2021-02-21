@@ -49,6 +49,8 @@ class Weapon(db.Model):
     weight = db.Column(db.Integer, default=1)
     notes = db.Column(db.Text, default="Enter additional information here...")
 
+# database set-up for shootout sheets, allows each sheet to access user for each sheet
+# e.g. sheet.author.username
 class Sheet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), default="insert_name")
@@ -141,7 +143,7 @@ class Sheet(db.Model):
         weaps = Weapon.query.filter(Weapon.id.notin_(ids_found)).all()
         return weaps
 
-    # form is request.form from a POSt request for sheet
+    # form is request.form from a POST request for sheet
     def remove_form_weapons(self, form):
         for i in self.appended_weapons():
             if form.get("delete"+str(i.id)):

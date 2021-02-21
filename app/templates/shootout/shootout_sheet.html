@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>Sheriffs & Shootouts - Form fillable Character Sheet</h2>
+    </div>
+    <form action="/shootout/sheet/{{ sheet.id }}" method="post">
+    <div class="row">
+        <div class="col">
+            <ul class="list-group mb-3">
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div><h6 class="my-0">Name</h6></div>{{ sheet.name }}</li>
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div><h6 class="my-0">Class</h6></div>{{ sheet.character_class }}</li>
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div><h6 class="my-0">Background</h6></div>{{ sheet.background }}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2 my-1">
+        <input class="btn btn-primary" type="submit" name="submit" value="save">
+        </div>
+    </div>
+    <!-- Tabs for Character Stats -->
+    <div class="row">
+        <div class="container">
+        <ul class="nav nav-tabs">
+            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#CStats">Current Stats</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#AStats">Attributes</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#SStats">Skills</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#WStats">Weapons</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#Items">Items</a></li>
+        </ul>  
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane container active" id="CStats">
+                <table class="table table-hover">
+                    <thead><tr><th scope="col">Attribute</th><th scope="col">Level</th></tr></thead>
+                    <tbody>
+                        <tr><td>Level</td><td>{{ sheet.level }}</td></tr>
+                        <tr><td>XP</td><td>{{ sheet.xp }}</td></tr>
+                        <tr><td>Max Hit Points</td><td>{{ sheet.max_hp }}</td></tr>
+                        <tr><td>Current Hit Points</td><td>{{ sheet.current_hp }}</td></tr>
+                        <tr><td>Attack Bonus</td><td>{{ sheet.attack_bonus }}</td></tr>
+                        <tr><td>System Strain</td><td>{{ sheet.system_strain }}</td></tr>
+                        <tr><td>Armour Class 1</td><td>{{ sheet.ac1 }}</td></tr>
+                        <tr><td>Armour Class 2</td><td>{{ sheet.ac2 }}</td></tr>
+                        <tr><td>Mental Save</td><td>{{ sheet.mental_save }}</td></tr>
+                        <tr><td>Evasion Save</td><td>{{ sheet.evasion_save }}</td></tr>
+                        <tr><td>Physical Save</td><td>{{ sheet.physical_save }}</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane container fade" id="AStats">
+                <table class="table table-hover">
+                    <thead><tr><th scope="col">Attribute</th><th scope="col">Level</th><th scope="col">Modifier</th></tr></thead>
+                    <tbody>
+                        <tr><td>Strength</td><td>{{ sheet.strength }}</td><td>{{ sheet.str_mod }}</td></tr>
+                        <tr><td>Dexterity</td><td>{{ sheet.dexterity }}</td><td>{{ sheet.dex_mod }}</td></tr>
+                        <tr><td>Constitution</td><td>{{ sheet.constitution }}</td><td>{{ sheet.con_mod }}</td></tr>
+                        <tr><td>Intelligence</td><td>{{ sheet.intelligence }}</td><td>{{ sheet.int_mod }}</td></tr>
+                        <tr><td>Wisdom</td><td>{{ sheet.wisdom }}</td><td>{{ sheet.wis_mod }}</td></tr>
+                        <tr><td>Charisma</td><td>{{ sheet.charisma }}</td><td>{{ sheet.chr_mod }}</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane container fade" id="SStats">
+                <table class="table table-hover">
+                    <thead><tr><th scope="col">Attribute</th><th scope="col">Level</th></tr></thead>
+                    <tbody>
+                        <tr><td>Administer</td><td>{{ sheet.administer }}</td></tr>
+                        <tr><td>Cast Magic</td><td>{{ sheet.cast_magic }}</td></tr>
+                        <tr><td>Connect</td><td>{{ sheet.connect }}</td></tr>
+                        <tr><td>Exert</td><td>{{ sheet.exert }}</td></tr>
+                        <tr><td>Fix</td><td>{{ sheet.fix }}</td></tr>
+                        <tr><td>Heal</td><td>{{ sheet.heal }}</td></tr>
+                        <tr><td>Horsemanship</td><td>{{ sheet.horsemanship }}</td></tr>
+                        <tr><td>Know</td><td>{{ sheet.know }}</td></tr>
+                        <tr><td>Know Magic</td><td>{{ sheet.know_magic }}</td></tr>
+                        <tr><td>Lead</td><td>{{ sheet.lead }}</td></tr>
+                        <tr><td>Notice</td><td>{{ sheet.notice }}</td></tr>
+                        <tr><td>Perform</td><td>{{ sheet.perform }}</td></tr>
+                        <tr><td>Punch</td><td>{{ sheet.punch }}</td></tr>
+                        <tr><td>Sail</td><td>{{ sheet.sail }}</td></tr>
+                        <tr><td>Shoot</td><td>{{ sheet.shoot }}</td></tr>
+                        <tr><td>Sneak</td><td>{{ sheet.sneak }}</td></tr>
+                        <tr><td>Stab</td><td>{{ sheet.stab }}</td></tr>
+                        <tr><td>Talk</td><td>{{ sheet.talk }}</td></tr>
+                        <tr><td>Trade</td><td>{{ sheet.trade }}</td></tr>
+                        <tr><td>Work</td><td>{{ sheet.work }}</td></tr>
+                    </tbody>
+                </table>
+            </table>                
+            </div>
+            </form>
+            <div class="tab-pane container fade" id="WStats">
+                <form action="/shootout/sheet/{{ sheet.id }}" method="post">
+                {% if weapons |length < 1 %}
+                    <p>There are no weapons attached</p>
+                {% else %}
+                <table class="table">
+                <thead>
+                    <tr>
+                    <th>Weapon</th><th>Damage</th><th>Bonus</th><th>Range</th><th>Magazine</th><th>Attribute</th><th>Weight</th><th>Notes</th><th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>                    
+                {% for weapon in weapons %}
+                    <tr>
+                        <td>{{ weapon.name }}</td><td>{{ weapon.damage }}</td><td>{{ weapon.bonus }}</td>
+                        <td>{{ weapon.weapon_range }}</td><td>{{ weapon.mag }}</td><td>{{ weapon.attribute }}</td>
+                        <td>{{ weapon.weight }}</td><td>"{{ weapon.notes }}"</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                </table>
+                {% endif %}
+            </form>
+            </div>
+            <div class="tab-pane container fade" id="Items">...</div>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
