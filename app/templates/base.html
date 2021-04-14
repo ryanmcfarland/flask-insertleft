@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <title>RM | {{ title }}</title>
 </head>
@@ -20,8 +19,8 @@
             <div class="collapse navbar-collapse" id="navbarsExample03">
                 <ul class="navbar-nav mr-auto">
                 <li class="nav-item active"><a class="nav-link" href="{{ url_for('shootout.so_home') }}">Shootout<span class="sr-only">(current)</span></a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('main.random') }}">Random</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('main.crud') }}">CRUD</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}">Blog</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('main.create') }}">Blog-Create</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="http://example.com/" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Extras</a>
                         <div class="dropdown-menu" aria-labelledby="dropdown03">
@@ -58,8 +57,9 @@
     </div>
     </div>
     {% endfor %}
-
+    <div class="container">
     {% block content %}
     {% endblock %}
+    </div>
 </body>
 </html>

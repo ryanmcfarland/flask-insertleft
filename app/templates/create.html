@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/easymde.min.css') }}">
+    <script src="{{ url_for('static', filename='js/easymde.min.js') }}"></script>
+
+    <h1>{% block title %} Add a New Note {% endblock %}</h1>
+    <form method="post">
+    <textarea id="my-text-area" name="content"></textarea>
+    <script>
+    var easyMDE = new EasyMDE({element: document.getElementById('my-text-area')});
+    </script>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+    </form>
+
+{% endblock %}

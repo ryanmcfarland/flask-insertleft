@@ -61,7 +61,7 @@ def so_create():
     sheet = Sheet(author=current_user)
     db.session.add(sheet)
     db.session.commit()
-    return redirect(url_for('shootout.home'))
+    return redirect(url_for('shootout.so_home'))
 
 @bp.route('/delete/<int:id>', methods=['GET','POST'])
 @login_required
