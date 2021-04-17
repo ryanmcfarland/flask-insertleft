@@ -1,4 +1,5 @@
-import math 
+import math
+import re
 from hashlib import md5
 from datetime import datetime
 from flask import current_app
@@ -23,13 +24,25 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
-class Notes(db.Model):
+class Entry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String, nullable=False)
+    slug = db.Column(db.String, unique=True)
+    published = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    note = db.Column(db.Text)
+    last_update = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    content = db.Column(db.Text)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def output_md(self):
         self.note=markdown.markdown(self.note)
+    
+    def output_snapshot(self, snapshot):
+        self.note="\n".join(self.note.split("\n")[:snapshot])
+
+    def gen_slug(self):
+        if not self.slug:
+            self.slug = re.sub('[^\w]+', '-', self.title.lower())
 
 ## Many-to-many relationship table between weapon and sheet
 ## allows for a sheet to have multiple weapons

@@ -2,17 +2,13 @@
 
 {% block content %}
 <h1>{% block title %} Welcome to FlaskNotes {% endblock %}</h1>
-    {% for note in notes %}
     <div class="card">
         <div class="card-body">
             <span class="badge badge-primary">#{{ note['id'] }}</span>
             <span class="badge badge-default">{{ note['created_at'] }}</span>
             <hr>
-            <p>{{ note['note'] |safe }}</p>
-            <hr>
-            <a class="btn btn-danger btn-sm" href="/blog/{{ note.id }}" role="button">Read More</a>
+            <p>{{ note['note'] | safe}}</p>
         </div>
     </div>
     <hr>
-    {% endfor %}
 {% endblock %}
