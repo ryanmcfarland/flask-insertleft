@@ -24,3 +24,9 @@ db.session.commit()
 >>> res=Notes.query.all()[1].note.split("\n")
 >>> res
 ['### Flask\r', 'Flask is a **web** framework for _Python_.\r', '\r', 'Here is the Flask logo:\r', '\r', '![Flask Logo](https://flask.palletsprojects.com/en/1.1.x/_images/flask-logo.png)']
+
+# TODO
+
+1. Roles -> https://flask.palletsprojects.com/en/1.1.x/patterns/viewdecorators/
+
+# https://stackoverflow.com/questions/40012682/how-to-divide-bootstrap-col-md-div-to-half-vertically/40012791

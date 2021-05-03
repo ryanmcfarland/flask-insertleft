@@ -3,7 +3,7 @@ import pandas
 
 class weaponsData(object):
     def parseFile(self):
-        self.readFile('weapons.csv')
+        self.readFile('misc/weapons.csv')
 
     def readFile(self, filename):
         conn = sqlite3.connect('app.db')

@@ -1,0 +1,24 @@
+html, body {
+    height: 100%;
+}
+
+main {
+    height: 80%;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: flex;
+    -ms-flex-align: center;
+    -ms-flex-pack: center;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.card-header {
+    position: fixed;
+  }
+  
+  

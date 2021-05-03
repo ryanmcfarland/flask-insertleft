@@ -24,7 +24,7 @@ def so_show(id):
     sheet = Sheet.query.get_or_404(id)
     sheet.update_bonuses()
     weapons = sheet.appended_weapons()    
-    return render_template('shootout/shootout_sheet.html', title="Shootout - Sheet", sheet=sheet, weapons=weapons)
+    return render_template('shootout/sheet.html', title="Shootout - Sheet", sheet=sheet, weapons=weapons)
 
 ## process form from sheet, get specific row from sheet and update variables based on form data and commit
 ## will also check if data for weapon relationship per sheet needs to be updated / deleted
@@ -46,14 +46,14 @@ def so_edit(id):
             flash('Sheet was not updated, please check inputs', 'warning')
             sheet.update_bonuses()
             weapons = sheet.appended_weapons()
-            return render_template('shootout/shootout_edit_sheet.html', title="Shootout - Sheet", sheet=sheet, weapons=weapons)
+            return render_template('shootout/edit.html', title="Shootout - Sheet", sheet=sheet, weapons=weapons)
         
         sheet.last_update = datetime.utcnow()
         db.session.add(sheet)
         db.session.commit()
         flash('Sheet has been successfully updated', 'info')
 
-    return render_template('shootout/shootout_edit_sheet.html', title="Shootout - Sheet", sheet=sheet, weapons=weapons)
+    return render_template('shootout/edit.html', title="Shootout - Sheet", sheet=sheet, weapons=weapons)
 
 @bp.route('/create', methods=['GET'])
 @login_required
@@ -82,11 +82,11 @@ def weapon_sheet(id=None, add=1):
         sheet = Sheet.query.get_or_404(id)
         sheet.append_form_weapons(request.form)
         db.session.commit()
-        return redirect(url_for('shootout.shootout_edit', id = id))
+        return redirect(url_for('shootout.so_edit', id = id))
     else:
         if id == None:
             weapons = Weapon.query.all()
         else:
             sheet = Sheet.query.get_or_404(id)
             weapons = sheet.missing_weapons()
-    return render_template('shootout_weapons.html', title="Shootout - Weapons", id = id, weapons=weapons, add=add)
+    return render_template('shootout/weapons.html', title="Shootout - Weapons", id = id, weapons=weapons, add=add)

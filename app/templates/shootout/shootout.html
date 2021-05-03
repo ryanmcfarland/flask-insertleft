@@ -22,7 +22,8 @@
             <td>{{ sheet.character_class }}</td>
             <td>{{ sheet.background }}</td>
             <td>{{ sheet.level }}</td>
-            <td class="text-right"><a class="btn btn-danger btn-sm" href="/shootout/sheet/edit/{{ sheet.id }}" role="button">Show</a></td>
+            <td class="text-right"><a class="btn btn-danger btn-sm" href="/shootout/sheet/{{ sheet.id }}" role="button">Show</a></td>
+            <td class="text-right"><a class="btn btn-danger btn-sm" href="/shootout/sheet/edit/{{ sheet.id }}" role="button">Edit</a></td>
             <td class="text-right"><a class="btn btn-danger btn-sm" href="/shootout/sheet/delete/{{ sheet.id }}" role="button">Delete</a></td>
             </tr>
         {% endfor %}
