@@ -1,8 +1,8 @@
-"""initial
+"""added notes
 
-Revision ID: 0b009ac7cf73
+Revision ID: 89d72c915165
 Revises: 
-Create Date: 2021-04-17 00:23:29.073657
+Create Date: 2021-05-04 21:42:53.270668
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '0b009ac7cf73'
+revision = '89d72c915165'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -63,8 +63,7 @@ def upgrade():
     sa.Column('max_hp', sa.Integer(), nullable=True),
     sa.Column('current_hp', sa.Integer(), nullable=True),
     sa.Column('system_strain', sa.Integer(), nullable=True),
-    sa.Column('ac1', sa.Integer(), nullable=True),
-    sa.Column('ac2', sa.Integer(), nullable=True),
+    sa.Column('ac', sa.Integer(), nullable=True),
     sa.Column('strength', sa.Integer(), nullable=True),
     sa.Column('dexterity', sa.Integer(), nullable=True),
     sa.Column('constitution', sa.Integer(), nullable=True),
@@ -95,6 +94,7 @@ def upgrade():
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('last_update', sa.DateTime(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('notes', sa.Text(), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )

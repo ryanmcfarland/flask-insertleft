@@ -8,8 +8,8 @@ from app.models import User
 
 bp = Blueprint('command', __name__)
 
-#flask create --name test --email test1
-@bp.cli.command('create')
+#flask create-user --name test --email test1
+@bp.cli.command('create-user')
 @click.option('--name', prompt="Enter name")
 @click.option('--email', prompt="Enter email")
 @click.option('--password', prompt="Enter password")

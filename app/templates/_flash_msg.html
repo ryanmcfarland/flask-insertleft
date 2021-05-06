@@ -1,4 +1,6 @@
-{% for category, message in get_flashed_messages(with_categories=True) %}
+<!-- #https://stackoverflow.com/questions/35965321/flashing-message-in-flask-on-a-bootstrap-modal -->
+
+<!--
 <div class="container">
     <div class="py-5 text-center">
         <div class="alert alert-{{category}} alert-dismissible fade show"><strong>{{category|upper}}</strong> {{ message }}
@@ -6,4 +8,35 @@
         </div>
     </div>
 </div>
+--> 
+
+{% for category, message in get_flashed_messages(with_categories=True) %}
+<div class="modal fade" role="dialog" id="myModal">
+    <div class="modal-dialog" role="document">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{category|upper}}</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                {{ message }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endfor %}
+
+<script>
+/* Trigger flash modal */
+$(document).ready(function() {
+    var messages = "{{ get_flashed_messages() }}";
+    if (typeof messages != 'undefined' && messages != '[]') {
+        console.log("hello");
+        $("#myModal").modal();
+    };
+});
+</script>

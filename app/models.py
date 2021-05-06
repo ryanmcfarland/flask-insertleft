@@ -75,8 +75,7 @@ class Sheet(db.Model):
     max_hp = db.Column(db.Integer,default=1)
     current_hp = db.Column(db.Integer,default=1)
     system_strain = db.Column(db.Integer, default=0)
-    ac1 = db.Column(db.Integer, default=10)
-    ac2 = db.Column(db.Integer,default=10)
+    ac = db.Column(db.Integer, default=10)
     strength = db.Column(db.Integer, default=0)
     dexterity = db.Column(db.Integer, default=0)
     constitution = db.Column(db.Integer, default=0)
@@ -108,6 +107,7 @@ class Sheet(db.Model):
     last_update = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     weapons = db.relationship("Weapon", secondary=weapon_identifier, backref=db.backref('weapons_identifier', lazy='dynamic'),lazy='dynamic')
+    notes = db.Column(db.Text, nullable=False, default='')
 
     def update_bonuses(self):
         self.attack_bonus=math.ceil(self.level/2)
@@ -170,6 +170,9 @@ class Sheet(db.Model):
             for i in Weapon.query.filter(Weapon.id.in_(form.getlist('add'))).all():
                 self.append_weapon(i)
 
+    def output_md(self):
+        self.notes=markdown.markdown(self.notes)
+
     def process_form(self, form):
         self.name=form.name.data
         self.character_class=form.character_class.data
@@ -179,8 +182,7 @@ class Sheet(db.Model):
         self.max_hp=form.max_hp.data
         self.current_hp=form.current_hp.data
         self.system_strain=form.system_strain.data
-        self.ac1=form.ac1.data
-        self.ac2=form.ac2.data
+        self.ac=form.ac.data
         self.strength=form.strength.data
         self.dexterity=form.dexterity.data
         self.constitution=form.constitution.data
@@ -206,6 +208,8 @@ class Sheet(db.Model):
         self.talk=form.talk.data
         self.trade=form.trade.data
         self.work=form.work.data
+        self.notes=form.notes.data
+
 
     def __repr__(self):
         return '<Sheet {}>'.format(self.name)

@@ -1,7 +1,16 @@
 {% extends 'base.html' %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/easymde.min.css') }}">
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/easymde.min.js') }}"></script>
+<script>var easyMDE = new EasyMDE({element: document.getElementById('my-text-area')});</script>
+{% endblock %}
+
 {% block content %}
-    <script src="{{ url_for('static', filename='js/easymde.min.js') }}"></script>
+<div class="container">
     <h1>Add a New Note</h1>
     <hr>
     <form method="post">
@@ -14,17 +23,13 @@
     </div>
     <hr>
     <div class="row">
-        <div class="col-1 d-flex justify-content-center text-center"><span>Content</spam></div>
+        <div class="col-1 d-flex justify-content-center text-center"><span>Content</span></div>
         <div class="col-11"><textarea id="my-text-area" name="content"></textarea></div>
-        <script>var easyMDE = new EasyMDE({element: document.getElementById('my-text-area')});</script>
     </div>
 
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
     </form>
-{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/easymde.min.css') }}">
+</div>
 {% endblock %}

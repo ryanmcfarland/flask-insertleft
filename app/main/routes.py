@@ -1,9 +1,10 @@
-from datetime import datetime
 from flask import Flask, request, render_template, flash, redirect, url_for, current_app, jsonify
 from flask_login import current_user, login_required
 from app import db
 from app.models import Entry
 from app.main import bp
+from app.main.forms import BlogForm
+
 
 import logging
 
@@ -24,7 +25,11 @@ def index():
 # https://stackoverflow.com/questions/43634409/switch-chart-js-data-with-button-click
 
 @bp.route('/blog/create/', methods=['GET','POST'])
+@login_required
 def create():
+    if current_user.username != "test":
+        flash('You do not have permissions to create an entry', 'warning')
+        return redirect(url_for('main.index'))
     if request.method == 'POST':
         content = request.form['content']
         if not content:
@@ -34,7 +39,7 @@ def create():
         db.session.add(Entry)
         db.session.commit()
         return redirect(url_for('main.index'))
-    return render_template('create.html')
+    return render_template('blog/create.html')
 
 @bp.route('/blog/<int:id>/', methods=['GET'])
 def blog_post(id):

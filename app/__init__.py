@@ -3,7 +3,7 @@ from flask import Flask, current_app
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
-from config import Config
+from config import app_config
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -14,9 +14,9 @@ login.login_message_category = "warning"
 
 #logging.basicConfig(level=logging.DEBUG)
 
-def create_app(config_class=Config):
+def create_app(config_name):
     app = Flask(__name__)
-    app.config.from_object(config_class)
+    app.config.from_object(app_config[config_name])
     app.url_map.strict_slashes = False
     
     db.init_app(app)

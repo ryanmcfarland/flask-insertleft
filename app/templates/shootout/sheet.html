@@ -8,6 +8,10 @@
 <script src="{{ url_for('static', filename='js/shootout.js') }}"></script>
 {% endblock %}
 
+{% block title %}
+Shootout - Sheet
+{% endblock %}
+
 {% block content %}
 <div class="container">
     <div class="py-5 text-center">
@@ -80,12 +84,13 @@
         </div>
         <!-- First row Second column --> 
         <div class="col-md-8">
+            <!-- Attributes (First row in the second column)--> 
             <div class="row" id="r-stat"><div class="col-md-12">
                     <div class="card mb-3"><div class="card-header">Current Stats</div>
                     <div class="table-responsive">
                     <table class="card-table table">
                     <tbody>
-                    <tr><td>Level</td><td>{{ sheet.level }}</td><td>Armour Class</td><td>{{ sheet.ac1 }}</td></tr>
+                    <tr><td>Level</td><td>{{ sheet.level }}</td><td>Armour Class</td><td>{{ sheet.ac }}</td></tr>
                     <tr><td>XP</td><td>{{ sheet.xp }}</td><td>System Strain</td><td>{{ sheet.system_strain }}</td></tr>
                     <tr><td>Attack Bonus</td><td>{{ sheet.attack_bonus }}</td><td>Mental Save</td><td>{{ sheet.mental_save }}</td></tr>
                     <tr><td>Max Hit Points</td><td>{{ sheet.max_hp }}</td><td>Evasion Save</td><td>{{ sheet.evasion_save }}</td></tr>
@@ -95,32 +100,13 @@
                     </div>
                     </div>
             </div></div>
-            <div class="row" id="r-weap">
-                <div class="col-md-12">
-                    <div class="card mb-3" id="c-weap"><div class="card-header" id="ch-weap">Weapons</div>
-                    {% if weapons |length < 1 %}
-                    <div class="card-body" id="cb-weap">
-                        <p class="card-text">There are no weapons attached</p>
-                    </div>
-                    {% else %}
-                    <div class="table-responsive" id="cb-weap">
-                        <table class="card-table table">
-                        <thead><tr><th></th><th>Damage</th><th>Bonus</th><th>Range</th><th>Magazine</th><th>Attribute</th><th>Weight</th><th>Notes</th></tr></thead>
-                        <tbody>                    
-                        {% for weapon in weapons %}
-                        <tr><td>{{ weapon.name }}</td><td>{{ weapon.damage }}</td><td>{{ weapon.bonus }}</td><td>{{ weapon.weapon_range }}</td><td>{{ weapon.mag }}</td><td>{{ weapon.attribute }}</td><td>{{ weapon.weight }}</td><td>"{{ weapon.notes }}"</td></tr>
-                        {% endfor %}
-                        </tbody>
-                        </table>
-                    </div>                   
-                    {% endif %}
-                    </div>
-                </div>
-            </div>
+            <!-- Weapons (Secpnd row second column) (includes weapons as duplicate code) -->         
+            {% include 'shootout/_weapons_sheet.html'%}
+            <!-- Additonal Notes (Third row second column) (marked-up) -->         
             <div class="row" id="r-note"><div class="col-md-12">
                 <div class="card mb-3" id="c-note"><div class="card-header" id="ch-note">Additional Notes</div>
                     <div class="card-body" id="cb-note">
-                    
+                        {{ sheet.notes | safe }}
                     </div>
                 </div>
             </div></div>

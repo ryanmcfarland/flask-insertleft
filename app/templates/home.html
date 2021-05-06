@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 
+{% block title %}Home{% endblock %}
+
 {% block content %}
-<h1>{% block title %} Welcome to FlaskNotes {% endblock %}</h1>
+<div class="container">
+<h1>Test</h1>
     {% for note in notes %}
     <div class="card">
         <div class="card-body">
@@ -15,4 +18,5 @@
     </div>
     <hr>
     {% endfor %}
+</div>
 {% endblock %}
