@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %} Welcome to FlaskNotes {% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class = "row">
+        <h1>{{ entry['title'] }}</h1>
+    </div>
+    <hr>
+    <div class = "row">
+        <div class="col-md-12">
+        {{ entry['content'] | safe }}
+        </div>
+    </div>
+</div>   
+{% endblock %}

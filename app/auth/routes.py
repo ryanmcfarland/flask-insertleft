@@ -19,7 +19,7 @@ def login():
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('auth.login'))
-        login_user(user)
+        login_user(user, remember=form.remember_me.data)
         return redirect(url_for('main.index'))
     return render_template('auth/login.html', title='Sign In', form=form)
 

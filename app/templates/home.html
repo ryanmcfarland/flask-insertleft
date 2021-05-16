@@ -2,21 +2,17 @@
 
 {% block title %}Home{% endblock %}
 
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/blog.css') }}">
+{% endblock %}
+
 {% block content %}
+<div class="container pt-3">
+<h1>Hi, I'm Ryan McFarland</h1>
+<p>I am a Northern Irish Gamer.</p>
+</div>
 <div class="container">
-<h1>Test</h1>
-    {% for note in notes %}
-    <div class="card">
-        <div class="card-body">
-            <span class="badge badge-primary">#{{ note['id'] }}</span>
-            <span class="badge badge-default">{{ note['created_at'] }}</span>
-            <hr>
-            <p>{{ note['note'] |safe }}</p>
-            <hr>
-            <a class="btn btn-danger btn-sm" href="/blog/{{ note.id }}" role="button">Read More</a>
-        </div>
-    </div>
-    <hr>
-    {% endfor %}
+{% include 'blog/_posts.html' %}    
 </div>
 {% endblock %}

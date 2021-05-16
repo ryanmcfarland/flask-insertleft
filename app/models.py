@@ -14,6 +14,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     sheets = db.relationship('Sheet', backref='author', lazy='dynamic')
+    posts = db.relationship('Entry', backref='author', lazy='dynamic')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -26,23 +27,25 @@ class User(UserMixin, db.Model):
 
 class Entry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String, nullable=False)
+    title = db.Column(db.String, default="")
     slug = db.Column(db.String, unique=True)
     published = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    publish_date = db.Column(db.DateTime, default=datetime.utcnow)
     last_update = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    content = db.Column(db.Text)
+    caption = db.Column(db.Text, default="")
+    content = db.Column(db.Text, default="")
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def output_md(self):
-        self.note=markdown.markdown(self.note)
+        self.content=markdown.markdown(self.content, extensions=['attr_list'])
     
     def output_snapshot(self, snapshot):
-        self.note="\n".join(self.note.split("\n")[:snapshot])
+        self.content="\n".join(self.content.split("\n")[:snapshot])
 
     def gen_slug(self):
         if not self.slug:
-            self.slug = re.sub('[^\w]+', '-', self.title.lower())
+            self.slug = re.sub(r'[^\w]+', '-', self.title.lower()).strip('-')
 
 ## Many-to-many relationship table between weapon and sheet
 ## allows for a sheet to have multiple weapons
