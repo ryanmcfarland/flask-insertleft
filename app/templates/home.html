@@ -8,11 +8,20 @@
 {% endblock %}
 
 {% block content %}
+{% from 'macros.html' import create_pagination, create_header %}
 <div class="container pt-3">
 <h1>Hi, I'm Ryan McFarland</h1>
-<p>I am a Northern Irish Gamer.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
 </div>
 <div class="container">
-{% include 'blog/_posts.html' %}    
+    <hr>
+    {% for entry in entries.items %}
+        {{ create_header(entry) }}
+        <hr>
+    {% endfor %}
+    {% from 'macros.html' import create_pagination %}
+    <div class = "row justify-content-center">
+        {{ create_pagination('main.index', entries) }}
+    </div>
 </div>
 {% endblock %}

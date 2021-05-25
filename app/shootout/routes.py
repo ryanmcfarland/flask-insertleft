@@ -57,7 +57,7 @@ def so_edit(id):
 @login_required
 def so_create():
     count_sheets = Sheet.query.filter_by(user_id=current_user.id).count()
-    if count_sheets < current_app.config['SHEETS_PER_USER']:
+    if count_sheets < current_app.config['SHEETS_PER_USER'] or current_user.check_roles(["Admin", "Power"]):
         sheet = Sheet(author=current_user)
         db.session.add(sheet)
         db.session.commit()

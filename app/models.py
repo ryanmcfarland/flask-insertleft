@@ -1,18 +1,29 @@
 import math
 import re
+import markdown
+
 from hashlib import md5
 from datetime import datetime
 from flask import current_app
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login
-import markdown
 
+## Many-to-many relationship table between user and role
+## allows for a user to have multiple roles
+user_permissions = db.Table('user_permissions',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('role_id', db.Integer, db.ForeignKey('role.id'))
+)
+
+# User class, maps the user to multiple sheets, roles and blog entries
+# Users can have multiple roles
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+    roles = db.relationship("Role", secondary=user_permissions, backref=db.backref('user_permissions', lazy='dynamic'),lazy='dynamic')
     sheets = db.relationship('Sheet', backref='author', lazy='dynamic')
     posts = db.relationship('Entry', backref='author', lazy='dynamic')
 
@@ -22,8 +33,50 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    # enfore role list and return true or false
+    def check_roles(self, roles):
+        if not isinstance(roles, (list, tuple)):
+            roles = [roles]
+        return any (x in roles for x in self.get_roles())
+
+    # loop through role values and print out list of roles attached to the user
+    def get_roles(self):
+        return [r[0] for r in  self.roles.values('name')]
+
+    def append_role(self, role):
+        r = Role.query.filter(Role.name.in_([role])).first()
+        if not r:
+            return None
+        elif not self.check_appended_role(r):
+            self.roles.append(r)
+
+   
+    def remove_role(self, role):
+        r = Role.query.filter(Role.name.in_([role])).first()
+        if not r:
+            return None
+        elif self.check_appended_role(r):
+            self.roles.remove(r)
+
+
+    def check_appended_role(self, role):
+        return self.roles.filter(user_permissions.c.role_id == role.id).count() > 0   
+
     def __repr__(self):
         return '<User {}>'.format(self.username)
+
+
+class Role(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), unique=True)
+
+    def __init__(self, **kwargs):
+        super(Role, self).__init__(**kwargs)
+        self.name=self.name.capitalize()
+
+    def __repr__(self):
+        return '<Role {}>'.format(self.name)
+
 
 class Entry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -37,15 +90,37 @@ class Entry(db.Model):
     content = db.Column(db.Text, default="")
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+    #def __init__(self, *args, **kwargs):
+    #    super(User, self).__init__(**kwargs)
+    #    self.append_role("User")
+
     def output_md(self):
         self.content=markdown.markdown(self.content, extensions=['attr_list'])
     
     def output_snapshot(self, snapshot):
         self.content="\n".join(self.content.split("\n")[:snapshot])
-
+        
     def gen_slug(self):
-        if not self.slug:
-            self.slug = re.sub(r'[^\w]+', '-', self.title.lower()).strip('-')
+        self.slug = re.sub(r'[^\w]+', '-', self.title.lower()).strip('-')
+    
+    # If False, always set published to False, return True for upstream checks
+    # If true, check contents and return False if any fields empty
+    # else set columns and return
+    def publish(self, publish=True):
+        if not publish:
+            self.published=publish
+            return True
+        elif not self.title or not self.caption or not self.content:
+            return False
+        else:
+            self.published=publish
+            self.gen_slug()
+            self.publish_date = datetime.utcnow()
+            return True
+
+    def __repr__(self):
+        return '<Entry {}>'.format(self.title)
+
 
 ## Many-to-many relationship table between weapon and sheet
 ## allows for a sheet to have multiple weapons
@@ -53,6 +128,7 @@ weapon_identifier = db.Table('weapon_identifier',
     db.Column('sheet_id', db.Integer, db.ForeignKey('sheet.id')),
     db.Column('weapon_id', db.Integer, db.ForeignKey('weapon.id'))
 )
+
 
 class Weapon(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -65,6 +141,7 @@ class Weapon(db.Model):
     attribute = db.Column(db.String(128), default="Dex")
     weight = db.Column(db.Integer, default=1)
     notes = db.Column(db.Text, default="Enter additional information here...")
+
 
 # database set-up for shootout sheets, allows each sheet to access user for each sheet
 # e.g. sheet.author.username
@@ -147,6 +224,8 @@ class Sheet(db.Model):
     def check_appended_weapon(self, weap):
         return self.weapons.filter(weapon_identifier.c.weapon_id == weap.id).count() > 0   
 
+    ## Query weapon table and join identiier where sheet id = sheet_id in weapon_identifier table
+    ## Role.query.filter(Role.user_permissions.any(id=1)).all()?
     def appended_weapons(self):
         weaps = Weapon.query.join(weapon_identifier, (weapon_identifier.c.weapon_id == Weapon.id)).filter(weapon_identifier.c.sheet_id == self.id)
         return weaps.all()

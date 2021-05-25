@@ -6,9 +6,7 @@ from app.auth import bp
 from app.auth.forms import LoginForm, RegistrationForm
 from app.models import User
 
-# request.form is passed in from POST
-# lets me bypass using wtforms and make my own forms 
-# but still use the wtfform validation
+# request.form is passed in from POST lets me bypass using wtforms and make my own forms but still use the wtfform validation
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:

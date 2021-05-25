@@ -11,7 +11,7 @@ class Config(object):
     SHEETS_PER_USER=5
     BLOG_SNAPSHOT=3
     SHEETS_PER_PAGE=6
-    POSTS_PER_PAGE=2
+    POSTS_PER_PAGE=5
 
 class DevelopmentConfig(Config):
     """

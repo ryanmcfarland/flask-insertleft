@@ -12,8 +12,6 @@ login.login_view = 'auth.login'
 login.login_message = 'Please log in to access this page.'
 login.login_message_category = "warning"
 
-#logging.basicConfig(level=logging.DEBUG)
-
 def create_app(config_name):
     app = Flask(__name__)
     app.config.from_object(app_config[config_name])
@@ -23,6 +21,9 @@ def create_app(config_name):
     migrate.init_app(app, db)
     login.init_app(app)
 
+    from app.common import bp as common_bp
+    app.register_blueprint(common_bp,cli_group=None)
+
     from app.auth import bp as auth_bp
     app.register_blueprint(auth_bp, url_prefix='/auth')
 
@@ -31,9 +32,6 @@ def create_app(config_name):
 
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
-
-    from app.command import bp as command_bp
-    app.register_blueprint(command_bp, cli_group=None)
 
     return app
 

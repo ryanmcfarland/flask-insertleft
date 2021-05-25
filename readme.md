@@ -30,3 +30,21 @@ db.session.commit()
 1. Roles -> https://flask.palletsprojects.com/en/1.1.x/patterns/viewdecorators/
 
 # https://stackoverflow.com/questions/40012682/how-to-divide-bootstrap-col-md-div-to-half-vertically/40012791
+
+# models
+#https://stackoverflow.com/questions/31842159/get-a-list-of-values-of-one-column-from-the-results-of-a-query
+#https://stackoverflow.com/questions/922774/check-if-input-is-a-list-tuple-of-strings-or-a-single-string
+
+
+<!-- #https://stackoverflow.com/questions/35965321/flashing-message-in-flask-on-a-bootstrap-modal -->
+
+<!--
+<div class="container">
+    <div class="py-5 text-center">
+        <div class="alert alert-{{category}} alert-dismissible fade show"><strong>{{category|upper}}</strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+    </div>
+</div>
+--> 
+

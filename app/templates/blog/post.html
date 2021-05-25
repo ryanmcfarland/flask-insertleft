@@ -1,17 +1,20 @@
 {% extends "base.html" %}
 
-{% block title %} Welcome to FlaskNotes {% endblock %}
+{% block title %}{{ entry.slug }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/blog.css') }}">
+{% endblock %}
 
 {% block content %}
 <div class="container">
-    <div class = "row">
-        <h1>{{ entry['title'] }}</h1>
-    </div>
+    {% from 'macros.html' import create_header %}
+    {{ create_header( entry) }}
     <hr>
     <div class = "row">
         <div class="col-md-12">
-        {{ entry['content'] | safe }}
+        {{ entry.content | safe}}
         </div>
     </div>
-</div>   
+</div>
 {% endblock %}

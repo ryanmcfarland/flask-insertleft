@@ -1,6 +1,9 @@
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
 <div class="container">
-    <a class="navbar-brand" href="{{ url_for('main.index') }}">Ryan McFarland</a>
+    <a class="navbar-brand" href="{{ url_for('main.index') }}">
+        <img id="logo" alt="Logo"  width="40" height="40" src="{{url_for('static', filename='image/bowl.svg')}}"/>
+        <span>bigaulbowl</span>
+    </a>
     <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <i class="fas fa-bars"></i>
     </button>
