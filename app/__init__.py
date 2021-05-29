@@ -3,11 +3,16 @@ from flask import Flask, current_app
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from flask_mail import Mail
+
 from config import app_config
 
 db = SQLAlchemy()
 migrate = Migrate()
 login = LoginManager()
+mail = Mail()
+
+
 login.login_view = 'auth.login'
 login.login_message = 'Please log in to access this page.'
 login.login_message_category = "warning"
@@ -20,6 +25,7 @@ def create_app(config_name):
     db.init_app(app)
     migrate.init_app(app, db)
     login.init_app(app)
+    mail.init_app(app)
 
     from app.common import bp as common_bp
     app.register_blueprint(common_bp,cli_group=None)
@@ -32,6 +38,9 @@ def create_app(config_name):
 
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
+    
+    from app.cv import bp as cv_bp
+    app.register_blueprint(cv_bp, url_prefix='/cv', static_folder='static')
 
     return app
 

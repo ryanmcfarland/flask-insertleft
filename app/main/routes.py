@@ -44,10 +44,6 @@ def blog(id=None, year=None, month=None, day=None, slug=None):#
 @login_required
 @role_required(["Admin", "Power"])
 def create():
-    if current_user.username != "test":
-        flash('You do not have permissions to create an entry', 'warning')
-        return redirect(url_for('main.index'))
-
     entry = Entry(user_id=current_user.id)
     db.session.add(entry)
     db.session.commit()
@@ -99,7 +95,7 @@ def preview(id):
         return redirect(url_for('main.blog', id=entry.id))
 
 # create way to edit, delete and publish posts through this page?
-@bp.route('/blog/publish/<int:id>/', methods=['GET'])
+@bp.route('/blog/publish/<int:id>/', methods=['POST'])
 @login_required
 @role_required(["Admin", "Power"])
 def publish(id):

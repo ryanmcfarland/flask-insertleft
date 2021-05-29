@@ -1,29 +1,28 @@
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-<div class="container">
-    <a class="navbar-brand" href="{{ url_for('main.index') }}">
-        <img id="logo" alt="Logo"  width="40" height="40" src="{{url_for('static', filename='image/bowl.svg')}}"/>
-        <span>bigaulbowl</span>
-    </a>
-    <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <i class="fas fa-bars"></i>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto">
-            <li class="nav-item align-self-center"><a class="nav-link text-nowrap" href="{{ url_for('shootout.so_home') }}">Shootout</a></li>
-            <li class="nav-item align-self-center"><a class="nav-link text-nowrap" href="{{ url_for('main.index') }}">Blog</a></li>
-            <li class="nav-item align-self-center"><a class="nav-link text-nowrap" href="{{ url_for('main.create') }}">Contact</a></li>
-        </ul>
-        <ul class="navbar-nav d-flex flex-row">
-            <li class="nav-item me-3 me-lg-0"><a class="nav-link" href="https://www.linkedin.com/in/ryan-mcfarland-213598127/"><i class="bi bi-linkedin"></i></a></li>
-        </ul>
-        <ul class="navbar-nav ml-auto">
-            {% if current_user.is_authenticated %}
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a></li>
-            {% else %}
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Login</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.register') }}">Register</a></li>
-            {% endif %}
-        </ul>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url_for('main.index') }}">
+            <img id="logo" alt="Logo"  src="{{url_for('static', filename='image/bowl.svg')}}"/>
+            <span>Big aul'Bowl</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColl" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColl">
+            <ul class="nav navbar-nav mr-auto">
+                <li class="nav-item align-left"><a class="nav-link text-nowrap" href="{{ url_for('shootout.so_home') }}">Shootout</a></li>
+                <li class="nav-item align-left"><a class="nav-link text-nowrap" href="{{ url_for('main.index') }}">Blog</a></li>
+                <li class="nav-item align-left"><a class="nav-link text-nowrap" href="{{ url_for('cv.download') }}" target="blank">Contact</a></li>
+            </ul>
+            <ul class="nav navbar-nav ml-auto">
+                <li class="nav-item align-left"><a class="nav-link" href="https://www.linkedin.com/in/ryan-mcfarland-213598127/" target="blank"><i class="bi bi-linkedin"></i></a></li>
+                <li class="nav-item align-left"><a class="nav-link" href="https://github.com/ryanmcfarland" target="blank"><i class="bi bi-github"></i></a></li>
+                <li class="nav-item align-left"><a class="nav-link text-nowrap" href="{{ url_for('cv.download') }}" target="blank"><i class="bi bi-file-person"></i></a></li>
+                {% if current_user.is_authenticated %}
+                <li class="nav-item align-left"><a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a></li>
+                {% else %}
+                <li class="nav-item align-left"><a class="nav-link" href="{{ url_for('auth.login') }}">Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
-</div>
 </nav>
