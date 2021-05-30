@@ -1,29 +1,33 @@
-import logging
-import os
-
 from flask import Flask, current_app
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
-from config import Config
+from flask_mail import Mail
+
+from config import app_config
 
 db = SQLAlchemy()
 migrate = Migrate()
 login = LoginManager()
+mail = Mail()
+
+
 login.login_view = 'auth.login'
 login.login_message = 'Please log in to access this page.'
 login.login_message_category = "warning"
 
-logging.basicConfig(level=logging.DEBUG)
-
-def create_app(config_class=Config):
+def create_app(config_name):
     app = Flask(__name__)
-    app.config.from_object(config_class)
+    app.config.from_object(app_config[config_name])
     app.url_map.strict_slashes = False
     
     db.init_app(app)
     migrate.init_app(app, db)
     login.init_app(app)
+    mail.init_app(app)
+
+    from app.common import bp as common_bp
+    app.register_blueprint(common_bp,cli_group=None)
 
     from app.auth import bp as auth_bp
     app.register_blueprint(auth_bp, url_prefix='/auth')
@@ -33,5 +37,9 @@ def create_app(config_class=Config):
 
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
+    
+    from app.contact import bp as contact_bp
+    app.register_blueprint(contact_bp, url_prefix='/contact')
 
     return app
+

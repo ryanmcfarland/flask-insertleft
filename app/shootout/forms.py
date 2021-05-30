@@ -10,8 +10,7 @@ class SheetForm(Form):
     max_hp = IntegerField('max_hp', validators=[InputRequired()])
     current_hp = IntegerField('current_hp', validators=[InputRequired()])
     system_strain = IntegerField('system_strain', validators=[InputRequired()])
-    ac1 = IntegerField('ac1', validators=[InputRequired()])
-    ac2 = IntegerField('ac2', validators=[InputRequired()])
+    ac = IntegerField('ac', validators=[InputRequired()])
     strength = IntegerField('strength', validators=[InputRequired()])
     dexterity = IntegerField('dexterity', validators=[InputRequired()])
     constitution = IntegerField('constitution', validators=[InputRequired()])
@@ -39,6 +38,8 @@ class SheetForm(Form):
     trade = IntegerField('trade', validators=[InputRequired()])
     work = IntegerField('work', validators=[InputRequired()])
     submit = StringField('submit', validators=[InputRequired()])
+    notes = StringField('notes', validators=[InputRequired()])
+
 
 class WeaponForm(Form):
     weapon = IntegerField('weapon', validators=[InputRequired()])

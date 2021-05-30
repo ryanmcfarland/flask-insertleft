@@ -1,0 +1,28 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url_for('main.index') }}">
+            <img id="logo" alt="Logo"  src="{{url_for('static', filename='image/bowl.svg')}}"/>
+            <span>Big aul'Bowl</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColl" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColl">
+            <ul class="nav navbar-nav mr-auto">
+                <li class="nav-item align-left"><a class="nav-link text-nowrap" href="{{ url_for('shootout.so_home') }}">Shootout</a></li>
+                <li class="nav-item align-left"><a class="nav-link text-nowrap" href="{{ url_for('main.index') }}">Blog</a></li>
+            </ul>
+            <ul class="nav navbar-nav ml-auto">
+                <li class="nav-item align-left"><a class="nav-link" href="https://www.linkedin.com/in/ryan-mcfarland-213598127/" target="blank"><i class="bi bi-linkedin"></i></a></li>
+                <li class="nav-item align-left"><a class="nav-link" href="https://github.com/ryanmcfarland" target="blank"><i class="bi bi-github"></i></a></li>
+                <li class="nav-item align-left"><a class="nav-link text-nowrap" href="{{ url_for('contact.cv') }}" target="blank"><i class="bi bi-file-person"></i></a></li>
+                <li class="nav-item align-left"><a class="nav-link text-nowrap" href="{{ url_for('contact.email') }}"><i class="bi bi-envelope"></i></a></li>
+                {% if current_user.is_authenticated %}
+                <li class="nav-item align-left"><a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a></li>
+                {% else %}
+                <li class="nav-item align-left"><a class="nav-link" href="{{ url_for('auth.login') }}">Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

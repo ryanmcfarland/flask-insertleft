@@ -1,0 +1,9 @@
+p.has-background {
+    padding: 20px 30px;
+  }
+
+.has-primary-background-color {
+    color: #fff;
+    background-color: #0073aa;
+  }
+
