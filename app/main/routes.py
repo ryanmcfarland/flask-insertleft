@@ -99,19 +99,19 @@ def preview(id):
 @login_required
 @role_required(["Admin", "Power"])
 def publish(id):
-    publish = request.args.get('publish', 'False', type=str)
+    publish = request.form.get('publish', 'False', type=str)
     publish = True if publish == "True" else False
     entry = Entry.query.get_or_404(id)
     if not entry.publish(publish=publish):
         flash("Cannot publish without a title, caption or content", "warning")
-        return redirect(url_for('main.admin', id=id))
+        return redirect(request.referrer)
     try:
         db.session.add(entry)
         db.session.commit()
     except:
         db.session.rollback()
         flash('Error with updating article', 'error')
-    return redirect(url_for('main.admin'))
+    return redirect(request.referrer)
 
 
 @bp.route('/blog/delete/<int:id>/', methods=['GET'])
@@ -124,7 +124,7 @@ def delete(id):
         db.session.commit()
     except:
         flash("Could not delete Post", 'error')
-    return redirect(url_for('main.admin'))
+    return redirect(request.referrer)
 
 # create way to edit, delete and publish posts through this page?
 @bp.route('/blog/admin/', methods=['GET','POST'])

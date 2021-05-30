@@ -5,7 +5,7 @@ import pandas
 
 class weaponsData(object):
     def parseFile(self):
-        self.readFile('weapons.csv')
+        self.readFile('misc/weapons.csv')
 
     def readFile(self, filename):
         DATABASE_URL = os.environ['DATABASE_URL']

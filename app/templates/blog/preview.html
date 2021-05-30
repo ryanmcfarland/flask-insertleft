@@ -21,9 +21,9 @@
         <div class="col-md-5">
             <form class="publish" action="{{ url_for( 'main.publish' , id=entry.id) }}" method="post">
             {% if entry.published %}
-            <button class="btn btn-danger btn-block" type="publish" value="False">Unpublish</button>
+            <button class="btn btn-danger btn-block" name="publish" value="False">Unpublish</button>
             {% else %} 
-            <button class="btn btn-success btn-block" type="publish" value="True">Publish</button>
+            <button class="btn btn-success btn-block" name="publish" value="True">Publish</button>
             {% endif %} 
             </form>
         </div>

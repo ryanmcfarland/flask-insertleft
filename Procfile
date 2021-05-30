@@ -1,1 +1,1 @@
-web: flask db upgrade; python weaponsPost.py; gunicorn myapp:app
+web: flask db upgrade; python misc/weaponsPost.py; gunicorn myapp:app

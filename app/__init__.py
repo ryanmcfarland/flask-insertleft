@@ -1,4 +1,3 @@
-
 from flask import Flask, current_app
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -39,8 +38,8 @@ def create_app(config_name):
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
     
-    from app.cv import bp as cv_bp
-    app.register_blueprint(cv_bp, url_prefix='/cv', static_folder='static')
+    from app.contact import bp as contact_bp
+    app.register_blueprint(contact_bp, url_prefix='/contact')
 
     return app
 
