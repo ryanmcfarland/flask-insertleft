@@ -1,5 +1,5 @@
-from wtforms import Form, StringField, IntegerField, validators
-from wtforms.validators import ValidationError, DataRequired, InputRequired, EqualTo, Length
+from wtforms import Form, StringField, IntegerField, SelectField
+from wtforms.validators import DataRequired, InputRequired, Length
 
 class SheetForm(Form):
     name = StringField('name', validators=[DataRequired(), Length(max=128)])
@@ -38,7 +38,7 @@ class SheetForm(Form):
     trade = IntegerField('trade', validators=[InputRequired()])
     work = IntegerField('work', validators=[InputRequired()])
     submit = StringField('submit', validators=[InputRequired()])
-    notes = StringField('notes', validators=[InputRequired()])
+    notes = StringField('notes')
 
 
 class WeaponForm(Form):

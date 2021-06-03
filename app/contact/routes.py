@@ -1,4 +1,4 @@
-from flask import send_from_directory, redirect
+from flask import send_from_directory, redirect, current_app
 from app.contact import bp
 
 
@@ -9,4 +9,4 @@ def cv():
 
 @bp.route('/email/', methods=['GET'])
 def email():
-    return redirect('mailto:bigaulbowl@outlook.com')
+    return redirect('mailto:'+current_app.config['ADMIN'])
