@@ -8,6 +8,8 @@ from flask import current_app
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login
+from sqlalchemy.orm import reconstructor
+
 
 ## Many-to-many relationship table between user and role
 ## allows for a user to have multiple roles
@@ -189,6 +191,21 @@ class Sheet(db.Model):
     weapons = db.relationship("Weapon", secondary=weapon_identifier, backref=db.backref('weapons_identifier', lazy='dynamic'),lazy='dynamic')
     notes = db.Column(db.Text, nullable=False, default='')
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.init_on_load()
+
+    # These classes and backgrounds should be avilable to all sheets 
+    @reconstructor
+    def init_on_load(self):
+        self.classes=["Warrior", "Expert", "Arcanist", "Magister", "Pact Maker", "Shaman", "War Mage", "Adepts", "Witch Hunter", "Martial Adept", "Mystic"]
+        self.backgrounds=["Arcane Scholar", "Cleric", "Courtesan", "Cowhand", "Criminal", "Dilettante", "Engineer",
+            "Entertainer", "Gentry", "Government Mage", "Hedge Wizard", "Hirespell", "Hunter", "Inquisitor", "Labourer",
+            "Merchant", "Official", "Physician", "Politician", "Rogue Mage", "Scholar", "Soldier", "Thug", "Vagabond", "Worker"]
+
+    def check_character_class(self, cls, bck):
+        return cls in self.classes and bck in self.backgrounds
+
     def update_bonuses(self):
         self.attack_bonus=math.ceil(self.level/2)
         self.str_mod=self.update_modifiers(self.strength)
@@ -291,6 +308,8 @@ class Sheet(db.Model):
         self.trade=form.trade.data
         self.work=form.work.data
         self.notes=form.notes.data
+
+        return self.check_character_class(self.character_class, self.background)
 
 
     def __repr__(self):

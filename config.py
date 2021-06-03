@@ -13,7 +13,7 @@ class Config(object):
     SHEETS_PER_PAGE=6
     POSTS_PER_PAGE=5
     
-    ADMIN="bigaulbowl@outlook.com"
+    ADMIN=os.environ.get('ADMIN') or 'bigaulbowl@outlook.com'
 
     # outlook mail server configuration - used within flask_mail
     MAIL_SERVER='smtp.office365.com'

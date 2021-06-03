@@ -24,20 +24,32 @@ Shootout - Edit
     <div class="row justify-content-center mb-3">
         <div class="col-md-3"><input class="btn btn-primary btn-block" type="submit" name="submit" value="Save"></div>
         <div class="col-md-3"><a class="btn btn-secondary btn-block" href="/shootout/weapons/sheet/{{ sheet.id }}" role="button">Add Weapons</a></div>
-        <div class="col-md-3"><a class="btn btn-danger btn-block" href="/shootout/weapons/sheet/{{ sheet.id }}" role="button">Delete</a></div>
+        <div class="col-md-3"><a class="btn btn-danger btn-block" href="/shootout/sheet/delete/{{ sheet.id }}" role="button">Delete</a></div>
     </div>
-    <div class="row">
-        <div class="col">
-            <ul class="list-group">
-                <li class="list-group-item d-flex justify-content-between lh-condensed">
-                    <div><h6 class="my-0">Name</h6></div><input type="text" name="name" value="{{ sheet.name }}"></li>
-                <li class="list-group-item d-flex justify-content-between lh-condensed">
-                    <div><h6 class="my-0">Class</h6></div><input type="text" name="character_class" value="{{ sheet.character_class }}"></li>
-                <li class="list-group-item d-flex justify-content-between lh-condensed">
-                    <div><h6 class="my-0">Background</h6></div><input type="text" name="background"value="{{ sheet.background }}"></li>
-            </ul>
+    <div class="row py-3 justify-content-center border">
+        <label class="col-sm-2 col-form-label font-weight-bold">Name</label>
+        <div class="col-sm-10"><input class="form-control" type="text" name="name" value="{{ sheet.name }}" required></div>
+    </div>
+    <div class="row py-3 justify-content-center border">
+        <label class="col-sm-2 col-form-label font-weight-bold">Class</label>
+        <div class="col-sm-10">
+            <select class="selectpicker form-control" aria-label="Default select example" name="character_class">
+                {% for cls in sheet.classes %}
+                <option value="{{cls}}" {% if cls == "{{ sheet.character_class }}" %} selected {% endif %}>{{cls}}</option>
+                {% endfor %}
+            </select>
         </div>
     </div>
+    <div class="row py-3 justify-content-center border">
+        <label class="col-sm-2 col-form-label font-weight-bold">Background</label>
+        <div class="col-sm-10">
+            <select class="selectpicker form-control" aria-label="Default select example" name="background">
+                {% for bck in sheet.backgrounds %}
+                <option value="{{bck}}" {% if cls == "{{ sheet.backgrounds }}" %} selected {% endif %}>{{bck}}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div> 
     <hr>
     <div class="row">
         <!-- First row first column --> 

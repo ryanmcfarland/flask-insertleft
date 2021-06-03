@@ -18,13 +18,21 @@ LOG = logging.getLogger(__name__)
 
 @bp.route('/', methods=['GET','POST'])
 @bp.route('/index/',  methods=['GET','POST'])
-@bp.route('/blog/',  methods=['GET','POST'])
 def index():
     page = request.args.get('page', 1, type=int)
     entries = Entry.query.filter_by(published=True).filter(Entry.slug != None).paginate(page,current_app.config['POSTS_PER_PAGE'],False)
     for entry in entries.items:
         entry.output_md()
     return render_template('home.html', entries=entries)
+
+
+@bp.route('/blog/',  methods=['GET','POST'])
+def home():
+    page = request.args.get('page', 1, type=int)
+    entries = Entry.query.filter_by(published=True).filter(Entry.slug != None).paginate(page,current_app.config['POSTS_PER_PAGE'],False)
+    for entry in entries.items:
+        entry.output_md()
+    return render_template('blog/home.html', entries=entries)
 
 #>>> end = datetime(year=2021,month=5,day=10)
 #>>> e1=Entry.query.filter(Entry.created_at <= end).all()

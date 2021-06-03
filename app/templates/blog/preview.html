@@ -19,6 +19,9 @@
     <hr>
     <div class="row justify-content-center mb-3">
         <div class="col-md-5">
+            <a class="btn btn-secondary btn-block" href="{{ url_for( 'main.edit' , id=entry.id) }}" role="button">Edit</a>
+        </div>
+        <div class="col-md-5">
             <form class="publish" action="{{ url_for( 'main.publish' , id=entry.id) }}" method="post">
             {% if entry.published %}
             <button class="btn btn-danger btn-block" name="publish" value="False">Unpublish</button>

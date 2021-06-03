@@ -9,12 +9,14 @@
 
 {% block content %}
 {% from 'macros.html' import create_pagination, create_header %}
-<div class="container pt-3">
-<h1>Hi, I'm Ryan McFarland</h1>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-</div>
 <div class="container">
+    {% if current_user.is_authenticated and current_user.check_roles("Admin") %}
+    <div class="row justify-content-center my-3">
+        <div class="col-md-3"><a class="btn btn-success btn-block" href="/blog/admin" role="button">Admin</a></div>
+        <div class="col-md-3"><a class="btn btn-info btn-block" href="/blog/create" role="button">Create</a></div>
+    </div>
     <hr>
+    {% endif %}
     {% for entry in entries.items %}
         {{ create_header(entry) }}
         <hr>

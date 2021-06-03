@@ -1,51 +1,69 @@
-### TBD
+# Personal Flask Website - bigbowldata
+
+## Description
+
+A personal website that was built using a flask backend and a bootstrap frontend that hosts the ability to create and edit role-playing sheets for the custom game "Shootouts & Sheriffs" and the post blog entries to the front-page. 
+
+Still a work in progress, looking for feedback
+
+## Setup & Startup
+
+Envirnoment variables to be created for the app
+
+```Required Variables
+SECRET_KEY
+FLASK_ENV
+MAIL_USERNAME
+MAIL_PASSWORD
+FLASK_APP
+DATABASE_URL
+ADMIN
+```
+
+To set-up the app's db on start-up
+
+``` Create and start flask
+flask db init
+flask db upgrade
+flask run
+```
+## Working Modules - Flask Blueprints
+
+### Common
+
+### Shootouts and Sheriffs
+
+A registered user can create a form fillable sheet with
+
+### Blog
 
 ## Personal Notes
 
-https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
-https://stackoverflow.com/questions/14494747/add-images-to-readme-md-on-github
+I followed the below guides for help and context when trying to build this from scratch:
+- Miguel Grinberg's flask turotial - [Flask Mega Turotial](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world)
+- Corey M Schafer's flask guide - [Corey's github](https://github.com/CoreyMSchafer/code_snippets/tree/master/Python/Flask_Blog)
+- Charles Leifer - [How to make a blog in an hour](https://charlesleifer.com/blog/how-to-make-a-flask-blog-in-one-hour-or-less/)
 
-python3 -m venv venv
-pip install -r requirements.txt
-pip install python-dotenv
+## TODO
 
--> create -> flask db init
--> add new columns -> flask db migrate -m "rename sheet"
--> update db -> flask db upgrade
-
-u = User.query.get(1)
-s = Sheet(name="Test", character_class="witch", background="rich", level=2, xp=1000, max_hp=40, current_hp=30, attack_bonus=2, system_strain=5, ac1=15, ac2=16, mental_save=8, evasion_save = 9, physical_save = 7, author=u)
-db.session.add(s)
-db.session.commit()
+- View other user's sheets
+- Coloured Model headings - https://bootsnipp.com/snippets/dzvv
+- better styling?
 
 
+### Misc Notes
+
+- A potential way to grab first element of a parsed markdown element maybe?
+```
 >> "\n".join(res[:2])
 '### Flask\r\nFlask is a **web** framework for _Python_.\r'
 >>> res=Notes.query.all()[1].note.split("\n")
 >>> res
 ['### Flask\r', 'Flask is a **web** framework for _Python_.\r', '\r', 'Here is the Flask logo:\r', '\r', '![Flask Logo](https://flask.palletsprojects.com/en/1.1.x/_images/flask-logo.png)']
+```
 
-# TODO
+- dyanmic way to adjust size of bootstrap nested column
 
-1. Roles -> https://flask.palletsprojects.com/en/1.1.x/patterns/viewdecorators/
+This is used within the shootout sheet to get weapons and notes the same size if large elements
 
-# https://stackoverflow.com/questions/40012682/how-to-divide-bootstrap-col-md-div-to-half-vertically/40012791
-
-# models
-#https://stackoverflow.com/questions/31842159/get-a-list-of-values-of-one-column-from-the-results-of-a-query
-#https://stackoverflow.com/questions/922774/check-if-input-is-a-list-tuple-of-strings-or-a-single-string
-
-
-<!-- #https://stackoverflow.com/questions/35965321/flashing-message-in-flask-on-a-bootstrap-modal -->
-
-<!--
-<div class="container">
-    <div class="py-5 text-center">
-        <div class="alert alert-{{category}} alert-dismissible fade show"><strong>{{category|upper}}</strong> {{ message }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        </div>
-    </div>
-</div>
---> 
-
-# request.referrer
+https://stackoverflow.com/questions/40012682/how-to-divide-bootstrap-col-md-div-to-half-vertically/40012791
