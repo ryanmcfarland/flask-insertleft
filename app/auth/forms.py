@@ -10,10 +10,10 @@ class LoginForm(Form):
     submit = SubmitField('Sign In')
 
 class RegistrationForm(Form):
-    username = StringField('Username', validators=[DataRequired()])
+    username = StringField('Username', validators=[DataRequired(), Length(min=4, max=25)])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
-    password2 = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    password2 = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password', message='Please enter matching passwords')])
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
