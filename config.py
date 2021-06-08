@@ -28,7 +28,7 @@ class DevelopmentConfig(Config):
     Development configurations
     """
     DEBUG = True
-    SQLALCHEMY_ECHO = True
+    #SQLALCHEMY_ECHO = True
     TEMPLATES_AUTO_RELOAD = True
     # see cv blueprint for how this could be used
     #CV_DIRECTORY="/home/ryanm/code/personal-flask/app/cv/static"

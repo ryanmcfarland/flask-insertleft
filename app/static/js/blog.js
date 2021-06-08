@@ -12,7 +12,7 @@ var easyMDE = new EasyMDE({
     insertTexts: {
 	    image: ["![](http://", "){: class=\"rounded mx-auto d-block\"}"],
 	},
-    toolbar: ["bold", "italic", "heading", "|", "quote", "unordered-list", "ordered-list", "|", "link", "image", "|", "table", "|", "side-by-side", "|", "guide"]
+    toolbar: ["bold", "italic", "heading", "|", "code", "quote", "unordered-list", "ordered-list", "|", "link", "image", "|", "table", "|", "side-by-side", "|", "guide"]
     });
 
 var easyMDECap = new EasyMDE({

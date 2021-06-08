@@ -1,7 +1,7 @@
 import datetime
 
 from datetime import datetime
-from flask import Flask, request, render_template, flash, redirect, url_for, current_app, jsonify
+from flask import  request, render_template, flash, redirect, url_for, current_app
 from flask_login import current_user, login_required
 from app import db
 from app.models import Entry
@@ -20,7 +20,7 @@ LOG = logging.getLogger(__name__)
 @bp.route('/index/',  methods=['GET','POST'])
 def index():
     page = request.args.get('page', 1, type=int)
-    entries = Entry.query.filter_by(published=True).filter(Entry.slug != None).paginate(page,current_app.config['POSTS_PER_PAGE'],False)
+    entries = Entry.query.filter_by(published=True).filter(Entry.slug != None).order_by(Entry.created_at.desc()).paginate(page,current_app.config['POSTS_PER_PAGE'],False)
     for entry in entries.items:
         entry.output_md()
     return render_template('home.html', entries=entries)
@@ -29,7 +29,7 @@ def index():
 @bp.route('/blog/',  methods=['GET','POST'])
 def home():
     page = request.args.get('page', 1, type=int)
-    entries = Entry.query.filter_by(published=True).filter(Entry.slug != None).paginate(page,current_app.config['POSTS_PER_PAGE'],False)
+    entries = Entry.query.filter_by(published=True).filter(Entry.slug != None).order_by(Entry.created_at.desc()).paginate(page,current_app.config['POSTS_PER_PAGE'],False)
     for entry in entries.items:
         entry.output_md()
     return render_template('blog/home.html', entries=entries)
@@ -40,7 +40,7 @@ def home():
 @bp.route('/blog/<int:year>/<int:month>/<int:day>/<slug>/', methods=['GET'])
 def blog(id=None, year=None, month=None, day=None, slug=None):#
     if id is None:
-        entry = Entry.query.filter(Entry.slug == slug).first()
+        entry = Entry.query.filter(Entry.slug == slug).order_by(Entry.created_at.desc()).first()
         entry.output_md()
     else:
         entry = Entry.query.get_or_404(id)
@@ -72,8 +72,13 @@ def edit(id):
             entry.content=form.content.data
             entry.caption=form.caption.data
             entry.last_update = datetime.utcnow()
-            db.session.add(entry)
-            db.session.commit()
+            entry.published=False
+            try:
+                db.session.add(entry)
+                db.session.commit()
+            except:
+                flash('Sheet was not updated, database error', 'warning')
+                return redirect(url_for('main.edit', id = id))
         else:
             flash('Sheet was not updated, please check inputs', 'warning')
             return redirect(url_for('main.edit', id = id))    
@@ -140,5 +145,5 @@ def delete(id):
 @role_required("Admin")
 def admin():
     page = request.args.get('page', 1, type=int)
-    entries = Entry.query.paginate(page,10,False)
+    entries = Entry.query.order_by(Entry.created_at.desc()).paginate(page,10,False)
     return render_template('blog/admin.html', entries=entries)

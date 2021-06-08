@@ -34,12 +34,14 @@ def create_admin_on_startup(username="ryanmcfarland", email="ryanmcfarland@outlo
         u = User(username=username, email=email)
         password=generate_temp_password(12)
         u.set_password(password)
-        db.session.add(u)
-        db.session.commit()
+        u.verified=True
         subject=(datetime.date.today().strftime("%Y.%m.%d"))+"Flask Admin Password"
-        send_email(subject, sender=current_app.config["ADMIN"],
-            recipients=[email], text_body=password, html_body=password)
-        u = User.query.filter_by(username=username).first()
+        send_email(subject, sender=current_app.config["ADMIN"], recipients=[email], text_body=password, html_body=password)
+        try:
+            db.session.add(u)
+            db.session.commit()
+        except:
+            NameError("Could not add user to the database - error")
         print("Added User: "+username)
     else:
         print("User added already: "+username)
