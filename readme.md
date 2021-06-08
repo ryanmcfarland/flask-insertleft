@@ -26,6 +26,7 @@ To set-up the app's db on start-up
 
 ``` Create and start flask
 flask db init
+flask db migrate
 flask db upgrade
 flask run
 ```

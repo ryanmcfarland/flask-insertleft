@@ -8,6 +8,7 @@ from app.models import User
 
 
 # - using wtforms to only validate my incoming form data - data checks aere handled in the route
+# - uses next inbuilt arg to redirect the user back to original page they had originally requested 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -20,7 +21,8 @@ def login():
                 flash('Invalid username or password', 'error')
                 return redirect(url_for('auth.login'))
             login_user(user, remember=form.remember_me.data)
-            return redirect(url_for('main.index'))
+            page = request.args.get('next', url_for('main.index'), type=str)
+            return redirect(page)
     else:
         return render_template('auth/login.html')
 

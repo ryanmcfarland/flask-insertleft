@@ -59,12 +59,12 @@ Shootout - Edit
                 <div class="table-responsive">
                 <table class="card-table table">
                 <tbody>
-                    <tr><td>Strength</td><td><input type="text" name="strength" class="text-right" value={{ sheet.strength }}></td></tr>
-                    <tr><td>Dexterity</td><td><input type="text" name="dexterity" class="text-right" value={{ sheet.dexterity }}></td></tr>
-                    <tr><td>Constitution</td><td><input type="text" name="constitution" class="text-right" value={{ sheet.constitution }}></td></tr>
-                    <tr><td>Intelligence</td><td><input type="text" name="intelligence" class="text-right" value={{ sheet.intelligence }}></td></tr>
-                    <tr><td>Wisdom</td><td><input type="text" name="wisdom" class="text-right" value={{ sheet.wisdom }}></td></tr>
-                    <tr><td>Charisma</td><td><input type="text" name="charisma" class="text-right" value={{ sheet.charisma }}></td></tr>
+                    <tr><td>Strength</td><td><input class="form-control" type="text" name="strength" class="text-right" value={{ sheet.strength }} required></td></tr>
+                    <tr><td>Dexterity</td><td><input class="form-control" type="text" name="dexterity" class="text-right" value={{ sheet.dexterity }} required></td></tr>
+                    <tr><td>Constitution</td><td><input class="form-control" type="text" name="constitution" class="text-right" value={{ sheet.constitution }} required></td></tr>
+                    <tr><td>Intelligence</td><td><input class="form-control" type="text" name="intelligence" class="text-right" value={{ sheet.intelligence }} required></td></tr>
+                    <tr><td>Wisdom</td><td><input class="form-control" type="text" name="wisdom" class="text-right" value={{ sheet.wisdom }} required></td></tr>
+                    <tr><td>Charisma</td><td><input class="form-control" type="text" name="charisma" class="text-right" value={{ sheet.charisma }} required></td></tr>
                 </tbody>
                 </table>
                 </div>
@@ -76,26 +76,26 @@ Shootout - Edit
                 <div class="table-responsive">
                 <table class="card-table table">
                     <tbody>
-                        <tr><td>Administer</td><td><input type="text" name="administer" value={{ sheet.administer }}></td></tr>
-                        <tr><td>Cast Magic</td><td><input type="text" name="cast_magic" value={{ sheet.cast_magic }}></td></tr>
-                        <tr><td>Connect</td><td><input type="text" name="connect" value={{ sheet.connect }}></td></tr>
-                        <tr><td>Exert</td><td><input type="text" name="exert" value={{ sheet.exert }}></td></tr>
-                        <tr><td>Fix</td><td><input type="text" name="fix" value={{ sheet.fix }}></td></tr>
-                        <tr><td>Heal</td><td><input type="text" name="heal" value={{ sheet.heal }}></td></tr>
-                        <tr><td>Horsemanship</td><td><input type="text" name="horsemanship" value={{ sheet.horsemanship }}></td></tr>
-                        <tr><td>Know</td><td><input type="text" name="know" value={{ sheet.know }}></td></tr>
-                        <tr><td>Know Magic</td><td><input type="text" name="know_magic" value={{ sheet.know_magic }}></td></tr>
-                        <tr><td>Lead</td><td><input type="text" name="lead" value={{ sheet.lead }}></td></tr>
-                        <tr><td>Notice</td><td><input type="text" name="notice" value={{ sheet.notice }}></td></tr>
-                        <tr><td>Perform</td><td><input type="text" name="perform" value={{ sheet.perform }}></td></tr>
-                        <tr><td>Punch</td><td><input type="text" name="punch" value={{ sheet.punch }}></td></tr>
-                        <tr><td>Sail</td><td><input type="text" name="sail" value={{ sheet.sail }}></td></tr>
-                        <tr><td>Shoot</td><td><input type="text" name="shoot" value={{ sheet.shoot }}></td></tr>
-                        <tr><td>Sneak</td><td><input type="text" name="sneak" value={{ sheet.sneak }}></td></tr>
-                        <tr><td>Stab</td><td><input type="text" name="stab" value={{ sheet.stab }}></td></tr>
-                        <tr><td>Talk</td><td><input type="text" name="talk" value={{ sheet.talk }}></td></tr>
-                        <tr><td>Trade</td><td><input type="text" name="trade" value={{ sheet.trade }}></td></tr>
-                        <tr><td>Work</td><td><input type="text" name="work" value={{ sheet.work }}></td></tr>
+                        <tr><td>Administer</td><td><input class="form-control" type="text" name="administer" value={{ sheet.administer }} required></td></tr>
+                        <tr><td>Cast Magic</td><td><input class="form-control" type="text" name="cast_magic" value={{ sheet.cast_magic }} required></td></tr>
+                        <tr><td>Connect</td><td><input class="form-control" type="text" name="connect" value={{ sheet.connect }} required></td></tr>
+                        <tr><td>Exert</td><td><input class="form-control" type="text" name="exert" value={{ sheet.exert }} required></td></tr>
+                        <tr><td>Fix</td><td><input class="form-control" type="text" name="fix" value={{ sheet.fix }} required></td></tr>
+                        <tr><td>Heal</td><td><input class="form-control" type="text" name="heal" value={{ sheet.heal }} required></td></tr>
+                        <tr><td>Horsemanship</td><td><input class="form-control" type="text" name="horsemanship" value={{ sheet.horsemanship }} required></td></tr>
+                        <tr><td>Know</td><td><input class="form-control" type="text" name="know" value={{ sheet.know }} required></td></tr>
+                        <tr><td>Know Magic</td><td><input class="form-control" type="text" name="know_magic" value={{ sheet.know_magic }} required></td></tr>
+                        <tr><td>Lead</td><td><input class="form-control" type="text" name="lead" value={{ sheet.lead }} required></td></tr>
+                        <tr><td>Notice</td><td><input class="form-control" type="text" name="notice" value={{ sheet.notice }} required></td></tr>
+                        <tr><td>Perform</td><td><input class="form-control" type="text" name="perform" value={{ sheet.perform }} required></td></tr>
+                        <tr><td>Punch</td><td><input class="form-control" type="text" name="punch" value={{ sheet.punch }} required></td></tr>
+                        <tr><td>Sail</td><td><input class="form-control" type="text" name="sail" value={{ sheet.sail }} required></td></tr>
+                        <tr><td>Shoot</td><td><input class="form-control" type="text" name="shoot" value={{ sheet.shoot }} required></td></tr>
+                        <tr><td>Sneak</td><td><input class="form-control" type="text" name="sneak" value={{ sheet.sneak }} required></td></tr>
+                        <tr><td>Stab</td><td><input class="form-control" type="text" name="stab" value={{ sheet.stab }} required></td></tr>
+                        <tr><td>Talk</td><td><input class="form-control" type="text" name="talk" value={{ sheet.talk }} required></td></tr>
+                        <tr><td>Trade</td><td><input class="form-control" type="text" name="trade" value={{ sheet.trade }} required></td></tr>
+                        <tr><td>Work</td><td><input class="form-control" ype="text" name="work" value={{ sheet.work }} required></td></tr>
                     </tbody>
                 </table>
                 </div>
@@ -109,11 +109,25 @@ Shootout - Edit
                     <div class="table-responsive">
                     <table class="card-table table">
                     <tbody>
-                    <tr><td>Level</td><td><input type="text" name="level" value={{ sheet.level }}></td><td>Armour Class</td><td><input type="text" name="ac" value={{ sheet.ac }}></td></tr>
-                    <tr><td>XP</td><td><input type="text" name="xp" value={{ sheet.xp }}></td><td>System Strain</td><td><input type="text" name="system_strain" value={{ sheet.system_strain }}></td></tr>
-                    <tr><td>Attack Bonus</td><td>{{ sheet.attack_bonus }}</td><td>Mental Save</td><td>{{ sheet.mental_save }}</td></tr>
-                    <tr><td>Max Hit Points</td><td><input type="text" name = "max_hp" value={{ sheet.max_hp }}></td><td>Evasion Save</td><td>{{ sheet.evasion_save }}</td></tr>
-                    <tr><td>Current Hit Points</td><td><input type="text" name ="current_hp" value={{ sheet.current_hp }}></td><td>Physical Save</td><td>{{ sheet.physical_save }}</td></tr>
+                    <tr>
+                        <td>Level</td><td><input class="form-control" type="text" name="level" value={{ sheet.level }} required></td>
+                        <td>Armour Class</td><td><input class="form-control" type="text" name="ac" value={{ sheet.ac }} required></td>
+                    </tr>
+                    <tr>
+                        <td>XP</td><td><input class="form-control" type="text" name="xp" value={{ sheet.xp }} required></td>
+                        <td>System Strain</td><td><input class="form-control" type="text" name="system_strain" value={{ sheet.system_strain }} required></td>
+                    </tr>
+                    <tr>
+                        <td>Attack Bonus</td><td>{{ sheet.attack_bonus }}</td>
+                        <td>Mental Save</td><td>{{ sheet.mental_save }}</td></tr>
+                    <tr>
+                        <td>Max Hit Points</td><td><input class="form-control" type="text" name = "max_hp" value={{ sheet.max_hp }} required></td>
+                        <td>Evasion Save</td><td>{{ sheet.evasion_save }}</td>
+                    </tr>
+                    <tr>
+                        <td>Current Hit Points</td><td><input class="form-control" type="text" name ="current_hp" value={{ sheet.current_hp }} required></td>
+                        <td>Physical Save</td><td>{{ sheet.physical_save }}</td>
+                    </tr>
                     </tbody>
                     </table>
                     </div>

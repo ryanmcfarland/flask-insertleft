@@ -25,6 +25,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+    verified = db.Column(db.Boolean, default=False)
     roles = db.relationship("Role", secondary=user_permissions, backref=db.backref('user_permissions', lazy='dynamic'),lazy='dynamic')
     sheets = db.relationship('Sheet', backref='author', lazy='dynamic')
     posts = db.relationship('Entry', backref='author', lazy='dynamic')
@@ -97,7 +98,7 @@ class Entry(db.Model):
     #    self.append_role("User")
 
     def output_md(self):
-        self.content=markdown.markdown(self.content, extensions=['attr_list'])
+        self.content=markdown.markdown(self.content, extensions=['attr_list', 'fenced_code'])
     
     def output_snapshot(self, snapshot):
         self.content="\n".join(self.content.split("\n")[:snapshot])
