@@ -20,6 +20,7 @@ user_permissions = db.Table('user_permissions',
 
 # User class, maps the user to multiple sheets, roles and blog entries
 # Users can have multiple roles
+# backref enables the Sheet/Posts model to access the user via sheet.author.id
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
@@ -81,6 +82,19 @@ class Role(db.Model):
         return '<Role {}>'.format(self.name)
 
 
+## Many-to-many relationship table between tag and entry
+attached_tags = db.Table('attached_tags',
+    db.Column('entry_id', db.Integer, db.ForeignKey('entry.id')),
+    db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'))
+)
+
+
+class Tag(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False, unique=True)
+
+
+#https://github.com/eugenkiss/Simblin/blob/master/simblin/models.py
 class Entry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, default="")
@@ -92,10 +106,7 @@ class Entry(db.Model):
     caption = db.Column(db.Text, default="")
     content = db.Column(db.Text, default="")
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-    #def __init__(self, *args, **kwargs):
-    #    super(User, self).__init__(**kwargs)
-    #    self.append_role("User")
+    tags = db.relationship("Tag", secondary=attached_tags, backref=db.backref('attached_tags', lazy='dynamic'), lazy='dynamic')
 
     def output_md(self):
         self.content=markdown.markdown(self.content, extensions=['attr_list', 'fenced_code'])
