@@ -35,7 +35,7 @@ def create_admin_on_startup(username="ryanmcfarland", email="ryanmcfarland@outlo
         password=generate_temp_password(12)
         u.set_password(password)
         u.verified=True
-        subject=(datetime.date.today().strftime("%Y.%m.%d"))+"Flask Admin Password"
+        subject=(datetime.date.today().strftime("%Y.%m.%d"))+" - Flask Admin Password"
         send_email(subject, sender=current_app.config["ADMIN"], recipients=[email], text_body=password, html_body=password)
         try:
             db.session.add(u)

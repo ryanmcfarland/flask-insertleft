@@ -12,7 +12,7 @@ Still a work in progress, looking for feedback
 
 Envirnoment variables to be created for the app
 
-```Required Variables
+``` Required Variables
 SECRET_KEY
 FLASK_ENV
 MAIL_USERNAME
@@ -20,6 +20,13 @@ MAIL_PASSWORD
 FLASK_APP
 DATABASE_URL
 ADMIN
+```
+
+Create python virtual env and install requirements.txt
+
+```
+python -m venv wsenv
+pip install -r requirements.txt
 ```
 
 To set-up the app's db on start-up
@@ -112,6 +119,7 @@ I followed the below guides for help and context when trying to build this from 
 
 - Update to flask 2.0 and Bootstrap 5.0
 - Easy way to view other user's sheets
+- implement popover events to add tags to articles
 - Coloured Model headings - https://bootsnipp.com/snippets/dzvv
 - better styling?
 
@@ -132,3 +140,5 @@ I followed the below guides for help and context when trying to build this from 
 This is used within the shootout sheet to get weapons and notes the same size if large elements
 
 https://stackoverflow.com/questions/40012682/how-to-divide-bootstrap-col-md-div-to-half-vertically/40012791
+
+https://stackoverflow.com/questions/24325744/bootstrap-custom-popover
