@@ -8,7 +8,10 @@ from flask import current_app
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login
+from sqlalchemy import func
 from sqlalchemy.orm import reconstructor
+from sqlalchemy.ext.hybrid import hybrid_property
+
 
 
 ## Many-to-many relationship table between user and role
@@ -21,15 +24,25 @@ user_permissions = db.Table('user_permissions',
 # User class, maps the user to multiple sheets, roles and blog entries
 # Users can have multiple roles
 # backref enables the Sheet/Posts model to access the user via sheet.author.id
+# lowercase_username is a hybrid property and not a column, used to verify that username strings
+# are not duplicated regardless of case (see offical sqlalchemy notes)
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
-    email = db.Column(db.String(120), index=True, unique=True)
+    email = db.Column(db.String(128), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     verified = db.Column(db.Boolean, default=False)
     roles = db.relationship("Role", secondary=user_permissions, backref=db.backref('user_permissions', lazy='dynamic'),lazy='dynamic')
     sheets = db.relationship('Sheet', backref='author', lazy='dynamic')
     posts = db.relationship('Entry', backref='author', lazy='dynamic')
+
+    @hybrid_property
+    def lowercase_username(self):
+        return self.username.lower()
+    
+    @lowercase_username.expression
+    def lowercase_username(cls):
+        return func.lower(cls.username)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
