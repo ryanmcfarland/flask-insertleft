@@ -1,6 +1,7 @@
 import datetime
+import requests
 
-from flask import current_app
+from flask import current_app, request
 from flask_mail import Message
 from app import db, mail
 from app.models import Role, User
@@ -65,11 +66,19 @@ def generate_temp_password(length):
 
 
 # Wrapper to send mail via flask_mail
-def send_email(subject, sender, recipients, text_body, html_body, attachments=None):
+def send_email(subject, sender, recipients, text_body, html_body=None, attachments=None):
     msg = Message(subject, sender=sender, recipients=recipients)
     msg.body = text_body
-    msg.html = html_body
+    #msg.html = html_body
     if attachments:
         for attachment in attachments:
             msg.attach(*attachment)
     mail.send(msg)
+
+def verify_recaptcha(response):
+    data = {
+                "secret": current_app.config['RECAPTCHA_SECRET_KEY'],
+                "response": response
+            }
+    r = requests.get(current_app.config['RECAPTCHA_SITE_VERIFY'], params=data)
+    return r.json()["success"] if r.status_code == 200 else False

@@ -25,7 +25,6 @@ def index():
         entry.output_md()
     return render_template('home.html', entries=entries)
 
-
 @bp.route('/blog/',  methods=['GET','POST'])
 def home():
     page = request.args.get('page', 1, type=int)

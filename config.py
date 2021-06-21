@@ -13,7 +13,7 @@ class Config(object):
     SHEETS_PER_PAGE=6
     POSTS_PER_PAGE=5
     
-    ADMIN=os.environ.get('ADMIN') or 'bigaulbowl@outlook.com'
+    ADMIN=os.environ.get('ADMIN') or 'insertleft@outlook.com'
 
     # outlook mail server configuration - used within flask_mail
     MAIL_SERVER='smtp.office365.com'
@@ -23,6 +23,12 @@ class Config(object):
     MAIL_USERNAME=os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD=os.environ.get('MAIL_PASSWORD')
 
+    #reCAPTCHA verify for login and register - https://developers.google.com/recaptcha/docs/verify
+    RECAPTCHA_SITE_KEY=os.environ.get('RECAPTCHA_SITE_KEY')
+    RECAPTCHA_SECRET_KEY=os.environ.get('RECAPTCHA_SECRET_KEY')
+    RECAPTCHA_SITE_VERIFY=os.environ.get('RECAPTCHA_SITE_VERIFY')
+
+
 class DevelopmentConfig(Config):
     """
     Development configurations
@@ -30,8 +36,7 @@ class DevelopmentConfig(Config):
     DEBUG = True
     #SQLALCHEMY_ECHO = True
     TEMPLATES_AUTO_RELOAD = True
-    # see cv blueprint for how this could be used
-    #CV_DIRECTORY="/home/ryanm/code/personal-flask/app/cv/static"
+
 
 class ProductionConfig(Config):
     """

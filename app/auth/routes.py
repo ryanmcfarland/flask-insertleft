@@ -1,10 +1,11 @@
 from flask import render_template, redirect, url_for, flash, request
-from werkzeug.urls import url_parse
+from flask.globals import current_app
 from flask_login import login_user, logout_user, current_user
 from app import db
 from app.auth import bp
 from app.auth.forms import LoginForm, RegistrationForm
 from app.models import User
+from app.common.utils import verify_recaptcha 
 
 
 # - using wtforms to only validate my incoming form data - data checks aere handled in the route
@@ -16,7 +17,7 @@ def login():
     if request.method == 'POST':
         form = LoginForm(request.form)
         if form.validate():
-            user = User.query.filter_by(username=form.username.data).first()
+            user = User.query.filter((User.lowercase_username==form.login.data.lower()) | (User.email==form.login.data)).first()
             if user is None or not user.check_password(form.password.data):
                 flash('Invalid username or password', 'error')
                 return redirect(url_for('auth.login'))
@@ -37,11 +38,10 @@ def logout():
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
-    if request.method == 'GET':
-        return render_template('auth/register.html')
-    else:
+    if request.method == 'POST':
         form = RegistrationForm(request.form)
-        if form.validate():
+        recapthca = verify_recaptcha(request.form['g-recaptcha-response'])
+        if form.validate() and recapthca:
             user = User(username=form.username.data, email=form.email.data)
             user.set_password(form.password.data)
             try:
@@ -54,12 +54,13 @@ def register():
             flash('Congratulations, you are now a registered user!')
             return redirect(url_for('auth.login'))
         elif "username" in form.errors:
-            flash(form.errors['username'][0], 'warn')
+            flash("Username Field - "+form.errors['username'][0], 'warn')
         elif "email" in form.errors:
-            flash(form.errors['email'][0], 'warn')
+            flash("Email Field - "+form.errors['email'][0], 'warn')
         elif "password2" in form.errors:
             flash(form.errors['password2'][0], 'warn')
+        elif not recapthca:
+            flash("Recaptcha could not be verified", 'warn')
         else:
             flash('Form data could not be processed, please try again', 'warn')
-        return redirect(url_for('auth.register'))
-
+    return render_template('auth/register.html')
