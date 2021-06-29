@@ -20,11 +20,11 @@ Shootout - Edit
     <div class="row py-3 justify-content-center">
         <h2>Sheriffs & Shootouts - Form fillable Character Sheet</h2>
     </div>
-    <form action="/shootout/sheet/edit/{{ sheet.id }}" method="post">
+    <form action="{{ url_for( 'shootout.edit' , id=sheet.id) }}" method="post">
     <div class="row justify-content-center mb-3">
         <div class="col-md-3"><input class="btn btn-primary btn-block" type="submit" name="submit" value="Save"></div>
-        <div class="col-md-3"><a class="btn btn-secondary btn-block" href="/shootout/weapons/sheet/{{ sheet.id }}" role="button">Add Weapons</a></div>
-        <div class="col-md-3"><a class="btn btn-danger btn-block" href="/shootout/sheet/delete/{{ sheet.id }}" role="button">Delete</a></div>
+        <div class="col-md-3"><a class="btn btn-secondary btn-block" href="{{ url_for( 'shootout.weapons' , id=sheet.id) }}" role="button">Add Weapons</a></div>
+        <div class="col-md-3"><a class="btn btn-danger btn-block" href="{{ url_for( 'shootout.delete' , id=sheet.id) }}" role="button">Delete</a></div>
     </div>
     <div class="row py-3 justify-content-center border">
         <label class="col-sm-2 col-form-label font-weight-bold">Name</label>

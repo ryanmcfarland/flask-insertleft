@@ -26,7 +26,7 @@ def create_app(config_name):
     mail.init_app(app)
 
     from app.common import bp as common_bp
-    app.register_blueprint(common_bp,cli_group=None)
+    app.register_blueprint(common_bp, cli_group=None)
 
     from app.auth import bp as auth_bp
     app.register_blueprint(auth_bp, url_prefix='/auth')
@@ -38,7 +38,7 @@ def create_app(config_name):
     app.register_blueprint(main_bp)
     
     from app.contact import bp as contact_bp
-    app.register_blueprint(contact_bp, url_prefix='/contact')
+    app.register_blueprint(contact_bp)
 
     return app
 

@@ -1,2 +1,1 @@
-FLASK_APP=mainserver.py
-FLASK_ENV=development
+FLASK_APP=insertleft.py

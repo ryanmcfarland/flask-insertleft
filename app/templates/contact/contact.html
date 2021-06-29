@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+
+{% block title %}Contact{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+{% endblock %}
+
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/validators.js') }}"></script>
+<script src="{{ url_for('static', filename='js/contact.js') }}"></script>
+<script src='//www.google.com/recaptcha/api.js' async defer></script>
+{% endblock %}
+
+{% block content %}
+<main role="main">
+<div class="container">
+		<form role="form" id="contact" class="form-horizontal" method="post" action="{{ url_for('contact.contact') }}">
+            <div class="row py-3 justify-content-center">
+                <h3>Drop Me a Message</h3>
+            </div>
+            <div class="row">
+            	<div class="col-md-6">
+                  	<div class="form-group">
+                        <input type="text" class="form-control" name="name" autocomplete="off" id="name" placeholder="Name">
+                  	</div>
+                </div>
+                <div class="col-md-6">
+                  	<div class="form-group">
+                        <input type="email" class="form-control" name="email" autocomplete="off" id="email" placeholder="E-mail">
+                  	</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <textarea class="form-control textarea" rows="3" name="message" id="message" placeholder="Message"></textarea>
+                  	</div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+            <div class="form-group">
+                <div id="g-recaptcha" class="g-recaptcha cols-sm-10" data-sitekey="{{ config['RECAPTCHA_SITE_KEY'] }}" data-theme="light" data-type="image" data-size="normal" data-tabindex="0">
+                </div>
+            </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-4">
+                    <button type="button" id="submitButton" class="btn btn-primary btn-lg btn-block pull left">Send a message</button>
+                </div>
+                <div class="col-md-4">
+                    <a class="btn btn-secondary btn-lg btn-block" href="{{ url_for('contact.email') }}" role="button">Email Directly</a>
+                </div>
+            </div>
+        </form>
+</div>
+</main>
+{% endblock %}
