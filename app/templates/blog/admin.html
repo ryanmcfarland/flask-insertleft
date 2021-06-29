@@ -37,7 +37,7 @@ $('.btn').css('width', maxWidth +'px');
                 <th>Title</th>
             </tr></thead><tbody>
             {% for entry in entries.items %}
-            <form class="publish" action="{{ url_for( 'main.publish' , id=entry.id) }}" method="post">
+            <form class="publish" action="{{ url_for( 'main.publish', id=entry.id) }}" method="post">
             <tr {% if not entry.published %}class="table-warning"{% endif %}>
                 <td>{{ entry.id }}</td>
                 <td>{{ entry.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
@@ -49,9 +49,9 @@ $('.btn').css('width', maxWidth +'px');
                     {% else %} 
                     <button class="btn btn-primary btn-block" style="display:inline" name="publish" value="True">Publish</button>
                     {% endif %}
-                    <a class="btn btn-info ad-but" style="display:inline" href="/blog/edit/{{ entry.id }}" role="button">Edit</a>
-                    <a class="btn btn-secondary ad-but" style="display:inline" href="/blog/preview/{{ entry.id }}" role="button">Preview</a>
-                    <a class="btn btn-danger ad-but" style="display:inline" href="/blog/delete/{{ entry.id }}" role="button">Delete</a>
+                    <a class="btn btn-info ad-but" style="display:inline" href="{{ url_for('main.edit', id=entry.id) }}" role="button">Edit</a>
+                    <a class="btn btn-secondary ad-but" style="display:inline" href="{{ url_for('main.preview', id=entry.id) }}" role="button">Preview</a>
+                    <a class="btn btn-danger ad-but" style="display:inline" href="{{ url_for('main.delete', id=entry.id) }}" role="button">Delete</a>
                     </div>
                 </td>
                 <td>{{ entry.author.username }}</td>

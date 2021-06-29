@@ -6,7 +6,7 @@ class weaponsData(object):
         self.readFile('misc/weapons.csv')
 
     def readFile(self, filename):
-        conn = sqlite3.connect('app.db')
+        conn = sqlite3.connect('mainserver.db')
         df = pandas.read_csv(filename, sep="|")
         df.to_sql("weapon", conn, if_exists='append', index=False)
 

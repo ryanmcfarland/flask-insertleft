@@ -85,13 +85,12 @@ def delete(id):
     except:
         db.session.rollback()
         flash("Could not delete sheet", 'error')
-    return redirect('/shootout')
-
+    return redirect(url_for('shootout.home'))
 
 @bp.route('/weapons', methods=['GET','POST'])
 @bp.route('/weapons/sheet/<int:id>', methods=['GET','POST'])
 @login_required
-def weapon_sheet(id=None):
+def weapons(id=None):
     if request.method == "POST":
         sheet = Sheet.query.get_or_404(id)
         sheet.append_form_weapons(request.form)

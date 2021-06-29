@@ -20,12 +20,12 @@ def contact():
         form = ContactForm(request.form)
         recapthca = verify_recaptcha(request.form['g-recaptcha-response'])
         if form.validate() and recapthca:
-            send_email('InsertLeft - Contact Me', sender=current_app.config['ADMIN'], recipients=[current_app.config['ADMIN']],
-                         text_body="""
-      From: %s <%s>
-      %s
-      """ % (form.name.data, form.email.data, form.message.data))
-            redirect(url_for('main.index'))
+            send_email('InsertLeft - Contact Me', 
+                        sender=current_app.config['ADMIN'], 
+                        recipients=[current_app.config['ADMIN']],
+                        text_body=create_text(form.name.data, form.email.data, form.message.data))
+            flash("Message sent, I'll reach back soon", 'info')
+            return redirect(url_for('main.index'))
         elif "name" in form.errors:
             flash("Name Field - "+form.errors['name'][0], 'warn')
         elif "email" in form.errors:
@@ -36,5 +36,12 @@ def contact():
             flash("Recaptcha could not be verified", 'warn')
         else:
             flash('Form data could not be processed, please try again', 'warn')
-    
     return render_template('contact/contact.html')
+
+def create_text(name, email, message):
+    return """
+    From: 
+    %s <%s>
+    Message:
+    %s
+    """ % (name, email, message)

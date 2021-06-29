@@ -10,7 +10,7 @@ Shootout - Weapons
         <h1 class="my-4">Sheriffs & Shootouts - Weapons</h1>
     </div>
     <div class="row justify-content-center">
-    <form action="/shootout/weapons/sheet/{{ id }}" method="post">
+    <form action="{{ url_for('shootout.weapons', id = id) }}" method="post">
     {% if weapons|length < 1 %}
         {% if add %}
             <p>There are no more weapons avaliable to add</p>
