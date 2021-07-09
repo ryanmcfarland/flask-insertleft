@@ -1,7 +1,7 @@
 import datetime
 import requests
 
-from flask import current_app, request
+from flask import current_app
 from flask_mail import Message
 from app import db, mail
 from app.models import Role, User
@@ -22,27 +22,32 @@ def add_roles_on_startup():
         r = Role.query.filter_by(name=i).first()
         if not r:
             r = Role(name=i)
-            db.session.add(r)
-            db.session.commit()
+            try:
+                db.session.add(r)
+                db.session.commit()
+            except:
+                db.session.rollback()
+                print("Error - rollbacking the db")
             print("Added Role: "+i)
         else:
             print("Role added already: "+i)
 
 # create admin user at start-up if it does not exist and send to my main email address
-def create_admin_on_startup(username="ryanmcfarland", email="ryanmcfarland@outlook.com"):
+def create_admin_on_startup(username="ryanmcfarland", email="insertleft@outlook.com"):
     u = User.query.filter_by(username=username).first()
     if not u:
         u = User(username=username, email=email)
         password=generate_temp_password(12)
         u.set_password(password)
         u.verified=True
-        subject=(datetime.date.today().strftime("%Y.%m.%d"))+" - Flask Admin Password"
-        send_email(subject, sender=current_app.config["ADMIN"], recipients=[email], text_body=password, html_body=password)
         try:
             db.session.add(u)
             db.session.commit()
+            subject=(datetime.date.today().strftime("%Y.%m.%d"))+" - Flask Admin Password"
+            send_email(subject, sender=current_app.config["ADMIN"], recipients=[email], text_body=password, html_body=password)
         except:
-            NameError("Could not add user to the database - error")
+            db.session.rollback()
+            print("Error - rollbacking the db")
         print("Added User: "+username)
     else:
         print("User added already: "+username)

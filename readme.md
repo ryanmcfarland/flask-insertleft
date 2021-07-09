@@ -1,6 +1,6 @@
-# Personal Flask Website - bigbowldata
+# Personal Flask Website - insertleft
 
-Heroku link - http://flask-ryan-personal.herokuapp.com/
+Weblink - www.insertleft.com
 
 ## Description
 
