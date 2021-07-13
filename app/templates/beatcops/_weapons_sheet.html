@@ -1,0 +1,41 @@
+<div class="row" id="r-weap">
+    <div class="col-md-12">
+        <div class="card mb-3" id="c-weap"><div class="card-header" id="ch-weap">Weapons</div>
+        {% if weapons |length < 1 %}
+        <div class="card-body" id="cb-weap">
+            <p class="card-text">There are no weapons attached</p>
+        </div>
+        {% else %}
+        <div class="table-responsive" id="cb-weap">
+            <table class="card-table table">
+            <thead><tr>
+                <th></th>
+                <th>Damage</th>
+                <th>Bonus</th>
+                <th>Range</th>
+                <th>Magazine</th>
+                <th>Attribute</th>
+                <th>Weight</th>
+                <th>Notes</th>
+                {% if checkbox %}<th>Delete</th>{% endif %}
+            </tr></thead>
+            <tbody>                    
+            {% for weapon in weapons %}
+            <tr><td>{{ weapon.name }}</td>
+                <td>{{ weapon.damage }}</td>
+                <td>{{ weapon.bonus }}</td>
+                <td>{{ weapon.weapon_range }}</td>
+                <td>{{ weapon.mag }}</td>
+                <td>{{ weapon.attribute }}</td>
+                <td>{{ weapon.weight }}</td>
+                <td>"{{ weapon.notes }}"</td>
+                {% if checkbox %}<td><input type="checkbox" name="delete{{ weapon.id }}" value={{ weapon.id }}></td>{% endif %}
+            </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </div>                   
+        {% endif %}
+        </div>
+    </div>
+</div>

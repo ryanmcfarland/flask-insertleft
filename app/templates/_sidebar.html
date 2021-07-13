@@ -1,0 +1,26 @@
+<div class="dismiss">
+    <i class="bi bi-x-lg"></i>
+</div>
+
+<div class="sidebar-header">
+    <i class="bi bi-server"></i>
+    <span>InsertLeft</span>
+</div>
+
+<ul class="list-unstyled components">
+    <li><a href="{{ url_for('main.home') }}">Blog</a></li>
+    <li>
+        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">RPG Character Sheets</a>
+        <ul class="collapse list-unstyled" id="pageSubmenu">
+            <li><a href="{{ url_for('shootout.home') }}">Sheriffs & Shootout (1.0)</a></li>
+            <li><a href="{{ url_for('beatcops.home') }}">Beat Cops (Beta)</a></li>
+        </ul>
+    </li>
+</ul>
+
+<ul class="list-unstyled CTAs">
+    <li><a class="nav-link" href="https://www.linkedin.com/in/ryan-mcfarland-213598127/" target="blank"><i class="bi bi-linkedin"></i>LinkedIn</a></li>
+    <li><a class="nav-link" href="https://github.com/ryanmcfarland" target="blank"><i class="bi bi-github"></i>Github</a></li>
+    <li><a href="{{ url_for('contact.cv') }}"><i class="bi bi-file-person"></i>Resume</a></li>
+    <li><a href="{{ url_for('contact.contact') }}"><i class="bi bi-envelope"></i>Contact</a></li>
+</ul>
