@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/shootout.css') }}">
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/shootout.js') }}"></script>
+{% endblock %}
+
+{% block title %}
+BeatCops - Sheet
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>BeatCops - Character Sheet</h2>
+    </div>
+    <div class="row">
+        <div class="col">
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div><h6 class="my-0">Name</h6></div>{{ sheet.name }}</li>
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div><h6 class="my-0">Class</h6></div>{{ sheet.character_class }}</li>
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div><h6 class="my-0">Background</h6></div>{{ sheet.background }}</li>
+            </ul>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <!-- First row first column --> 
+        <div class="col-md-4">
+            <div class="row" id="r-att"><div class="col-md-12">
+            <div class="card mb-3" id="cd-att"><div class="card-header">Attributes</div>
+                <div class="table-responsive">
+                <table class="card-table table">
+                <thead><tr><th scope="col"></th><th scope="col">Level</th><th scope="col">Modifier</th></tr></thead>
+                <tbody>
+                <tr><td>Strength</td><td>{{ sheet.strength }}</td><td>{{ sheet.str_mod }}</td></tr>
+                <tr><td>Dexterity</td><td>{{ sheet.dexterity }}</td><td>{{ sheet.dex_mod }}</td></tr>
+                <tr><td>Constitution</td><td>{{ sheet.constitution }}</td><td>{{ sheet.con_mod }}</td></tr>
+                <tr><td>Intelligence</td><td>{{ sheet.intelligence }}</td><td>{{ sheet.int_mod }}</td></tr>
+                <tr><td>Wisdom</td><td>{{ sheet.wisdom }}</td><td>{{ sheet.wis_mod }}</td></tr>
+                <tr><td>Charisma</td><td>{{ sheet.charisma }}</td><td>{{ sheet.chr_mod }}</td></tr>
+                </tbody>
+                </table>
+                </div>
+            </div>
+            </div></div>
+            <div class="row" id="r-ski"><div class="col-md-12">
+            <div class="card mb-3"><div class="card-header">Skills</div>  
+            <!-- table resposinve needs to be outside of card body for this to work (fills card) --> 
+            <div class="table-responsive">
+            <table class="card-table table">
+                <tbody>
+                <tr><td>Administer</td><td>{{ sheet.administer }}</td></tr>
+                <tr><td>Animal Handling</td><td>{{ sheet.animal_handling }}</td></tr>
+                <tr><td>Connect</td><td>{{ sheet.connect }}</td></tr>
+                <tr><td>Drive</td><td>{{ sheet.drive }}</td></tr>
+                <tr><td>Fix</td><td>{{ sheet.fix }}</td></tr>
+                <tr><td>Heal</td><td>{{ sheet.heal }}</td></tr>
+                <tr><td>Investigate</td><td>{{ sheet.investigate }}</td></tr>
+                <tr><td>Know</td><td>{{ sheet.know }}</td></tr>
+                <tr><td>Lead</td><td>{{ sheet.lead }}</td></tr>
+                <tr><td>Notice</td><td>{{ sheet.notice }}</td></tr>
+                <tr><td>Perform</td><td>{{ sheet.perform }}</td></tr>
+                <tr><td>Program</td><td>{{ sheet.program }}</td></tr>
+                <tr><td>Punch</td><td>{{ sheet.punch }}</td></tr>
+                <tr><td>Requisition</td><td>{{ sheet.requisition }}</td></tr>
+                <tr><td>Search</td><td>{{ sheet.search }}</td></tr>
+                <tr><td>Shoot</td><td>{{ sheet.shoot }}</td></tr>
+                <tr><td>Stealth</td><td>{{ sheet.stealth }}</td></tr>
+                <tr><td>Strike</td><td>{{ sheet.strike }}</td></tr>
+                <tr><td>Survive</td><td>{{ sheet.survive }}</td></tr>
+                <tr><td>Talk</td><td>{{ sheet.talk }}</td></tr>
+                <tr><td>Work</td><td>{{ sheet.work }}</td></tr>
+                </tbody>
+            </table>
+            </div>
+            </div>
+            </div></div>
+        </div>
+        <!-- First row Second column --> 
+        <div class="col-md-8">
+            <!-- Attributes (First row in the second column)--> 
+            <div class="row" id="r-stat"><div class="col-md-12">
+                    <div class="card mb-3"><div class="card-header">Current Stats</div>
+                    <div class="table-responsive">
+                    <table class="card-table table">
+                    <tbody>
+                    <tr><td>Level</td><td>{{ sheet.level }}</td><td>Armour Class</td><td>{{ sheet.ac }}</td></tr>
+                    <tr><td>XP</td><td>{{ sheet.xp }}</td><td>System Strain</td><td>{{ sheet.system_strain }}</td></tr>
+                    <tr><td>Attack Bonus</td><td>{{ sheet.attack_bonus }}</td><td>Mental Save</td><td>{{ sheet.mental_save }}</td></tr>
+                    <tr><td>Max Hit Points</td><td>{{ sheet.max_hp }}</td><td>Evasion Save</td><td>{{ sheet.evasion_save }}</td></tr>
+                    <tr><td>Current Hit Points</td><td>{{ sheet.current_hp }}</td><td>Physical Save</td><td>{{ sheet.physical_save }}</td></tr>
+                    </tbody>
+                    </table>
+                    </div>
+                    </div>
+            </div></div>
+            <!-- Weapons (Secpnd row second column) (includes weapons as duplicate code) -->         
+            {% include 'shootout/_weapons_sheet.html'%}
+            <!-- Additonal Notes (Third row second column) (marked-up) -->         
+            <div class="row" id="r-note"><div class="col-md-12">
+                <div class="card mb-3" id="c-note"><div class="card-header" id="ch-note">Additional Notes</div>
+                    <div class="card-body" id="cb-note">
+                        {{ sheet.notes | safe }}
+                    </div>
+                </div>
+            </div></div>
+        </div>
+    </div>
+    <hr>
+</div>
+{% endblock %}
