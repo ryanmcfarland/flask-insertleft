@@ -5,6 +5,8 @@ from datetime import datetime
 from app import db
 from sqlalchemy.orm import reconstructor
 
+from app.beatcops import Config
+
 ## Many-to-many relationship table between weapon and sheet
 ## allows for a sheet to have multiple weapons
 beatcops_weapon_identifier = db.Table('beatcops_weapon_identifier',
@@ -79,15 +81,9 @@ class BeatCopsSheet(db.Model):
         super().__init__(**kwargs)
         self.init_on_load()
 
-    # These classes and backgrounds should be avilable to all sheets 
-    @reconstructor
-    def init_on_load(self):
-        self.classes=["Brain", "Brawn"]
-        self.backgrounds=["Traffic Branch", "Armed Response Unit", "Dog Section", "Detective", "Tactical Support Group", "Cyber Crime", 
-            "Response", "Neighbourhood", "PACE Officer", "Counter Terror Firearms Officer" ]
 
     def check_character_class(self, cls, bck):
-        return cls in self.classes and bck in self.backgrounds
+        return cls in Config.classes and bck in Config.backgrounds
 
     def update_bonuses(self):
         self.attack_bonus=math.ceil(self.level/2)
@@ -155,46 +151,23 @@ class BeatCopsSheet(db.Model):
     def output_md(self):
         self.notes=markdown.markdown(self.notes)
 
-    def process_form(self, form):
-        self.name=form.name.data
-        self.character_class=form.character_class.data
-        self.background=form.background.data
-        self.level=form.level.data
-        self.xp=form.xp.data
-        self.max_hp=form.max_hp.data
-        self.current_hp=form.current_hp.data
-        self.system_strain=form.system_strain.data
-        self.ac=form.ac.data
-        self.strength=form.strength.data
-        self.dexterity=form.dexterity.data
-        self.constitution=form.constitution.data
-        self.intelligence=form.intelligence.data
-        self.wisdom=form.wisdom.data
-        self.administer=form.administer.data
-        self.animal_handling=form.animal_handling.data
-        self.connect=form.connect.data
-        self.drive=form.drive.data
-        self.fix=form.fix.data
-        self.heal=form.heal.data
-        self.investigate=form.investigate.data
-        self.know=form.know.data
-        self.lead=form.lead.data
-        self.notice=form.notice.data
-        self.perform=form.perform.data
-        self.program=form.program.data
-        self.punch=form.punch.data
-        self.requisition=form.requisition.data
-        self.search=form.search.data
-        self.shoot=form.shoot.data
-        self.stealth=form.stealth.data
-        self.strike=form.strike.data
-        self.survive=form.survive.data
-        self.talk=form.talk.data
-        self.work=form.work.data
-        self.notes=form.notes.data
+    def process_and_save(self, form):
+        for k in [*form.data]:
+            setattr(self, k, form[k].data)
+        self.last_update = datetime.utcnow()
+        if self.check_character_class(self.character_class, self.background):
+            return self.save()
+        else:
+            return None
 
-        return self.check_character_class(self.character_class, self.background)
-
+    def save(self):
+        try:
+            db.session.add(self)
+            db.session.commit()
+            return self
+        except:
+            db.session.rollback()
+            return None
 
     def __repr__(self):
         return '<Sheet {}>'.format(self.name)

@@ -5,6 +5,8 @@ each section
 -> uses jquery to grab height of css objects within the sheet
 */
 
+
+
 function cssHeight(){
     var HeightMain = ($("#r-att").height())+($("#r-ski").height())-($("#r-stat").height());
     var pad = ($("#r-att").height())-($("#cd-att").height());

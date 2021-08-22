@@ -72,3 +72,20 @@
     <small class="text-muted">{{ entry.author.username }}</small>
 </span>
 {%- endmacro %}
+
+{% macro render_field(field, display=None) -%}
+<tr>
+    <td>
+        {{ field.id.capitalize() }}
+    </td>
+    <td>
+        {% if field.errors %}
+        <input class="form-control is-invalid has-feedback" type="text" name="{{ field.id }}" class="text-right" value={{ field.raw_data[0] }} required>
+        <span id="glypcn{{ field.id.capitalize() }}" class="glyphicon glyphicon-remove form-control-feedback"></span>
+        <div id="feedback{{ field.id.capitalize() }}" class="invalid-feedback">{{ field.errors[0] }}</div>
+        {% else %}
+        <input class="form-control" type="text" name="{{ field.id }}" class="text-right" value={{ field.data }} required>
+        {% endif %}
+    </td>
+</tr>
+{%- endmacro %}

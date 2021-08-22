@@ -2,21 +2,20 @@ import importlib
 
 from datetime import datetime
 from flask import request, render_template, flash, redirect, url_for, current_app
+from flask.views import MethodView
 from flask_login import current_user, login_required
 from app import db
-from app.beatcops import bp
+from app.beatcops import bp, Config
+from app.beatcops.models import BeatCopsSheet as Sheet
 
-Sheet = getattr(importlib.import_module('app.'+bp.name+'.models'), 'BeatCopsSheet')
+#Sheet = getattr(importlib.import_module('app.'+bp.name+'.models'), 'BeatCopsSheet')
 Weapon = getattr(importlib.import_module('app.'+bp.name+'.models'), 'BeatCopsWeapon')
 SheetForm = getattr(importlib.import_module('app.'+bp.name+'.forms'), 'SheetForm')
 
 @bp.route('', methods=['GET','POST'])
 @login_required
 def home():
-    page = request.args.get('page', 1, type=int)
     sheets = Sheet.query.filter_by(user_id=current_user.id).all()
-    #player_sheets = Sheet.query.filter(Sheet.user_id != current_user.id).paginate(page,9,False)
-    #player_sheets=player_sheets.items
     return render_template(bp.name+'/home.html', sheets=sheets)
 
 @bp.route('/sheet/<int:id>', methods=['GET'])
@@ -30,11 +29,11 @@ def show(id):
 ## process form from sheet, get specific row from sheet and update variables based on form data and commit
 ## will also check if data for weapon relationship per sheet needs to be updated / deleted
 ## will not save data if not validated
-@bp.route('/sheet/edit/<int:id>', methods=['GET','POST'])
-@login_required
+#@bp.route('/sheet/edit/<int:id>', methods=['GET','POST'])
+#@login_required
+
 def edit(id):
     sheet = Sheet.query.get_or_404(id)
-    sheet.update_bonuses()
     weapons = sheet.appended_weapons()
     
     if request.method == "POST":
@@ -58,7 +57,42 @@ def edit(id):
             flash('Sheet cannot be updated, database error', 'error')
             return redirect(url_for(bp.name+'.edit', id = id))
 
+
     return render_template(bp.name+'/edit.html', sheet=sheet, weapons=weapons)
+
+
+#https://stackoverflow.com/questions/44119600/how-to-keep-input-after-failed-form-validation-in-flask
+#https://stackoverflow.com/questions/43310740/how-to-set-up-an-inherited-methodview-in-flask-to-do-crud-operations-on-sqlalche
+
+class Edit(MethodView):
+    def __init__(self, env=None):
+        #super(Edit, self).__init__(env)
+        self.env = env
+
+    @login_required
+    def get(self, id):
+        form = SheetForm(request.form)
+        sheet = Sheet.query.get_or_404(id)
+        form.process(obj=sheet)
+        weapons = sheet.appended_weapons()
+        return render_template(bp.name+'/editForms.html', sheet=form, weapons=weapons, config=Config, id = id)
+
+    @login_required
+    def post(self, id):
+        form = SheetForm(request.form)
+        sheet = Sheet.query.get_or_404(id)
+        weapons = sheet.appended_weapons()
+        if not form.validate():
+            flash('Sheet cannot be updated, please check inputs: '+" ,".join([*form.errors]), 'error')
+            return render_template(bp.name+'/editForms.html', sheet=form, weapons=weapons, config=Config, id = id)
+        sheet.remove_form_weapons(request.form)
+        if sheet.process_and_save(form):
+            flash('Sheet has been successfully updated', 'info')
+            return redirect(url_for(bp.name+'.show', id = id))
+        else:
+            flash('Sheet cannot be updated, database error', 'error')
+            return redirect(url_for(bp.name+'.edit', id = id))
+
 
 # This is not efficient -> selects table and then counts
 # https://stackoverflow.com/questions/34692571/how-to-use-count-in-flask-sqlalchemy/35097740
