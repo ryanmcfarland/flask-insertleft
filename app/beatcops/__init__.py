@@ -1,5 +1,3 @@
-from flask import Blueprint
-
 class Config(object):
     attributes = ["strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma" ]
     classes=["Brain", "Brawn"]
@@ -10,9 +8,11 @@ class Config(object):
             "know", "lead", "notice", "perform", "program", "punch", "program", "requisition", "search",
             "shoot",  "stealth",  "strike", "survive", "talk", "work" ]
 
+from flask import Blueprint
+from app.common.views import register_urls
+from app.beatcops.models import BeatCopsSheet, BeatCopsWeapon
+from app.beatcops.forms import SheetForm
+
 bp = Blueprint('beatcops', __name__)
 
-from app.beatcops.routes import Edit
-
-edit = Edit.as_view('edit', "test")
-bp.add_url_rule('/edit/<int:id>', view_func=edit)
+register_urls(bp, BeatCopsSheet, SheetForm, BeatCopsWeapon, Config)

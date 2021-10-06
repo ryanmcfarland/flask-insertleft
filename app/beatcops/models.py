@@ -49,6 +49,9 @@ class BeatCopsSheet(db.Model):
     intelligence = db.Column(db.Integer, default=0)
     wisdom = db.Column(db.Integer, default=0)
     charisma = db.Column(db.Integer, default=0)
+    mental_save = db.Column(db.Integer, default=16)
+    evasion_save = db.Column(db.Integer, default=16)
+    physical_save = db.Column(db.Integer, default=16)
     administer = db.Column(db.Integer, default=-1)
     animal_handling = db.Column(db.Integer, default=-1)
     connect = db.Column(db.Integer, default=-1)
@@ -77,37 +80,8 @@ class BeatCopsSheet(db.Model):
     weapons = db.relationship("BeatCopsWeapon", secondary=beatcops_weapon_identifier, backref=db.backref('beatcops_weapon_identifier', lazy='dynamic'),lazy='dynamic')
     notes = db.Column(db.Text, nullable=False, default='')
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.init_on_load()
-
-
     def check_character_class(self, cls, bck):
         return cls in Config.classes and bck in Config.backgrounds
-
-    def update_bonuses(self):
-        self.attack_bonus=math.ceil(self.level/2)
-        self.str_mod=self.update_modifiers(self.strength)
-        self.dex_mod=self.update_modifiers(self.dexterity)
-        self.con_mod=self.update_modifiers(self.constitution)
-        self.int_mod=self.update_modifiers(self.intelligence)
-        self.wis_mod=self.update_modifiers(self.wisdom)
-        self.chr_mod=self.update_modifiers(self.charisma)
-        self.mental_save=16-self.level-(max(self.wis_mod, self.chr_mod))
-        self.evasion_save=16-self.level-(max(self.int_mod, self.dex_mod))        
-        self.physical_save=16-self.level-(max(self.con_mod, self.str_mod))
-
-    def update_modifiers(self, attr):
-        if attr < 4:
-            return -2
-        elif attr < 8:
-            return -1
-        elif attr < 14:
-            return 0
-        elif attr < 18:
-            return 1
-        else:
-            return 2
 
     def append_weapon(self, weap):
         if not self.check_appended_weapon(weap):
