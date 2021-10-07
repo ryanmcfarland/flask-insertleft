@@ -73,20 +73,10 @@ class ShootoutSheet(db.Model):
     weapons = db.relationship("ShootoutWeapon", secondary=shootout_weapon_identifier, backref=db.backref('shootout_weapon_identifier', lazy='dynamic'),lazy='dynamic')
     notes = db.Column(db.Text, nullable=False, default='')
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.init_on_load()
-
-    # These classes and backgrounds should be avilable to all sheets 
-    @reconstructor
-    def init_on_load(self):
-        self.classes=["Warrior", "Expert", "Arcanist", "Magister", "Pact Maker", "Shaman", "War Mage", "Adepts", "Witch Hunter", "Martial Adept", "Mystic"]
-        self.backgrounds=["Arcane Scholar", "Cleric", "Courtesan", "Cowhand", "Criminal", "Dilettante", "Engineer",
-            "Entertainer", "Gentry", "Government Mage", "Hedge Wizard", "Hirespell", "Hunter", "Inquisitor", "Labourer",
-            "Merchant", "Official", "Physician", "Politician", "Rogue Mage", "Scholar", "Soldier", "Thug", "Vagabond", "Worker"]
 
     def check_character_class(self, cls, bck):
         return cls in self.classes and bck in self.backgrounds
+
 
     def update_bonuses(self):
         self.attack_bonus=math.ceil(self.level/2)

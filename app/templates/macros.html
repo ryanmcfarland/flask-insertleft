@@ -72,3 +72,59 @@
     <small class="text-muted">{{ entry.author.username }}</small>
 </span>
 {%- endmacro %}
+
+{% macro render_field(field, min, max, modifier=False, display=None) -%}
+    <td>
+        {% if display %}
+            {{ display }}
+        {% else %}
+            {{ field.id.capitalize() }}
+        {% endif %}
+    </td>
+    <td>
+        {% if field.errors %}
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <button type="button" class="btn btn-outline-secondary btn-number" data-type="minus" data-field="{{ field.id }}"><span class="bi bi-dash-lg"></span></button>
+            </div>
+            <input class="form-control is-invalid has-feedback input-number" type="text" name="{{ field.id }}" class="text-right" value={{ field.raw_data[0] }} min="{{ min }}" max="{{ max }}" required>
+            <div class="input-group-append">
+                <button type="button"  class="btn btn-outline-secondary btn-number" data-type="plus" data-field="{{ field.id }}"><span class="bi bi-plus-lg"></span></button>
+            </div>
+            <span id="glypcn{{ field.id.capitalize() }}" class="glyphicon glyphicon-remove form-control-feedback"></span>
+            <div id="feedback{{ field.id.capitalize() }}" class="invalid-feedback">{{ field.errors[0] }}</div>
+        </div>
+        {% else %}
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <button type="button" class="btn btn-outline-secondary btn-number" data-type="minus" data-field="{{ field.id }}"><span class="bi bi-dash-lg"></span></button>
+            </div>
+            <input type="text" name="{{ field.id }}" class="form-control input-number" value="{{ field.data }}" min="{{ min }}" max="{{ max }}" required>
+            <div class="input-group-append">
+                <button type="button"  class="btn btn-outline-secondary btn-number" data-type="plus" data-field="{{ field.id }}"><span class="bi bi-plus-lg"></span></button>
+            </div>
+        </div>
+        {% endif %}
+    </td>
+    {% if modifier %}
+    <td>
+        <div class="modifier" name="modifier-{{ field.id }}">
+        </div>
+    </td>
+    {% endif %}
+{%- endmacro %}
+
+{% macro show_field(field, display, modifier=None) -%}
+    <td>
+        {{ display.capitalize() }}
+    </td>
+    <td id="{{ display }}">
+        {{ field }}
+    </td>
+    {% if modifier %}
+    <td>
+        <div class="modifier" name="modifier-{{ modifier }}">
+        </div>
+    </td>
+    {% endif %}
+{%- endmacro %}

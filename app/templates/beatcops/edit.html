@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block extra_scripts %}
-<script src="{{ url_for('static', filename='js/shootout.js') }}"></script>
+<script src="{{ url_for('static', filename='js/rpgsheet.js') }}"></script>
 <script src="{{ url_for('static', filename='js/easymde.min.js') }}"></script>
 <script>var easyMDE = new EasyMDE({element: document.getElementById('my-text-area')});</script>
 {% endblock %}
@@ -15,27 +15,29 @@
 BeatCops - Edit
 {% endblock %}
 
+{% from 'macros.html' import render_field %}
+
 {% block content %}
 <div class="container">
     <div class="row py-3 justify-content-center">
         <h2>BeatCops - Form fillable Character Sheet</h2>
     </div>
-    <form action="{{ url_for( 'beatcops.edit' , id=sheet.id) }}" method="post">
+    <form action="{{ url_for( 'beatcops.edit' , id=id) }}" method="post">
     <div class="row justify-content-center mb-3">
         <div class="col-md-3"><input class="btn btn-primary btn-block" type="submit" name="submit" value="Save"></div>
-        <div class="col-md-3"><a class="btn btn-secondary btn-block" href="{{ url_for( 'beatcops.weapons' , id=sheet.id) }}" role="button">Add Weapons</a></div>
-        <div class="col-md-3"><a class="btn btn-danger btn-block" href="{{ url_for( 'beatcops.delete' , id=sheet.id) }}" role="button">Delete</a></div>
+        <div class="col-md-3"><a class="btn btn-secondary btn-block" href="{{ url_for( 'beatcops.weapons' , id=id) }}" role="button">Add Weapons</a></div>
+        <div class="col-md-3"><a class="btn btn-danger btn-block" href="{{ url_for( 'beatcops.delete' , id=id) }}" role="button">Delete</a></div>
     </div>
     <div class="row py-3 justify-content-center border">
         <label class="col-sm-2 col-form-label font-weight-bold">Name</label>
-        <div class="col-sm-10"><input class="form-control" type="text" name="name" value="{{ sheet.name }}" required></div>
+        <div class="col-sm-10"><input class="form-control" type="text" name="name" value="{{ sheet.name.data }}" required></div>
     </div>
     <div class="row py-3 justify-content-center border">
         <label class="col-sm-2 col-form-label font-weight-bold">Class</label>
         <div class="col-sm-10">
-            <select class="selectpicker form-control" aria-label="Default select example" name="character_class">
-                {% for cls in sheet.classes %}
-                <option value="{{cls}}" {% if cls == "{{ sheet.character_class }}" %} selected {% endif %}>{{cls}}</option>
+            <select id="character_class" class="selectpicker form-control" aria-label="Default select example" name="character_class">
+                {% for cls in config.classes %}
+                <option value="{{cls}}" {% if cls == sheet.character_class.data %} selected {% endif %}>{{cls}}</option>
                 {% endfor %}
             </select>
         </div>
@@ -43,12 +45,13 @@ BeatCops - Edit
     <div class="row py-3 justify-content-center border">
         <label class="col-sm-2 col-form-label font-weight-bold">Background</label>
         <div class="col-sm-10">
-            <select class="selectpicker form-control" aria-label="Default select example" name="background">
-                {% for bck in sheet.backgrounds %}
-                <option value="{{bck}}" {% if cls == "{{ sheet.backgrounds }}" %} selected {% endif %}>{{bck}}</option>
+            <select id="character_background" class="selectpicker form-control" aria-label="Default select example" name="background">
+                {% for bck in config.backgrounds %}
+                <option value="{{bck}}" {% if bck == sheet.background.data %} selected {% endif %}>{{bck}}</option>
                 {% endfor %}
             </select>
         </div>
+        <meta id="my-data" data-name="{{name}}" data-other="{{other}}">
     </div> 
     <hr>
     <div class="row">
@@ -59,12 +62,9 @@ BeatCops - Edit
                 <div class="table-responsive">
                 <table class="card-table table">
                 <tbody>
-                    <tr><td>Strength</td><td><input class="form-control" type="text" name="strength" class="text-right" value={{ sheet.strength }} required></td></tr>
-                    <tr><td>Dexterity</td><td><input class="form-control" type="text" name="dexterity" class="text-right" value={{ sheet.dexterity }} required></td></tr>
-                    <tr><td>Constitution</td><td><input class="form-control" type="text" name="constitution" class="text-right" value={{ sheet.constitution }} required></td></tr>
-                    <tr><td>Intelligence</td><td><input class="form-control" type="text" name="intelligence" class="text-right" value={{ sheet.intelligence }} required></td></tr>
-                    <tr><td>Wisdom</td><td><input class="form-control" type="text" name="wisdom" class="text-right" value={{ sheet.wisdom }} required></td></tr>
-                    <tr><td>Charisma</td><td><input class="form-control" type="text" name="charisma" class="text-right" value={{ sheet.charisma }} required></td></tr>
+                    {% for attr in config.attributes %}
+                        <tr>{{ render_field(sheet[attr], 0, 22, modifier=True) }}</tr>
+                    {% endfor %}
                 </tbody>
                 </table>
                 </div>
@@ -76,27 +76,9 @@ BeatCops - Edit
                 <div class="table-responsive">
                 <table class="card-table table">
                     <tbody>
-                        <tr><td>Administer</td><td><input class="form-control" type="text" name="administer" value={{ sheet.administer }} required></td></tr>
-                        <tr><td>Animal Handling</td><td><input class="form-control" type="text" name="animal_handling" value={{ sheet.animal_handling }} required></td></tr>
-                        <tr><td>Connect</td><td><input class="form-control" type="text" name="connect" value={{ sheet.connect }} required></td></tr>
-                        <tr><td>Drive</td><td><input class="form-control" type="text" name="drive" value={{ sheet.drive }} required></td></tr>
-                        <tr><td>Fix</td><td><input class="form-control" type="text" name="fix" value={{ sheet.fix }} required></td></tr>
-                        <tr><td>Heal</td><td><input class="form-control" type="text" name="heal" value={{ sheet.heal }} required></td></tr>
-                        <tr><td>Investigate</td><td><input class="form-control" type="text" name="investigate" value={{ sheet.investigate }} required></td></tr>
-                        <tr><td>Know</td><td><input class="form-control" type="text" name="know" value={{ sheet.know }} required></td></tr>
-                        <tr><td>Lead</td><td><input class="form-control" type="text" name="lead" value={{ sheet.lead }} required></td></tr>
-                        <tr><td>Notice</td><td><input class="form-control" type="text" name="notice" value={{ sheet.notice }} required></td></tr>
-                        <tr><td>Perform</td><td><input class="form-control" type="text" name="perform" value={{ sheet.perform }} required></td></tr>
-                        <tr><td>Program</td><td><input class="form-control" type="text" name="program" value={{ sheet.program }} required></td></tr>
-                        <tr><td>Punch</td><td><input class="form-control" type="text" name="punch" value={{ sheet.punch }} required></td></tr>
-                        <tr><td>Requisition</td><td><input class="form-control" type="text" name="requisition" value={{ sheet.requisition }} required></td></tr>
-                        <tr><td>Search</td><td><input class="form-control" type="text" name="search" value={{ sheet.search }} required></td></tr>
-                        <tr><td>Shoot</td><td><input class="form-control" type="text" name="shoot" value={{ sheet.shoot }} required></td></tr>
-                        <tr><td>Stealth</td><td><input class="form-control" type="text" name="stealth" value={{ sheet.stealth }} required></td></tr>
-                        <tr><td>Strike</td><td><input class="form-control" type="text" name="strike" value={{ sheet.strike }} required></td></tr>
-                        <tr><td>Survive</td><td><input class="form-control" type="text" name="survive" value={{ sheet.survive }} required></td></tr>
-                        <tr><td>Talk</td><td><input class="form-control" type="text" name="talk" value={{ sheet.talk }} required></td></tr>
-                        <tr><td>Work</td><td><input class="form-control" ype="text" name="work" value={{ sheet.work }} required></td></tr>
+                    {% for skill in config.skills %}
+                        <tr>{{ render_field(sheet[skill], -1, 4) }}</tr>
+                    {% endfor %}
                     </tbody>
                 </table>
                 </div>
@@ -111,23 +93,23 @@ BeatCops - Edit
                     <table class="card-table table">
                     <tbody>
                     <tr>
-                        <td>Level</td><td><input class="form-control" type="text" name="level" value={{ sheet.level }} required></td>
-                        <td>Armour Class</td><td><input class="form-control" type="text" name="ac" value={{ sheet.ac }} required></td>
+                        {{ render_field(sheet.level, 0, 10) }}
+                        {{ render_field(sheet.ac, 0, 20, display="Armour Class") }}
                     </tr>
                     <tr>
-                        <td>XP</td><td><input class="form-control" type="text" name="xp" value={{ sheet.xp }} required></td>
-                        <td>System Strain</td><td><input class="form-control" type="text" name="system_strain" value={{ sheet.system_strain }} required></td>
+                        <td>XP</td><td><input class="form-control" type="text" name="xp" value={{ sheet.xp.data }} required></td>
+                        {{ render_field(sheet.system_strain, 0, 20, display="System Strain") }}
                     </tr>
                     <tr>
-                        <td>Attack Bonus</td><td>{{ sheet.attack_bonus }}</td>
-                        <td>Mental Save</td><td>{{ sheet.mental_save }}</td></tr>
+                        <td>Attack Bonus</td><td id="attack_bonus"></td>
+                        {{ render_field(sheet.mental_save, 0, 20, display="Mental Save") }}
                     <tr>
-                        <td>Max Hit Points</td><td><input class="form-control" type="text" name = "max_hp" value={{ sheet.max_hp }} required></td>
-                        <td>Evasion Save</td><td>{{ sheet.evasion_save }}</td>
+                        <td>Max Hit Points</td><td><input class="form-control" type="text" name = "max_hp" value={{ sheet.max_hp.data }} required></td>
+                        {{ render_field(sheet.evasion_save, 0, 20, display="Evasion Save") }}
                     </tr>
                     <tr>
-                        <td>Current Hit Points</td><td><input class="form-control" type="text" name ="current_hp" value={{ sheet.current_hp }} required></td>
-                        <td>Physical Save</td><td>{{ sheet.physical_save }}</td>
+                        <td>Current Hit Points</td><td><input class="form-control" type="text" name ="current_hp" value={{ sheet.current_hp.data }} required></td>
+                        {{ render_field(sheet.physical_save, 0, 20, display="Physical Save") }}
                     </tr>
                     </tbody>
                     </table>
@@ -140,7 +122,7 @@ BeatCops - Edit
             <!-- Additional Notes (third row row second column) (includes weapons as duplicate code) -->          
             <div class="row"><div class="col-md-12">
                 <div class="card mb-3"><div class="card-header">Additional Notes - Supports Markdown</div>
-                    <textarea id="my-text-area" name="notes">{{ sheet.notes | safe }}</textarea>
+                    <textarea id="my-text-area" name="notes">{{ sheet.notes.data | safe }}</textarea>
                 </div>
             </div></div>  
             </form>

@@ -146,3 +146,8 @@ def admin():
     page = request.args.get('page', 1, type=int)
     entries = Entry.query.order_by(Entry.created_at.desc()).paginate(page,10,False)
     return render_template('blog/admin.html', entries=entries)
+
+# create way to edit, delete and publish posts through this page?
+@bp.route('/test', methods=['GET','POST'])
+def react():
+    return render_template('react.html')
