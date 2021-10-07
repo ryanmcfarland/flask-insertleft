@@ -16,15 +16,16 @@ class Home(MethodView):
 
 
 class Show(MethodView):
-    def __init__(self, Sheet, route):
+    def __init__(self, Sheet, Config, route):
         self.Sheet = Sheet
+        self.Config = Config
         self.route = route
 
     def get(self, id):
         sheet = self.Sheet.query.get_or_404(id)
         weapons = sheet.appended_weapons()
         sheet.output_md()    
-        return render_template(self.route+'/sheet.html', sheet=sheet, weapons=weapons) 
+        return render_template(self.route+'/sheet.html', sheet=sheet, config=self.Config, weapons=weapons) 
 
 
 # This is not efficient -> selects table and then counts
@@ -139,7 +140,7 @@ class Weapon(MethodView):
 
 def register_urls(bp, Sheet, SheetForm, Weapons, Config):
     home = Home.as_view('home', Sheet, bp.name)
-    show = Show.as_view('show', Sheet, bp.name)
+    show = Show.as_view('show', Sheet, Config, bp.name)
     create = Create.as_view('create', Sheet, bp.name)
     delete = Delete.as_view('delete', Sheet, bp.name)
     edit = Edit.as_view('edit', Sheet, SheetForm, Config, bp.name)

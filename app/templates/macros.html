@@ -114,20 +114,16 @@
     {% endif %}
 {%- endmacro %}
 
-{% macro show_field(field, min, max, modifier=False, display=None) -%}
+{% macro show_field(field, display, modifier=None) -%}
     <td>
-        {% if display %}
-            {{ display }}
-        {% else %}
-            {{ field.id.capitalize() }}
-        {% endif %}
+        {{ display.capitalize() }}
     </td>
-    <td>
-        {{ sheet.strength }}
+    <td id="{{ display }}">
+        {{ field }}
     </td>
     {% if modifier %}
     <td>
-        <div class="modifier" name="modifier-{{ field.id }}">
+        <div class="modifier" name="modifier-{{ modifier }}">
         </div>
     </td>
     {% endif %}

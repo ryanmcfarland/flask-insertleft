@@ -150,3 +150,6 @@ $(".input-number").keydown(function (e) {
 
 $('#character_class').change(function (){
     updateAttackBonus()});
+
+$("input[name='level']").change(function (){
+    updateAttackBonus()});
