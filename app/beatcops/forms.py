@@ -24,6 +24,7 @@ class SheetForm(Form):
     animal_handling = IntegerField('animal_handling', validators=[InputRequired()])
     connect = IntegerField('connect', validators=[InputRequired()])
     drive = IntegerField('drive', validators=[InputRequired()])
+    exert = IntegerField('exert', validators=[InputRequired()])
     fix = IntegerField('fix', validators=[InputRequired()])
     heal = IntegerField('heal', validators=[InputRequired()])
     investigate = IntegerField('investigate', validators=[InputRequired()])

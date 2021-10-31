@@ -35,6 +35,7 @@ class DevelopmentConfig(Config):
     Development configurations
     """
     DEBUG = True
+    CV = '/home/ryanm/config/insertleft'
     #SQLALCHEMY_ECHO = True
     TEMPLATES_AUTO_RELOAD = True
 

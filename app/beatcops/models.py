@@ -56,6 +56,7 @@ class BeatCopsSheet(db.Model):
     animal_handling = db.Column(db.Integer, default=-1)
     connect = db.Column(db.Integer, default=-1)
     drive = db.Column(db.Integer, default=-1)
+    exert = db.Column(db.Integer, default=-1)
     fix = db.Column(db.Integer, default=-1)
     heal = db.Column(db.Integer, default=-1)
     investigate = db.Column(db.Integer, default=-1)
