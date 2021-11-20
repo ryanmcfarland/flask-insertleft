@@ -114,6 +114,31 @@
     {% endif %}
 {%- endmacro %}
 
+{% macro render_field_no_button(field, modifier=False, display=None) -%}
+    <td class="field-name">
+        {% if display %}
+            {{ display }}
+        {% else %}
+            {{ field.id.capitalize() }}
+        {% endif %}
+    </td>
+    <td>
+        {% if field.errors %}
+        <input class="form-control is-invalid has-feedback input-number" type="text" name="{{ field.id }}" class="text-right" value={{ field.raw_data[0] }} required>
+        <span id="glypcn{{ field.id.capitalize() }}" class="glyphicon glyphicon-remove form-control-feedback"></span>
+        <div id="feedback{{ field.id.capitalize() }}" class="invalid-feedback">{{ field.errors[0] }}</div>
+        {% else %}
+        <input type="text" name="{{ field.id }}" class="form-control input-number" value="{{ field.data }}" required>
+        {% endif %}
+    </td>
+    {% if modifier %}
+    <td>
+        <div class="field-modifier" name="modifier-{{ field.id }}">
+        </div>
+    </td>
+    {% endif %}
+{%- endmacro %}
+
 {% macro show_field(field, display, modifier=False,  cap=False) -%}
     <td class="field-name">
     {% if cap %}

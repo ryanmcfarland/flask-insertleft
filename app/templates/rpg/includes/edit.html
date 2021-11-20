@@ -49,10 +49,10 @@
                             <col span="1" class="wide">
                             <tbody>
                                 <tr>{{ render_field(sheet.level, 0, 10) }}</tr>
-                                <tr><td>XP</td><td><input class="form-control" type="text" name="xp" value={{ sheet.xp.data }} required></td></tr>
+                                <tr>{{ render_field_no_button(sheet.xp, display='XP') }}</tr>
                                 <tr><td>Attack Bonus</td><td><input class="form-control" type="text" name="attack_bonus" value='0' disabled></td></tr>
-                                <tr><td>Max Hit Points</td><td><input class="form-control" type="text" name = "max_hp" value={{ sheet.max_hp.data }} required></td></tr>
-                                <tr><td>Current Hit Points</td><td><input class="form-control" type="text" name ="current_hp" value={{ sheet.current_hp.data }} required></td></tr>
+                                <tr>{{ render_field_no_button(sheet.max_hp, display='Max Hit Points') }}</tr>
+                                <tr>{{ render_field_no_button(sheet.current_hp, display='Current Hit Points') }}</tr>
                             </tbody>
                         </table>
                     </div>

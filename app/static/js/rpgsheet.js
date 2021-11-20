@@ -120,8 +120,8 @@ $('.input-number').focusin(function(){
 });
 
 $('.input-number').change(function() {
-    minValue =  parseInt($(this).attr('min'));
-    maxValue =  parseInt($(this).attr('max'));
+    minValue =  parseInt($(this).attr('min')) || 0;
+    maxValue =  parseInt($(this).attr('max')) || 20000;
     valueCurrent = parseInt($(this).val());
     name = $(this).attr('name');
     if(valueCurrent >= minValue) {

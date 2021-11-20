@@ -15,6 +15,7 @@ from app.beatcops.forms import SheetForm
 bp = Blueprint('beatcops', __name__)
 
 # We need to inject the BP name to be picked up in all templates
+# Reference -> https://stackoverflow.com/questions/26498689/flask-jinja-pass-data-to-a-base-template-all-templates
 @bp.context_processor
 def inject_user():
     return dict(bp_name='BeatCops', bp_route='beatcops')
