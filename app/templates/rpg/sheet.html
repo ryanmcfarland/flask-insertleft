@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/rpgsheet.css') }}">
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/rpgsheet.js') }}"></script>
+<script> var sheet = true </script>
+{% endblock %}
+
+{% block title %}
+{{ bp_name }} - Sheet
+{% endblock %}
+
+{% from 'macros.html' import show_field %}
+
+{% block content %}
+<div class="container">
+    <div class="py-3 text-center">
+        <h2>{{ bp_name }} - Character Sheet</h2>
+    </div>
+    {% if current_user.id == sheet.user_id %}
+    <div class="row justify-content-center mb-3">
+        <div class="col-md-3"><a class="btn btn-danger btn-block" href="{{ url_for( bp_route+'.edit' , id=sheet.id) }}" role="button">Edit</a></div>
+    </div>
+    {% endif %}
+    <div class="row">
+        <div class="col">
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div><h6 class="my-0">Name</h6></div><div>{{ sheet.name }}</div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div><h6 class="my-0">Class</h6></div><div id = "character_class">{{ sheet.character_class }}</div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div><h6 class="my-0">Background</h6></div><div>{{ sheet.background }}</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <hr>
+    {% include 'rpg/includes/show.html'%}
+    <hr>
+</div>
+{% endblock %}

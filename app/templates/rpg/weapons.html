@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 
 {% block title %}
-Shootout - Weapons
+{{ bp_name }} - Weapons
 {% endblock %}
 
 {% block content %}
 <div class="container">
     <div class="row py-3 justify-content-center">
-        <h1 class="my-4">Sheriffs & Shootouts - Weapons</h1>
+        <h1 class="my-4">{{ bp_name }} - Weapons</h1>
     </div>
     <div class="row justify-content-center">
-    <form action="{{ url_for('shootout.weapons', id = id) }}" method="post">
+    <form action="{{ url_for('beatcops.weapons', id = id) }}" method="post">
     {% if weapons|length < 1 %}
         {% if add %}
             <p>There are no more weapons avaliable to add</p>

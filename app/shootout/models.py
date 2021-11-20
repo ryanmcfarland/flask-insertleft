@@ -5,6 +5,9 @@ from datetime import datetime
 from app import db
 from sqlalchemy.orm import reconstructor
 
+from app.shootout import Config
+
+
 ## Many-to-many relationship table between weapon and sheet
 ## allows for a sheet to have multiple weapons
 shootout_weapon_identifier = db.Table('shootout_weapon_identifier',
@@ -46,7 +49,7 @@ class ShootoutSheet(db.Model):
     intelligence = db.Column(db.Integer, default=0)
     wisdom = db.Column(db.Integer, default=0)
     charisma = db.Column(db.Integer, default=0)
-    administer = db.Column(db.Integer, default=0)
+    administer = db.Column(db.Integer, default=-1)
     cast_magic = db.Column(db.Integer, default=-1)
     connect = db.Column(db.Integer, default=-1)
     exert = db.Column(db.Integer, default=-1)
@@ -73,34 +76,8 @@ class ShootoutSheet(db.Model):
     weapons = db.relationship("ShootoutWeapon", secondary=shootout_weapon_identifier, backref=db.backref('shootout_weapon_identifier', lazy='dynamic'),lazy='dynamic')
     notes = db.Column(db.Text, nullable=False, default='')
 
-
     def check_character_class(self, cls, bck):
-        return cls in self.classes and bck in self.backgrounds
-
-
-    def update_bonuses(self):
-        self.attack_bonus=math.ceil(self.level/2)
-        self.str_mod=self.update_modifiers(self.strength)
-        self.dex_mod=self.update_modifiers(self.dexterity)
-        self.con_mod=self.update_modifiers(self.constitution)
-        self.int_mod=self.update_modifiers(self.intelligence)
-        self.wis_mod=self.update_modifiers(self.wisdom)
-        self.chr_mod=self.update_modifiers(self.charisma)
-        self.mental_save=16-self.level-(max(self.wis_mod, self.chr_mod))
-        self.evasion_save=16-self.level-(max(self.int_mod, self.dex_mod))        
-        self.physical_save=16-self.level-(max(self.con_mod, self.str_mod))
-
-    def update_modifiers(self, attr):
-        if attr < 4:
-            return -2
-        elif attr < 8:
-            return -1
-        elif attr < 14:
-            return 0
-        elif attr < 18:
-            return 1
-        else:
-            return 2
+        return cls in Config.classes and bck in Config.backgrounds
 
     def append_weapon(self, weap):
         if not self.check_appended_weapon(weap):
@@ -144,45 +121,23 @@ class ShootoutSheet(db.Model):
     def output_md(self):
         self.notes=markdown.markdown(self.notes)
 
-    def process_form(self, form):
-        self.name=form.name.data
-        self.character_class=form.character_class.data
-        self.background=form.background.data
-        self.level=form.level.data
-        self.xp=form.xp.data
-        self.max_hp=form.max_hp.data
-        self.current_hp=form.current_hp.data
-        self.system_strain=form.system_strain.data
-        self.ac=form.ac.data
-        self.strength=form.strength.data
-        self.dexterity=form.dexterity.data
-        self.constitution=form.constitution.data
-        self.intelligence=form.intelligence.data
-        self.wisdom=form.wisdom.data
-        self.administer=form.administer.data
-        self.cast_magic=form.cast_magic.data
-        self.connect=form.connect.data
-        self.exert=form.exert.data
-        self.fix=form.fix.data
-        self.heal=form.heal.data
-        self.horsemanship=form.horsemanship.data
-        self.know=form.know.data
-        self.know_magic=form.know_magic.data
-        self.lead=form.lead.data
-        self.notice=form.notice.data
-        self.perform=form.perform.data
-        self.punch=form.punch.data
-        self.sail=form.sail.data
-        self.shoot=form.shoot.data
-        self.sneak=form.sneak.data
-        self.stab=form.stab.data
-        self.talk=form.talk.data
-        self.trade=form.trade.data
-        self.work=form.work.data
-        self.notes=form.notes.data
+    def process_and_save(self, form):
+        for k in [*form.data]:
+            setattr(self, k, form[k].data)
+        self.last_update = datetime.utcnow()
+        if self.check_character_class(self.character_class, self.background):
+            return self.save()
+        else:
+            return None
 
-        return self.check_character_class(self.character_class, self.background)
-
+    def save(self):
+        try:
+            db.session.add(self)
+            db.session.commit()
+            return self
+        except:
+            db.session.rollback()
+            return None
 
     def __repr__(self):
         return '<Sheet {}>'.format(self.name)

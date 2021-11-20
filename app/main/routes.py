@@ -150,4 +150,4 @@ def admin():
 # create way to edit, delete and publish posts through this page?
 @bp.route('/test', methods=['GET','POST'])
 def react():
-    return render_template('react.html')
+    return render_template('test.html')

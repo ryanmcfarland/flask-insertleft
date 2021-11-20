@@ -1,0 +1,40 @@
+#cb-weap,#cb-note {
+    overflow-y: auto;
+  }
+
+.card {
+    box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    }
+
+.card-header {
+    background-color: #4285F4;
+    font-weight: bold;
+    color: white;
+}
+
+td {
+    font-weight: bold;
+    text-align: left;
+    vertical-align: middle !important;
+}
+
+.wide {
+    width: 42%;
+}
+
+.field-modifier {
+    background-color:#383838;
+    color: white;
+    border-radius: 10px;
+    width: 40px;
+    height: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#attack_bonus {
+    font-weight: normal;
+    text-align: left;
+    vertical-align: middle;
+}

@@ -2,6 +2,21 @@ from app import db
 from flask import request, render_template, flash, redirect, url_for, current_app
 from flask.views import MethodView
 from flask_login import current_user, login_required
+from werkzeug.exceptions import Forbidden
+
+# This can't be a decotor within a view due to the lack of ability to access self
+# needs to be added to all required functions
+def user_or_admin(Sheet, id):
+    """
+    Returns Forbidden or None.
+    
+    Checks if the user id is either an Admin or is the owner of the sheet.
+    """
+    if current_user.check_roles('Admin') or Sheet.query.filter_by(user_id=current_user.id).filter_by(id=id).all():
+        return None
+    else:
+        return Forbidden("You do not have access")
+
 
 class Home(MethodView):
     def __init__(self, Sheet, route):
@@ -12,7 +27,7 @@ class Home(MethodView):
     @login_required
     def get(self):
         sheets = self.Sheet.query.filter_by(user_id=current_user.id).all()
-        return render_template(self.route+'/home.html', sheets=sheets)
+        return render_template('rpg/home.html', sheets=sheets)
 
 
 class Show(MethodView):
@@ -25,7 +40,7 @@ class Show(MethodView):
         sheet = self.Sheet.query.get_or_404(id)
         weapons = sheet.appended_weapons()
         sheet.output_md()    
-        return render_template(self.route+'/sheet.html', sheet=sheet, config=self.Config, weapons=weapons) 
+        return render_template('rpg/sheet.html', sheet=sheet, config=self.Config, weapons=weapons) 
 
 
 # This is not efficient -> selects table and then counts
@@ -51,7 +66,8 @@ class Delete(MethodView):
         self.Sheet = Sheet
         self.route = route
 
-    @login_required
+    decorators = [login_required]
+
     def get(self, id):
         sheet = self.Sheet.query.get_or_404(id)
         try:
@@ -62,7 +78,6 @@ class Delete(MethodView):
             flash("Could not delete sheet", 'error')
         return redirect(url_for(self.route+'.home'))
 
-    @login_required
     def post(self, id):
         sheet = self.Sheet.query.get_or_404(id)
         try:
@@ -86,24 +101,26 @@ class Edit(MethodView):
         self.Config = Config
         self.route = route
 
+    decorators = [login_required]
 
-    @login_required
     def get(self, id):
+        access = user_or_admin(self.Sheet,id)
+        if access is not None: return access
         form = self.SheetForm(request.form)
         sheet = self.Sheet.query.get_or_404(id)
         form.process(obj=sheet)
         weapons = sheet.appended_weapons()
-        return render_template(self.route+'/edit.html', sheet=form, weapons=weapons, config=self.Config, id = id)
+        return render_template('rpg/edit.html', sheet=form, weapons=weapons, config=self.Config, id = id)
 
-
-    @login_required
     def post(self, id):
+        access = user_or_admin(self.Sheet,id)
+        if access is not None: return access
         form = self.SheetForm(request.form)
         sheet = self.Sheet.query.get_or_404(id)
         weapons = sheet.appended_weapons()
         if not form.validate():
             flash('Sheet cannot be updated, please check inputs: '+" ,".join([*form.errors]), 'error')
-            return render_template(self.route+'/edit.html', sheet=form, weapons=weapons, config=self.Config, id = id)
+            return render_template('rpg/edit.html', sheet=form, weapons=weapons, config=self.Config, id = id)
         sheet.remove_form_weapons(request.form)
         if sheet.process_and_save(form):
             flash('Sheet has been successfully updated', 'info')
@@ -128,7 +145,7 @@ class Weapon(MethodView):
             add=True
             sheet = self.Sheet.query.get_or_404(id)
             weapons = sheet.missing_weapons()
-        return render_template(self.route+'/weapons.html', id = id, weapons=weapons, add=add)
+        return render_template('rpg/weapons.html', id = id, weapons=weapons, add=add)
     
     @login_required
     def post(self, id):
