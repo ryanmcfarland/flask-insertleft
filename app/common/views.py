@@ -12,7 +12,7 @@ class Home(MethodView):
     @login_required
     def get(self):
         sheets = self.Sheet.query.filter_by(user_id=current_user.id).all()
-        return render_template(self.route+'/home.html', sheets=sheets)
+        return render_template('rpg/home.html', sheets=sheets)
 
 
 class Show(MethodView):
@@ -25,7 +25,7 @@ class Show(MethodView):
         sheet = self.Sheet.query.get_or_404(id)
         weapons = sheet.appended_weapons()
         sheet.output_md()    
-        return render_template(self.route+'/sheet.html', sheet=sheet, config=self.Config, weapons=weapons) 
+        return render_template('rpg/sheet.html', sheet=sheet, config=self.Config, weapons=weapons) 
 
 
 # This is not efficient -> selects table and then counts
@@ -93,7 +93,7 @@ class Edit(MethodView):
         sheet = self.Sheet.query.get_or_404(id)
         form.process(obj=sheet)
         weapons = sheet.appended_weapons()
-        return render_template(self.route+'/edit.html', sheet=form, weapons=weapons, config=self.Config, id = id)
+        return render_template('rpg/edit.html', sheet=form, weapons=weapons, config=self.Config, id = id)
 
 
     @login_required
@@ -103,7 +103,7 @@ class Edit(MethodView):
         weapons = sheet.appended_weapons()
         if not form.validate():
             flash('Sheet cannot be updated, please check inputs: '+" ,".join([*form.errors]), 'error')
-            return render_template(self.route+'/edit.html', sheet=form, weapons=weapons, config=self.Config, id = id)
+            return render_template('rpg/edit.html', sheet=form, weapons=weapons, config=self.Config, id = id)
         sheet.remove_form_weapons(request.form)
         if sheet.process_and_save(form):
             flash('Sheet has been successfully updated', 'info')
@@ -128,7 +128,7 @@ class Weapon(MethodView):
             add=True
             sheet = self.Sheet.query.get_or_404(id)
             weapons = sheet.missing_weapons()
-        return render_template(self.route+'/weapons.html', id = id, weapons=weapons, add=add)
+        return render_template('rpg/weapons.html', id = id, weapons=weapons, add=add)
     
     @login_required
     def post(self, id):

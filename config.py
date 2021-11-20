@@ -15,6 +15,7 @@ class Config(object):
     POSTS_PER_PAGE=5
     
     ADMIN=os.environ.get('ADMIN') or 'insertleft@outlook.com'
+    CV = os.environ.get('CV') or '/home/ryanm/config/insertleft'
 
     # outlook mail server configuration - used within flask_mail
     MAIL_SERVER='smtp.office365.com'
@@ -35,7 +36,6 @@ class DevelopmentConfig(Config):
     Development configurations
     """
     DEBUG = True
-    CV = '/home/ryanm/config/insertleft'
     #SQLALCHEMY_ECHO = True
     TEMPLATES_AUTO_RELOAD = True
 

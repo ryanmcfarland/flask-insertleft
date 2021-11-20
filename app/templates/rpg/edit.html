@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/rpgsheet.css') }}">
+<link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/rpgsheet.js') }}"></script>
+<script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+<script>var easyMDE = new EasyMDE({element: document.getElementById('my-text-area')});</script>
+{% endblock %}
+
+{% block title %}
+{{ bp_name }} - Edit
+{% endblock %}
+
+{% from 'macros.html' import render_field %}
+
+{% block content %}
+<div class="container">
+    <div class="row py-3 justify-content-center">
+        <h2>{{ bp_name }} - Form fillable Character Sheet</h2>
+    </div>
+    <form action="{{ url_for( bp_route+'.edit' , id=id) }}" method="post">
+        <div class="row justify-content-center mb-3">
+            <div class="col-md-3"><input class="btn btn-primary btn-block" type="submit" name="submit" value="Save"></div>
+            <div class="col-md-3"><a class="btn btn-secondary btn-block" href="{{ url_for( bp_route+'.weapons' , id=id) }}" role="button">Add Weapons</a></div>
+            <div class="col-md-3"><a class="btn btn-danger btn-block" href="{{ url_for( bp_route+'.delete' , id=id) }}" role="button">Delete</a></div>
+        </div>
+        <div class="row py-3 justify-content-center border">
+            <label class="col-sm-2 col-form-label font-weight-bold">Name</label>
+            <div class="col-sm-10"><input class="form-control" type="text" name="name" value="{{ sheet.name.data }}" required></div>
+        </div>
+        <div class="row py-3 justify-content-center border">
+            <label class="col-sm-2 col-form-label font-weight-bold">Class</label>
+            <div class="col-sm-10">
+                <select id="character_class" class="selectpicker form-control" aria-label="Default select example" name="character_class">
+                    {% for cls in config.classes %}
+                    <option value="{{cls}}" {% if cls == sheet.character_class.data %} selected {% endif %}>{{cls}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="row py-3 justify-content-center border">
+            <label class="col-sm-2 col-form-label font-weight-bold">Background</label>
+            <div class="col-sm-10">
+                <select id="character_background" class="selectpicker form-control" aria-label="Default select example" name="background">
+                    {% for bck in config.backgrounds %}
+                    <option value="{{bck}}" {% if bck == sheet.background.data %} selected {% endif %}>{{bck}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <meta id="my-data" data-name="{{name}}" data-other="{{other}}">
+        </div> 
+    <hr>
+    {% include 'rpg/includes/edit.html'%}  
+    </form>
+</div>
+
+{% endblock %}

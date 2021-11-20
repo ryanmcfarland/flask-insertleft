@@ -15,4 +15,9 @@ from app.shootout.forms import SheetForm
 
 bp = Blueprint('shootout', __name__)
 
+# We need to inject the BP name to be picked up in all templates
+@bp.context_processor
+def inject_user():
+    return dict(bp_name='Shootout', bp_route='shootout')
+
 register_urls(bp, ShootoutSheet, SheetForm, ShootoutWeapon, Config)

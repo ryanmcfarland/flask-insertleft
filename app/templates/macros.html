@@ -74,7 +74,7 @@
 {%- endmacro %}
 
 {% macro render_field(field, min, max, modifier=False, display=None) -%}
-    <td>
+    <td class="field-name">
         {% if display %}
             {{ display }}
         {% else %}
@@ -108,22 +108,26 @@
     </td>
     {% if modifier %}
     <td>
-        <div class="modifier" name="modifier-{{ field.id }}">
+        <div class="field-modifier" name="modifier-{{ field.id }}">
         </div>
     </td>
     {% endif %}
 {%- endmacro %}
 
-{% macro show_field(field, display, modifier=None) -%}
-    <td>
+{% macro show_field(field, display, modifier=False,  cap=False) -%}
+    <td class="field-name">
+    {% if cap %}
+        {{ display }}
+    {% else %}
         {{ display.capitalize() }}
+    {% endif %}
     </td>
-    <td id="{{ display }}">
-        {{ field }}
+    <td name="{{ display }}">
+        <input type="text" name="{{ display }}" class="form-control input-number" value="{{ field }}" disabled>
     </td>
     {% if modifier %}
     <td>
-        <div class="modifier" name="modifier-{{ modifier }}">
+        <div class="field-modifier" name="modifier-{{ display }}">
         </div>
     </td>
     {% endif %}

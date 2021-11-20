@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 
 {% block title %}
-BeatCops
+{{ bp_name }}
 {% endblock %}
 
 {% block content %}
 <div class="container">
     <div class="row py-3 justify-content-center">
-        <h1 class="my-4">BeatCops</h1>
+        <h1 class="my-4">{{ bp_name }}</h1>
     </div>
-    <form action="{{ url_for( 'beatcops.create') }}" method="post" id="myForm"></form>
+    <form action="{{ url_for( bp_route+'.create') }}" method="post" id="myForm"></form>
     <div class="row justify-content-center mb-3">
         <div class="col-md-3"><button type="submit" form="myForm" class="btn btn-success btn-block" name="something"><i></i>Create</button></div>
-        <div class="col-md-3"><a class="btn btn-info btn-block" href="{{ url_for( 'beatcops.weapons') }}" role="button">Weapons</a></div>
+        <div class="col-md-3"><a class="btn btn-info btn-block" href="{{ url_for( bp_route+'.weapons') }}" role="button">Weapons</a></div>
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -35,9 +35,9 @@ BeatCops
             <td>{{ sheet.character_class }}</td>
             <td>{{ sheet.background }}</td>
             <td>{{ sheet.level }}</td>
-            <td class="text-right"><a class="btn btn-primary btn-block" href="{{ url_for( 'beatcops.show' , id=sheet.id) }}" role="button">Show</a></td>
-            <td class="text-right"><a class="btn btn-secondary btn-block" href="{{ url_for( 'beatcops.edit' , id=sheet.id) }}" role="button">Edit</a></td>
-            <td class="text-right"><a class="btn btn-danger btn-block" href="{{ url_for( 'beatcops.delete' , id=sheet.id) }}" role="button">Delete</a></td>
+            <td class="text-right"><a class="btn btn-primary btn-block" href="{{ url_for( bp_route+'.show' , id=sheet.id) }}" role="button">Show</a></td>
+            <td class="text-right"><a class="btn btn-secondary btn-block" href="{{ url_for( bp_route+'.edit' , id=sheet.id) }}" role="button">Edit</a></td>
+            <td class="text-right"><a class="btn btn-danger btn-block" href="{{ url_for( bp_route+'.delete' , id=sheet.id) }}" role="button">Delete</a></td>
             </tr>
             {% endfor %}
             </tbody>

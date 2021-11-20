@@ -33,30 +33,37 @@ function updateModifiers(){
 
 function updateModifier(fieldName){
     var field = $("div[name='modifier-"+fieldName+"']");
-    var currentVal = parseInt($("input[name='"+fieldName+"']").val());
-    field.text(updateAttrMods(currentVal))
+    var currentVal = (parseInt($("input[name='"+fieldName+"']").val())) | (parseInt($("td[name='"+fieldName+"']").text()));
+    var currentVal = updateAttrMods(currentVal);
+    field.text(currentVal[0]);
+    field.attr('style','color: '+currentVal[1])
 }
 
 function updateAttrMods(attr){
     if (attr < 4) { 
-        return -2;
+        return ['-2', '#EB1010'];
     } else if (attr < 8 ) {
-        return -1;
+        return ['-1', '#EB1010'];
     } else if (attr < 14) {
-        return 0;
+        return ['0',  'white'];
     } else if (attr < 18) {
-        return 1;
+        return ['+1', '#26EB10'];
     } else {
-        return 2;
+        return ['+2', '#26EB10'];
     }
-}
+};
 
 function updateAttackBonus(){
-    var chr_class = $('#character_class').val();
-    if ('Brain' == chr_class) {
-        $("td[id='attack_bonus']").text(Math.floor(($("input[name='level']").val())/2))
+    if (typeof sheet === 'undefined') { 
+        var chr_class = $('#character_class').val();
     } else {
-        $("td[id='attack_bonus']").text($("input[name='level']").val())
+        var chr_class = $('#character_class').text();
+    }
+    var level = ($("input[name='level']").val()) | (parseInt($("td[id='level']").text()));
+    if ('Brain' == chr_class) {
+        $("input[name='attack_bonus']").val(Math.floor(level/2)).change()
+    } else {
+        $("input[name='attack_bonus']").val(level).change()
     };
 };
 
