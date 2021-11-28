@@ -1,4 +1,6 @@
 import markdown
+import uuid
+import base64
 
 from datetime import datetime
 from app import db
@@ -18,7 +20,7 @@ class WeaponMixin(object):
 # database set-up for shootout sheets, allows each sheet to access user for each sheet
 # e.g. sheet.author.username
 class SheetMixin(object):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(32), primary_key = True, nullable=False)
     name = db.Column(db.String(128), default="insert_name")
     character_class = db.Column(db.String(128), default="")
     background = db.Column(db.String(128), default="")
@@ -40,6 +42,18 @@ class SheetMixin(object):
     notes = db.Column(db.Text, nullable=False, default='')   
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     last_update = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    # Everytime a new sheet is created, we automatically create a shorthand safe url using base64 and uuid
+    # https://stackoverflow.com/questions/12270852/convert-uuid-32-character-hex-string-into-a-youtube-style-short-id-and-back
+    def __init__(self, *args, **kwargs):
+        super(SheetMixin, self).__init__(*args, **kwargs)
+        self.id = self.uuid2urlsafe(uuid.uuid4().bytes)
+
+    def uuid2urlsafe(self, uuid):
+        return base64.urlsafe_b64encode(uuid).rstrip(b'=').decode('ascii')
+
+    def urlsafe2uuid(self, urlstr):
+        return str(uuid.UUID(bytes=base64.urlsafe_b64decode(urlstr + '==')))
 
     @classmethod
     def check_character_class(self, cls, bck):

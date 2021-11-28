@@ -26,7 +26,10 @@ class Home(MethodView):
 
     @login_required
     def get(self):
-        sheets = self.Sheet.query.filter_by(user_id=current_user.id).all()
+        if current_user.check_roles('Admin'):
+            sheets = self.Sheet.query.all()
+        else:
+            sheets = self.Sheet.query.filter_by(user_id=current_user.id).all()
         return render_template('rpg/home.html', sheets=sheets)
 
 
@@ -36,7 +39,7 @@ class Show(MethodView):
         self.Config = Config
         self.route = route
 
-    def get(self, id):
+    def get(self, id, slug = None):
         sheet = self.Sheet.query.get_or_404(id)
         weapons = sheet.appended_weapons()
         sheet.output_md()    
@@ -104,7 +107,7 @@ class Edit(MethodView):
     decorators = [login_required]
 
     def get(self, id):
-        access = user_or_admin(self.Sheet,id)
+        access = user_or_admin(self.Sheet, id)
         if access is not None: return access
         form = self.SheetForm(request.form)
         sheet = self.Sheet.query.get_or_404(id)
@@ -113,7 +116,7 @@ class Edit(MethodView):
         return render_template('rpg/edit.html', sheet=form, weapons=weapons, config=self.Config, id = id)
 
     def post(self, id):
-        access = user_or_admin(self.Sheet,id)
+        access = user_or_admin(self.Sheet, id)
         if access is not None: return access
         form = self.SheetForm(request.form)
         sheet = self.Sheet.query.get_or_404(id)
@@ -164,9 +167,10 @@ def register_urls(bp, Sheet, SheetForm, Weapons, Config):
     weapon = Weapon.as_view('weapons', Sheet, Weapons, bp.name)
 
     bp.add_url_rule('/home', view_func=home)
-    bp.add_url_rule('/sheet/<int:id>', view_func=show)
+    bp.add_url_rule('/sheet/<id>', view_func=show)
+    bp.add_url_rule('/sheet/<id>/<slug>', view_func=show)
     bp.add_url_rule('/create', view_func=create)
-    bp.add_url_rule('/delete/<int:id>', view_func=delete)
-    bp.add_url_rule('/edit/<int:id>', view_func=edit)
+    bp.add_url_rule('/delete/<id>', view_func=delete)
+    bp.add_url_rule('/edit/<id>', view_func=edit)
     bp.add_url_rule('/weapons', view_func=weapon)
-    bp.add_url_rule('/weapons/sheet/<int:id>', view_func=weapon)
+    bp.add_url_rule('/weapons/sheet/<id>', view_func=weapon)

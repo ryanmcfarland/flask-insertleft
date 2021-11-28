@@ -7,7 +7,6 @@ load_dotenv(os.path.join(configdir, '.env'), verbose = True)
 
 class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
-    URL_SALT = int(os.environ.get('URL_SALT'))
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(configdir, 'insertleft.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SHEETS_PER_USER=5

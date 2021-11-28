@@ -20,26 +20,32 @@
             <p>There are no characters sheets saved for this user</p>
         {% else %}
             <table class="table">
-            <thead>
-            <tr>
-            <th>Name</th>
-            <th>Class</th>
-            <th>Background</th>
-            <th>Level</th>
-            </tr>
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Class</th>
+                    <th>Background</th>
+                    <th>Level</th>
+                    <th>Author</th>
+                </tr>
             </thead>
             <tbody>
-            {% for sheet in sheets %}
-            <tr>
-            <td>{{ sheet.name }}</td>
-            <td>{{ sheet.character_class }}</td>
-            <td>{{ sheet.background }}</td>
-            <td>{{ sheet.level }}</td>
-            <td class="text-right"><a class="btn btn-primary btn-block" href="{{ url_for( bp_route+'.show' , id=sheet.id) }}" role="button">Show</a></td>
-            <td class="text-right"><a class="btn btn-secondary btn-block" href="{{ url_for( bp_route+'.edit' , id=sheet.id) }}" role="button">Edit</a></td>
-            <td class="text-right"><a class="btn btn-danger btn-block" href="{{ url_for( bp_route+'.delete' , id=sheet.id) }}" role="button">Delete</a></td>
-            </tr>
-            {% endfor %}
+                {% for sheet in sheets %}
+                <tr>
+                    <td>{{ sheet.name }}</td>
+                    <td>{{ sheet.character_class }}</td>
+                    <td>{{ sheet.background }}</td>
+                    <td>{{ sheet.level }}</td>
+                    <td>{{ sheet.author.username }}</td>
+                    <td>
+                        <div class="btn-group btn-block" role="group">
+                            <a class="btn btn-primary" href="{{ url_for( bp_route+'.show' , id=sheet.id, slug=sheet.name) }}" role="button">Show</a>
+                            <a class="btn btn-secondary" href="{{ url_for( bp_route+'.edit' , id=sheet.id) }}" role="button">Edit</a>
+                            <a class="btn btn-danger" href="{{ url_for( bp_route+'.delete' , id=sheet.id) }}" role="button">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
             </tbody>
             </table>
         {% endif %}
