@@ -2,7 +2,7 @@ import os
 
 from app import create_app, db
 from app.models import User, Entry, Tag, Role
-from app.shootout.models import ShootoutSheet, ShootoutWeapon
+from app.rpg.shootout.models import ShootoutSheet, ShootoutWeapon
 
 
 config_name = os.getenv('FLASK_ENV')

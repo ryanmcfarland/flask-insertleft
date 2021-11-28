@@ -8,9 +8,9 @@ class Config(object):
             "shoot",  "stealth",  "strike", "survive", "talk", "work" ]
 
 from flask import Blueprint
-from app.common.views import register_urls
-from app.beatcops.models import BeatCopsSheet, BeatCopsWeapon
-from app.beatcops.forms import SheetForm
+from app.rpg.views import register_urls
+from app.rpg.beatcops.models import BeatCopsSheet, BeatCopsWeapon
+from app.rpg.beatcops.forms import BeatCopsForm
 
 bp = Blueprint('beatcops', __name__)
 
@@ -20,4 +20,4 @@ bp = Blueprint('beatcops', __name__)
 def inject_user():
     return dict(bp_name='BeatCops', bp_route='beatcops')
 
-register_urls(bp, BeatCopsSheet, SheetForm, BeatCopsWeapon, Config)
+register_urls(bp, BeatCopsSheet, BeatCopsForm, BeatCopsWeapon, Config)

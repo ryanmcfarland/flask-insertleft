@@ -1,4 +1,4 @@
-from wtforms import Form, StringField, IntegerField, SelectField
+from wtforms import Form, StringField, IntegerField
 from wtforms.validators import DataRequired, InputRequired, Length
 
 class SheetForm(Form):
@@ -20,27 +20,6 @@ class SheetForm(Form):
     intelligence = IntegerField('intelligence', validators=[InputRequired()])
     wisdom = IntegerField('wisdom', validators=[InputRequired()])
     charisma = IntegerField('charisma', validators=[InputRequired()])
-    administer = IntegerField('administer', validators=[InputRequired()])
-    cast_magic = IntegerField('cast_magic', validators=[InputRequired()])
-    connect = IntegerField('connect', validators=[InputRequired()])
-    exert = IntegerField('exert', validators=[InputRequired()])
-    fix = IntegerField('fix', validators=[InputRequired()])
-    heal = IntegerField('heal', validators=[InputRequired()])
-    horsemanship = IntegerField('horsemanship', validators=[InputRequired()])
-    know = IntegerField('know', validators=[InputRequired()])
-    know_magic = IntegerField('know_magic', validators=[InputRequired()])
-    lead = IntegerField('lead', validators=[InputRequired()])
-    notice = IntegerField('notice', validators=[InputRequired()])
-    perform = IntegerField('perform', validators=[InputRequired()])
-    punch = IntegerField('punch', validators=[InputRequired()])
-    sail = IntegerField('sail', validators=[InputRequired()])
-    shoot = IntegerField('shoot', validators=[InputRequired()])
-    sneak = IntegerField('sneak', validators=[InputRequired()])
-    stab = IntegerField('stab', validators=[InputRequired()])
-    survive = IntegerField('survive', validators=[InputRequired()])
-    talk = IntegerField('talk', validators=[InputRequired()])
-    trade = IntegerField('trade', validators=[InputRequired()])
-    work = IntegerField('work', validators=[InputRequired()])
     submit = StringField('submit', validators=[InputRequired()])
     notes = StringField('notes')
 

@@ -1,23 +1,9 @@
-import math
 import markdown
 
 from datetime import datetime
 from app import db
-from sqlalchemy.orm import reconstructor
 
-from app.shootout import Config
-
-
-## Many-to-many relationship table between weapon and sheet
-## allows for a sheet to have multiple weapons
-shootout_weapon_identifier = db.Table('shootout_weapon_identifier',
-    db.Column('sheet_id', db.Integer, db.ForeignKey('shootout_sheet.id')),
-    db.Column('weapon_id', db.Integer, db.ForeignKey('shootout_weapon.id'))
-)
-
-
-class ShootoutWeapon(db.Model):
-    __tablename__="shootout_weapon"
+class WeaponMixin(object):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), default="insert_name")
     weapon_type = db.Column(db.String(128), default="Ranged")
@@ -31,8 +17,7 @@ class ShootoutWeapon(db.Model):
 
 # database set-up for shootout sheets, allows each sheet to access user for each sheet
 # e.g. sheet.author.username
-class ShootoutSheet(db.Model):
-    __tablename__="shootout_sheet"
+class SheetMixin(object):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), default="insert_name")
     character_class = db.Column(db.String(128), default="")
@@ -43,66 +28,50 @@ class ShootoutSheet(db.Model):
     current_hp = db.Column(db.Integer,default=1)
     system_strain = db.Column(db.Integer, default=0)
     ac = db.Column(db.Integer, default=10)
+    mental_save = db.Column(db.Integer, default=16)
+    evasion_save = db.Column(db.Integer, default=16)
+    physical_save = db.Column(db.Integer, default=16)
     strength = db.Column(db.Integer, default=0)
     dexterity = db.Column(db.Integer, default=0)
     constitution = db.Column(db.Integer, default=0)
     intelligence = db.Column(db.Integer, default=0)
     wisdom = db.Column(db.Integer, default=0)
     charisma = db.Column(db.Integer, default=0)
-    administer = db.Column(db.Integer, default=-1)
-    cast_magic = db.Column(db.Integer, default=-1)
-    connect = db.Column(db.Integer, default=-1)
-    exert = db.Column(db.Integer, default=-1)
-    fix = db.Column(db.Integer, default=-1)
-    heal = db.Column(db.Integer, default=-1)
-    horsemanship = db.Column(db.Integer, default=-1)
-    know = db.Column(db.Integer, default=-1)
-    know_magic = db.Column(db.Integer, default=-1)
-    lead = db.Column(db.Integer, default=-1)
-    notice = db.Column(db.Integer, default=-1)
-    perform = db.Column(db.Integer, default=-1)
-    punch = db.Column(db.Integer, default=-1)
-    sail = db.Column(db.Integer, default=-1)   
-    shoot = db.Column(db.Integer, default=-1)   
-    sneak = db.Column(db.Integer, default=-1)   
-    stab = db.Column(db.Integer, default=-1)   
-    survive = db.Column(db.Integer, default=-1)   
-    talk = db.Column(db.Integer, default=-1)   
-    trade = db.Column(db.Integer, default=-1)   
-    work = db.Column(db.Integer, default=-1)     
+    notes = db.Column(db.Text, nullable=False, default='')   
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     last_update = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    weapons = db.relationship("ShootoutWeapon", secondary=shootout_weapon_identifier, backref=db.backref('shootout_weapon_identifier', lazy='dynamic'),lazy='dynamic')
-    notes = db.Column(db.Text, nullable=False, default='')
 
+    @classmethod
     def check_character_class(self, cls, bck):
-        return cls in Config.classes and bck in Config.backgrounds
+        return cls in self.Config.classes and bck in self.Config.backgrounds
 
+    @classmethod
     def append_weapon(self, weap):
         if not self.check_appended_weapon(weap):
             self.weapons.append(weap)
-    
+
+    @classmethod
     def remove_weapon(self, weap):
         if self.check_appended_weapon(weap):
             self.weapons.remove(weap)
 
+    @classmethod
     def check_appended_weapon(self, weap):
-        return self.weapons.filter(shootout_weapon_identifier.c.weapon_id == weap.id).count() > 0   
+        return self.weapons.filter(self.sw_rel.c.weapon_id == weap.id).count() > 0   
 
     ## Query weapon table and join identiier where sheet id = sheet_id in weapon_identifier table
     ## Role.query.filter(Role.user_permissions.any(id=1)).all()?
     def appended_weapons(self):
-        weaps = ShootoutWeapon.query.join(shootout_weapon_identifier, (shootout_weapon_identifier.c.weapon_id == ShootoutWeapon.id)).filter(shootout_weapon_identifier.c.sheet_id == self.id)
+        weaps = self.Weapon.query.join(self.sw_rel, (self.sw_rel.c.weapon_id == self.Weapon.id)).filter(self.sw_rel.c.sheet_id == self.id)
         return weaps.all()
 
     ## return records that do not have rows in the association table
     def missing_weapons(self):
-        weaps = ShootoutWeapon.query.join(shootout_weapon_identifier, (shootout_weapon_identifier.c.weapon_id == ShootoutWeapon.id)).filter(shootout_weapon_identifier.c.sheet_id == self.id)
+        weaps = self.Weapon.query.join(self.sw_rel, (self.sw_rel.c.weapon_id == self.Weapon.id)).filter(self.sw_rel.c.sheet_id == self.id)
         ids_found = []
         for i in weaps.all():
             ids_found.append(i.id)
-        weaps = ShootoutWeapon.query.filter(ShootoutWeapon.id.notin_(ids_found)).all()
+        weaps = self.Weapon.query.filter(self.Weapon.id.notin_(ids_found)).all()
         return weaps
 
     # form is request.form from a POST request for sheet
@@ -115,7 +84,7 @@ class ShootoutSheet(db.Model):
     # will add relationship to the list to the sqlite database
     def append_form_weapons(self, form):
         if form['add']:
-            for i in ShootoutWeapon.query.filter(ShootoutWeapon.id.in_(form.getlist('add'))).all():
+            for i in self.Weapon.query.filter(self.Weapon.id.in_(form.getlist('add'))).all():
                 self.append_weapon(i)
 
     def output_md(self):

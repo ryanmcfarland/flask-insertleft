@@ -1,6 +1,7 @@
 import datetime
 import requests
 
+from obscure import Obscure
 from flask import current_app
 from flask_mail import Message
 from app import db, mail

@@ -29,6 +29,7 @@ class User(UserMixin, db.Model):
     roles = db.relationship("Role", secondary=user_permissions, backref=db.backref('user_permissions', lazy='dynamic'),lazy='dynamic')
     shootout_sheets = db.relationship('ShootoutSheet', backref='author', lazy='dynamic')
     beatcops_sheets = db.relationship('BeatCopsSheet', backref='author', lazy='dynamic')
+    swn_sheets = db.relationship('StarsSheet', backref='author', lazy='dynamic')
     posts = db.relationship('Entry', backref='author', lazy='dynamic')
 
     @hybrid_property

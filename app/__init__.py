@@ -31,11 +31,13 @@ def create_app(config_name):
     from app.auth import bp as auth_bp
     app.register_blueprint(auth_bp, url_prefix='/auth')
 
-    from app.shootout import bp as shootout_bp
-    from app.beatcops import bp as beatcops_bp
+    from app.rpg.shootout import bp as shootout_bp
+    from app.rpg.beatcops import bp as beatcops_bp    
+    from app.rpg.swn import bp as swn_bp
 
     app.register_blueprint(shootout_bp, url_prefix='/shootout')
     app.register_blueprint(beatcops_bp, url_prefix='/beatcops')
+    app.register_blueprint(swn_bp, url_prefix='/swn')
 
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)

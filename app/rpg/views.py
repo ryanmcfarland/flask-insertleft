@@ -131,7 +131,7 @@ class Edit(MethodView):
 
 
 class Weapon(MethodView):
-    def __init__(self, Sheet, route, Weapon):
+    def __init__(self, Sheet, Weapon, route):
         self.Sheet = Sheet
         self.Weapon = Weapon
         self.route = route
@@ -140,7 +140,7 @@ class Weapon(MethodView):
     def get(self, id = None):
         if id == None:
             add=False
-            weapons = Weapon.query.all()
+            weapons = self.Weapon.query.all()
         else:
             add=True
             sheet = self.Sheet.query.get_or_404(id)

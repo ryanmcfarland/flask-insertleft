@@ -2,11 +2,12 @@ import os
 from dotenv import load_dotenv
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-configdir = os.environ.get('CONFIG_DIR') or '/home/ryanm/config/insertleft'
+configdir = os.environ.get('CONFIG_DIR') or '/home/ryanm/code/flask-insertleft/insertleft'
 load_dotenv(os.path.join(configdir, '.env'), verbose = True)
 
 class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
+    URL_SALT = int(os.environ.get('URL_SALT'))
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(configdir, 'insertleft.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SHEETS_PER_USER=5
@@ -15,7 +16,7 @@ class Config(object):
     POSTS_PER_PAGE=5
     
     ADMIN=os.environ.get('ADMIN') or 'insertleft@outlook.com'
-    CV = os.environ.get('CV') or '/home/ryanm/config/insertleft'
+    CV = os.environ.get('CV') or configdir
 
     # outlook mail server configuration - used within flask_mail
     MAIL_SERVER='smtp.office365.com'

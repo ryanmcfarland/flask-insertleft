@@ -4,6 +4,8 @@ if each section is too large, we create a dyanmic way to create an overflow bar 
 each section
 -> uses jquery to grab height of css objects within the sheet
 */
+const atk_bons_cls = [ "Warrior", "Brawn", ]
+
 
 function cssHeight(){
     var HeightMain = ($("#r-att").height())+($("#r-ski").height())-($("#r-stat").height());
@@ -60,10 +62,10 @@ function updateAttackBonus(){
         var chr_class = $('#character_class').text();
     }
     var level = ($("input[name='level']").val()) | (parseInt($("td[id='level']").text()));
-    if ('Brain' == chr_class) {
-        $("input[name='attack_bonus']").val(Math.floor(level/2)).change()
-    } else {
+    if (atk_bons_cls.includes(chr_class)) {
         $("input[name='attack_bonus']").val(level).change()
+    } else {
+        $("input[name='attack_bonus']").val(Math.floor(level/2)).change()
     };
 };
 

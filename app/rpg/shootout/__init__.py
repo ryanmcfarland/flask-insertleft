@@ -9,9 +9,9 @@ class Config(object):
             "survive",  "talk",  "trade", "work" ]
 
 from flask import Blueprint
-from app.common.views import register_urls
-from app.shootout.models import ShootoutSheet, ShootoutWeapon
-from app.shootout.forms import SheetForm
+from app.rpg.views import register_urls
+from app.rpg.shootout.models import ShootoutSheet, ShootoutWeapon
+from app.rpg.shootout.forms import ShootoutForm
 
 bp = Blueprint('shootout', __name__)
 
@@ -20,4 +20,4 @@ bp = Blueprint('shootout', __name__)
 def inject_user():
     return dict(bp_name='Shootout', bp_route='shootout')
 
-register_urls(bp, ShootoutSheet, SheetForm, ShootoutWeapon, Config)
+register_urls(bp, ShootoutSheet, ShootoutForm, ShootoutWeapon, Config)

@@ -16,6 +16,7 @@ logs
 env.bat
 rmenv
 ilenv
+insertleft
 
 #vscoe 
 .vscode
