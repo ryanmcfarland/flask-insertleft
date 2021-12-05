@@ -69,10 +69,20 @@ function updateAttackBonus(){
     };
 };
 
+function tableSearch(card){
+    $("#"+card+"-input").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#"+card+"-table tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      })
+}
+
 $(document).ready(function() {    
-    cssHeight()
-    updateModifiers()
-    updateAttackBonus()
+    cssHeight();
+    updateModifiers();
+    updateAttackBonus();
+    tableSearch("skills");
 });
 
 $(window).resize(function() {

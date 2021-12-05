@@ -10,6 +10,8 @@
     background-color: #4285F4;
     font-weight: bold;
     color: white;
+    display: inline-flex;
+    align-items: center;
 }
 
 td {

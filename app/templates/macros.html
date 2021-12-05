@@ -87,7 +87,7 @@
             <div class="input-group-prepend">
                 <button type="button" class="btn btn-outline-secondary btn-number" data-type="minus" data-field="{{ field.id }}"><span class="bi bi-dash-lg"></span></button>
             </div>
-            <input class="form-control is-invalid has-feedback input-number" type="text" name="{{ field.id }}" class="text-right" value={{ field.raw_data[0] }} min="{{ min }}" max="{{ max }}" required>
+            <input class="form-control is-invalid has-feedback input-number shadow-none" type="text" name="{{ field.id }}" class="text-right" value={{ field.raw_data[0] }} min="{{ min }}" max="{{ max }}" required>
             <div class="input-group-append">
                 <button type="button"  class="btn btn-outline-secondary btn-number" data-type="plus" data-field="{{ field.id }}"><span class="bi bi-plus-lg"></span></button>
             </div>
@@ -99,7 +99,7 @@
             <div class="input-group-prepend">
                 <button type="button" class="btn btn-outline-secondary btn-number" data-type="minus" data-field="{{ field.id }}"><span class="bi bi-dash-lg"></span></button>
             </div>
-            <input type="text" name="{{ field.id }}" class="form-control input-number" value="{{ field.data }}" min="{{ min }}" max="{{ max }}" required>
+            <input type="text" name="{{ field.id }}" class="form-control input-number shadow-none" value="{{ field.data }}" min="{{ min }}" max="{{ max }}" required>
             <div class="input-group-append">
                 <button type="button"  class="btn btn-outline-secondary btn-number" data-type="plus" data-field="{{ field.id }}"><span class="bi bi-plus-lg"></span></button>
             </div>
@@ -124,11 +124,11 @@
     </td>
     <td>
         {% if field.errors %}
-        <input class="form-control is-invalid has-feedback input-number" type="text" name="{{ field.id }}" class="text-right" value={{ field.raw_data[0] }} required>
+        <input class="form-control is-invalid has-feedback input-number shadow-none" type="text" name="{{ field.id }}" class="text-right" value={{ field.raw_data[0] }} required>
         <span id="glypcn{{ field.id.capitalize() }}" class="glyphicon glyphicon-remove form-control-feedback"></span>
         <div id="feedback{{ field.id.capitalize() }}" class="invalid-feedback">{{ field.errors[0] }}</div>
         {% else %}
-        <input type="text" name="{{ field.id }}" class="form-control input-number" value="{{ field.data }}" required>
+        <input type="text" name="{{ field.id }}" class="form-control input-number shadow-none" value="{{ field.data }}" required>
         {% endif %}
     </td>
     {% if modifier %}
@@ -148,7 +148,7 @@
     {% endif %}
     </td>
     <td name="{{ display }}">
-        <input type="text" name="{{ display }}" class="form-control input-number" value="{{ field }}" disabled>
+        <input type="text" name="{{ display }}" class="form-control input-number shadow-none" value="{{ field }}" disabled>
     </td>
     {% if modifier %}
     <td>
