@@ -5,68 +5,64 @@ Blog - Admin
 {% endblock %}
 
 {% block extra_scripts %}
-<script>
-/* 
-https://stackoverflow.com/questions/60218810/how-can-i-make-button-width-to-follow-the-most-larger-width-button-based-on-text
-*/
-
-let maxWidth = 0;
-
-$('.btn').each(function(){
- const width = parseFloat($(this).css('width'));
- if(width > maxWidth) {maxWidth = width}
-})
-
-$('.btn').css('width', maxWidth +'px');
-</script>
+<script src="{{ url_for('static', filename='js/blog.js') }}"></script>
 {% endblock %}
 
 {% block content %}
 <div class="container">
+    <div class="row pt-3 justify-content-center">
+        <div class="col-md-3"><a class="btn btn-info btn-block" href="{{ url_for( 'blog.create') }}" role="button">Create Post</a></div>
+    </div>
+    <hr>
     <div class="row">
         <div class="col-md-12">
         {% if entries.items |length < 1 %}
             <p>There are no characters sheets saved for this user</p>
         {% else %}
-            <table class="table"><thead class="thead-light"><tr>
-                <th>#</th>
-                <th>Date Created</th>
-                <th>Published</th>
-                <th>Actions</th>
-                <th>Author</th>
-                <th>Title</th>
-            </tr></thead><tbody>
-            {% for entry in entries.items %}
-            <form class="publish" action="{{ url_for( 'main.publish', id=entry.id) }}" method="post">
-            <tr {% if not entry.published %}class="table-warning"{% endif %}>
-                <td>{{ entry.id }}</td>
-                <td>{{ entry.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
-                <td>{{ entry.published }}</td>
-                <td>
-                    <div class="btn-group btn-block btn-group-justified" role="group">
-                    {% if entry.published %}
-                    <button class="btn btn-primary btn-block" style="display:inline" name="publish" value="False">Unpublish</button>
-                    {% else %} 
-                    <button class="btn btn-primary btn-block" style="display:inline" name="publish" value="True">Publish</button>
-                    {% endif %}
-                    <a class="btn btn-info ad-but" style="display:inline" href="{{ url_for('main.edit', id=entry.id) }}" role="button">Edit</a>
-                    <a class="btn btn-secondary ad-but" style="display:inline" href="{{ url_for('main.preview', id=entry.id) }}" role="button">Preview</a>
-                    <a class="btn btn-danger ad-but" style="display:inline" href="{{ url_for('main.delete', id=entry.id) }}" role="button">Delete</a>
-                    </div>
-                </td>
-                <td>{{ entry.author.username }}</td>
-                <td>{{ entry.title }}</td>
-            </tr>
-            </form>
-            {% endfor %}
-            </tbody></table>
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Date Created</th>
+                        <th>Published</th>
+                        <th>Actions</th>
+                        <th>Author</th>
+                        <th>Title</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for entry in entries.items %}
+                    <form class="publish" action="{{ url_for( 'blog.publish', id=entry.id) }}" method="post">
+                    <tr {% if not entry.published %}class="table-warning"{% endif %}>
+                        <td>{{ entry.id }}</td>
+                        <td>{{ entry.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>{{ entry.published }}</td>
+                        <td>
+                            <div class="btn-group btn-group-justified" role="group">
+                            {% if entry.published %}
+                                <button class="btn btn-primary ad-but" style="display:inline" name="publish" value="False">Unpublish</button>
+                            {% else %} 
+                                <button class="btn btn-primary ad-but" style="display:inline" name="publish" value="True">Publish</button>
+                            {% endif %}
+                                <a class="btn btn-info ad-but" style="display:inline" href="{{ url_for('blog.edit', id=entry.id) }}" role="button">Edit</a>
+                                <a class="btn btn-secondary ad-but" style="display:inline" href="{{ url_for('blog.preview', id=entry.id) }}" role="button">Preview</a>
+                                <a class="btn btn-danger ad-but" style="display:inline" href="{{ url_for('blog.delete', id=entry.id) }}" role="button">Delete</a>
+                            </div>
+                        </td>
+                        <td>{{ entry.author.username }}</td>
+                        <td>{{ entry.title }}</td>
+                    </tr>
+                    </form>
+                {% endfor %}
+                </tbody>
+            </table>
         {% endif %}
         </div>
     </div>
     <hr>
     {% from 'macros.html' import create_pagination %}
     <div class = "row justify-content-center">
-        {{ create_pagination('main.admin', entries) }}
+        {{ create_pagination('blog.admin', entries) }}
     </div>
 </div>
 {% endblock %}

@@ -31,6 +31,9 @@ def create_app(config_name):
     from app.auth import bp as auth_bp
     app.register_blueprint(auth_bp, url_prefix='/auth')
 
+    from app.blog import bp as blog_bp
+    app.register_blueprint(blog_bp, url_prefix='/blog')
+
     from app.rpg.shootout import bp as shootout_bp
     from app.rpg.beatcops import bp as beatcops_bp    
     from app.rpg.swn import bp as swn_bp

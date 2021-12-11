@@ -40,19 +40,6 @@ def upgrade():
     )
     op.create_index(op.f('ix_user_email'), 'user', ['email'], unique=True)
     op.create_index(op.f('ix_user_username'), 'user', ['username'], unique=True)
-    op.create_table('weapon',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(length=128), nullable=True),
-    sa.Column('weapon_type', sa.String(length=128), nullable=True),
-    sa.Column('bonus', sa.Integer(), nullable=True),
-    sa.Column('damage', sa.String(length=128), nullable=True),
-    sa.Column('mag', sa.Integer(), nullable=True),
-    sa.Column('weapon_range', sa.String(length=128), nullable=True),
-    sa.Column('attribute', sa.String(length=128), nullable=True),
-    sa.Column('weight', sa.Integer(), nullable=True),
-    sa.Column('notes', sa.Text(), nullable=True),
-    sa.PrimaryKeyConstraint('id')
-    )
     op.create_table('entry',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(), nullable=True),
@@ -68,51 +55,6 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('slug')
     )
-    op.create_table('sheet',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(length=128), nullable=True),
-    sa.Column('character_class', sa.String(length=128), nullable=True),
-    sa.Column('background', sa.String(length=128), nullable=True),
-    sa.Column('level', sa.Integer(), nullable=True),
-    sa.Column('xp', sa.Integer(), nullable=True),
-    sa.Column('max_hp', sa.Integer(), nullable=True),
-    sa.Column('current_hp', sa.Integer(), nullable=True),
-    sa.Column('system_strain', sa.Integer(), nullable=True),
-    sa.Column('ac', sa.Integer(), nullable=True),
-    sa.Column('strength', sa.Integer(), nullable=True),
-    sa.Column('dexterity', sa.Integer(), nullable=True),
-    sa.Column('constitution', sa.Integer(), nullable=True),
-    sa.Column('intelligence', sa.Integer(), nullable=True),
-    sa.Column('wisdom', sa.Integer(), nullable=True),
-    sa.Column('charisma', sa.Integer(), nullable=True),
-    sa.Column('administer', sa.Integer(), nullable=True),
-    sa.Column('cast_magic', sa.Integer(), nullable=True),
-    sa.Column('connect', sa.Integer(), nullable=True),
-    sa.Column('exert', sa.Integer(), nullable=True),
-    sa.Column('fix', sa.Integer(), nullable=True),
-    sa.Column('heal', sa.Integer(), nullable=True),
-    sa.Column('horsemanship', sa.Integer(), nullable=True),
-    sa.Column('know', sa.Integer(), nullable=True),
-    sa.Column('know_magic', sa.Integer(), nullable=True),
-    sa.Column('lead', sa.Integer(), nullable=True),
-    sa.Column('notice', sa.Integer(), nullable=True),
-    sa.Column('perform', sa.Integer(), nullable=True),
-    sa.Column('punch', sa.Integer(), nullable=True),
-    sa.Column('sail', sa.Integer(), nullable=True),
-    sa.Column('shoot', sa.Integer(), nullable=True),
-    sa.Column('sneak', sa.Integer(), nullable=True),
-    sa.Column('stab', sa.Integer(), nullable=True),
-    sa.Column('survive', sa.Integer(), nullable=True),
-    sa.Column('talk', sa.Integer(), nullable=True),
-    sa.Column('trade', sa.Integer(), nullable=True),
-    sa.Column('work', sa.Integer(), nullable=True),
-    sa.Column('created_at', sa.DateTime(), nullable=False),
-    sa.Column('last_update', sa.DateTime(), nullable=False),
-    sa.Column('user_id', sa.Integer(), nullable=True),
-    sa.Column('notes', sa.Text(), nullable=False),
-    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
-    sa.PrimaryKeyConstraint('id')
-    )
     op.create_table('user_permissions',
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('role_id', sa.Integer(), nullable=True),
@@ -124,12 +66,6 @@ def upgrade():
     sa.Column('tag_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['entry_id'], ['entry.id'], ),
     sa.ForeignKeyConstraint(['tag_id'], ['tag.id'], )
-    )
-    op.create_table('weapon_identifier',
-    sa.Column('sheet_id', sa.Integer(), nullable=True),
-    sa.Column('weapon_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['sheet_id'], ['sheet.id'], ),
-    sa.ForeignKeyConstraint(['weapon_id'], ['weapon.id'], )
     )
     # ### end Alembic commands ###
 

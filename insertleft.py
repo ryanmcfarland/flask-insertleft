@@ -1,7 +1,8 @@
 import os
 
 from app import create_app, db
-from app.models import User, Entry, Tag, Role
+from app.models import User, Role
+from app.blog.models import Entry, Tag
 from app.rpg.shootout.models import ShootoutSheet, ShootoutWeapon
 
 
