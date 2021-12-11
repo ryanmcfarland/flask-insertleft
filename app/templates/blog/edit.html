@@ -3,11 +3,14 @@
 {% block title %}Create{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/easymde.min.css') }}">
+<link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
 {% endblock %}
 
 {% block extra_scripts %}
-<script src="{{ url_for('static', filename='js/easymde.min.js') }}"></script>
+<script> 
+    var blog="edit"
+</script>
+<script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
 <script src="{{ url_for('static', filename='js/blog.js') }}"></script>
 {% endblock %}
 

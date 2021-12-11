@@ -12,8 +12,8 @@
 <div class="container">
     {% if current_user.is_authenticated and current_user.check_roles("Admin") %}
     <div class="row justify-content-center my-3">
-        <div class="col-md-3"><a class="btn btn-success btn-block" href="{{ url_for('main.admin') }}" role="button">Admin</a></div>
-        <div class="col-md-3"><a class="btn btn-info btn-block" href="{{ url_for('main.create') }}" role="button">Create</a></div>
+        <div class="col-md-3"><a class="btn btn-success btn-block" href="{{ url_for('blog.admin') }}" role="button">Admin</a></div>
+        <div class="col-md-3"><a class="btn btn-info btn-block" href="{{ url_for('blog.create') }}" role="button">Create</a></div>
     </div>
     <hr>
     {% endif %}
@@ -23,7 +23,7 @@
     {% endfor %}
     {% from 'macros.html' import create_pagination %}
     <div class = "row justify-content-center">
-        {{ create_pagination('main.home', entries) }}
+        {{ create_pagination('blog.home', entries) }}
     </div>
 </div>
 {% endblock %}
