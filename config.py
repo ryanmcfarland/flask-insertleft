@@ -3,8 +3,9 @@ from dotenv import load_dotenv
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 configdir = os.environ.get('CONFIG_DIR') or '/home/ryanm/code/flask-insertleft/insertleft'
-mediadir = os.environ.get('MEDIA_DRECTORY') or os.path.join(basedir, 'media')
 load_dotenv(os.path.join(configdir, '.env'), verbose = True)
+# Load this after the load-dotenv to grab media directory from config file
+mediadir = os.environ.get('MEDIA_DRECTORY') or os.path.join(basedir, 'media')
 
 class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
