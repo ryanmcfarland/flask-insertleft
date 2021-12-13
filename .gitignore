@@ -18,7 +18,11 @@ rmenv
 ilenv
 insertleft
 
-#vscoe 
+#Static Images
+app/static/images
+media
+
+#vscode 
 .vscode
 
 #personal

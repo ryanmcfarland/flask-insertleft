@@ -44,10 +44,23 @@
         </div>
     </div>
     <hr>
+    <div class="row">
+        <div class="col-md-1 justify-content-center text-center">
+            <span>Tips</span>
+        </div>
+        <div class="col-md-11">
+            <a class="link-primary d-block" href="https://python-markdown.github.io/extensions/attr_list/" target="_blank">Python Markdown - attributes - https://python-markdown.github.io/extensions/attr_list/</a>
+            <a class="link-primary d-block" href="https://www.markdownguide.org/basic-syntax" target="_blank">Markdown - Overview - https://www.markdownguide.org/basic-syntax</a>
+            <a class="link-primary d-block" href="{{ url_for('common.upload') }}" target="_blank">InsertLeft - Uploading Images</a>
+            <a class="link-primary d-block" href="{{ url_for('common.images') }}" target="_blank">InsertLeft - All Saved Images</a>
+        </div>
+    </div>
+    <hr>
     <div class="form-group">
         <div class="row">
             <div class="col-md-1 justify-content-center text-center">
-                <span>Content</span></div>
+                <span>Content</span>
+            </div>
             <div class="col-md-11">
                 <textarea id="main_body" name="content" >{{ entry['content'] }}</textarea>
             </div>

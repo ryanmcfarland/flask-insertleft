@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Upload{% endblock %}
+
+
+{% block extra_css %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class = "row pt-3">
+        <div class="col-md-12">
+            <h1>Upload Images</h1>
+        </div>
+    </div>
+    <hr>
+    <form method=post enctype=multipart/form-data>
+      <input type=file name=file>
+      <input type=submit value=Upload>
+    </form>
+</div>
+{% endblock %}

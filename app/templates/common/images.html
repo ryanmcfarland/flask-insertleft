@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Upload{% endblock %}
+
+
+{% block extra_css %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class = "row pt-3">
+        <div class="col-md-12">
+            <h1>Images</h1>
+        </div>
+    </div>
+    <hr>
+    {% for f in files %}
+        <a class="link-primary" href="{{ url_for( 'common.media' , name=f) }}">{{ url_for( 'common.media' , name=f) }}</a>
+    {% endfor %}
+</div>
+{% endblock %}
