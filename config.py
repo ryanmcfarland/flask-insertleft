@@ -13,6 +13,8 @@ class Config(object):
     BLOG_SNAPSHOT=3
     SHEETS_PER_PAGE=6
     POSTS_PER_PAGE=5
+    UPLOAD_IMAGES_FOLDER = os.path.join(basedir, 'media/images')
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
     
     ADMIN=os.environ.get('ADMIN') or 'insertleft@outlook.com'
     CV = os.environ.get('CV') or configdir
