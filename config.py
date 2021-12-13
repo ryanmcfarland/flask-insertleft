@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 configdir = os.environ.get('CONFIG_DIR') or '/home/ryanm/code/flask-insertleft/insertleft'
+mediadir = os.environ.get('MEDIA_DRECTORY') or os.path.join(basedir, 'media')
 load_dotenv(os.path.join(configdir, '.env'), verbose = True)
 
 class Config(object):
@@ -13,7 +14,7 @@ class Config(object):
     BLOG_SNAPSHOT=3
     SHEETS_PER_PAGE=6
     POSTS_PER_PAGE=5
-    UPLOAD_IMAGES_FOLDER = os.path.join(basedir, 'media/images')
+    UPLOAD_IMAGES_FOLDER = os.path.join(mediadir, 'images')
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
     
     ADMIN=os.environ.get('ADMIN') or 'insertleft@outlook.com'
