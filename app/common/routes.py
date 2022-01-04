@@ -49,7 +49,7 @@ def upload():
 def media(name):
     return send_from_directory(current_app.config["UPLOAD_IMAGES_FOLDER"], name)
 
-@bp.route('/media/images')
+@bp.route('/images')
 @login_required
 @role_required("Admin")
 def images():
