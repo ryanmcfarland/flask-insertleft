@@ -22,12 +22,12 @@
 </head>
 
 <body class="bg-white">
+    {% include '_navbar.html' %}  
     <div class="wrapper">
         <nav id="sidebar" class="sidebar">
             {% include '_sidebar.html' %}
         </nav>
-        <div id="content" class="content">
-            {% include '_navbar.html' %}    
+        <div id="content" class="content">  
             {% block content %}{% endblock %}
         </div>
     </div>
