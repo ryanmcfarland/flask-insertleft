@@ -30,6 +30,10 @@ class User(UserMixin, db.Model):
     swn_sheets = db.relationship('StarsSheet', backref='author', lazy='dynamic')
     posts = db.relationship('Entry', backref='author', lazy='dynamic')
 
+    @property
+    def serializable(self):
+        return {'id': self.id, 'username': self.username}
+
     @hybrid_property
     def lowercase_username(self):
         return self.username.lower()

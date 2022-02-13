@@ -1,3 +1,134 @@
+.green {
+    color: #67ad3e;
+}
+
+.rpghome {
+    width: 1200px;
+}
+
+.player-block {
+    margin:0px 50px 0px 50px;
+}
+
+.player-block .header {
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px 0;
+    padding-left: 10px;
+    width: 100%;
+}
+
+.player-block .header  .stat{
+    float:left;
+    font-weight: 700;
+}
+
+.header .name {
+    width:300px;
+}
+
+.header .class {
+    width:166px;
+}
+
+.header .background {
+    width:166px;
+}
+
+.header .level {
+    width:31px;
+    margin-right:35px;
+}
+
+.header .hp {
+    width:20px;
+    margin-right:35px;
+}
+
+.player-sheets .block {
+    height:46px;
+    border-top: 1px solid #2a2a2a;
+    margin-bottom: 4px;
+    padding-top: 4px;
+}
+
+.player-sheets .wrap {
+    vertical-align:top;
+    display: inline-block;
+    justify-content: start;
+    height:100%;
+}
+
+.player-sheets .sheet-stats {
+    height: 40px;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    margin: 0 10px 12px 0px;
+    padding-left: 10px;
+    border: 1px solid rgb(255, 255, 255);
+}
+
+.player-sheets .sheet-stats:hover {
+    background-color:rgb(222, 245, 240);
+    border-radius: 5px;
+    border: 1px solid orange;
+    box-shadow: 0 0 4px 0 rgb(221 143 0 / 50%);
+    transition: background .15s ease-in-out!important;
+}
+
+.sheet-show {
+    display:block;
+    height: 40px;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
+
+.sheet-show:hover {
+    color: inherit;
+}
+
+.player-sheets .sheet-stat {
+    display: inline-block;
+    font-weight: 600;
+}
+
+.player-sheets .sheet.buttons {
+    float:right;
+}
+
+.sheet-stat.name {
+    width:300px;
+}
+
+.sheet-stat.class {
+    min-width:166px;
+    width:166px;
+}
+.sheet-stat.background {
+    width:166px;
+}
+
+.sheet-stat.level {
+    width:9px;
+    margin-right: 57px;
+}
+.sheet-stat.hp {
+    width:41px;
+    margin-right: 35px;
+}
+
+.sheet-stat.button {
+    width:100px;
+    margin-right: 35px;
+}
+
+.sheet-stat.button-last {
+    width:100px;
+    margin-right: 10px;
+}
+
 #cb-weap,#cb-note {
     overflow-y: auto;
   }

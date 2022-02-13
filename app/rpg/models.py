@@ -4,6 +4,9 @@ import base64
 
 from datetime import datetime
 from app import db
+from app.models import User
+
+from sqlalchemy.ext.declarative import declared_attr
 
 class WeaponMixin(object):
     id = db.Column(db.Integer, primary_key=True)
@@ -42,12 +45,23 @@ class SheetMixin(object):
     notes = db.Column(db.Text, nullable=False, default='')   
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     last_update = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    
+    @declared_attr
+    def user_id(cls):
+        return db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    @declared_attr
+    def user(cls):
+        return db.relationship(User)
 
     # Everytime a new sheet is created, we automatically create a shorthand safe url using base64 and uuid
     # https://stackoverflow.com/questions/12270852/convert-uuid-32-character-hex-string-into-a-youtube-style-short-id-and-back
     def __init__(self, *args, **kwargs):
         super(SheetMixin, self).__init__(*args, **kwargs)
         self.id = self.uuid2urlsafe(uuid.uuid4().bytes)
+
+    def as_dict(self):
+        return { c.name: getattr(self, c.name) for c in self.__table__.columns }
 
     def uuid2urlsafe(self, uuid):
         return base64.urlsafe_b64encode(uuid).rstrip(b'=').decode('ascii')
