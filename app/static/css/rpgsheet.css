@@ -6,6 +6,8 @@
     width: 1200px;
 }
 
+
+
 .player-block {
     margin:0px 50px 0px 50px;
 }
@@ -15,7 +17,13 @@
     font-weight: 700;
     padding: 10px 0;
     padding-left: 10px;
-    width: 100%;
+    width: 1041px;
+    border-bottom: 1px solid #6b6b6b;
+}
+
+.player-sheets .sheet {
+    padding-bottom: 4px;
+    border-bottom: 1px solid #6b6b6b;
 }
 
 .player-block .header  .stat{
@@ -47,15 +55,15 @@
 
 .player-sheets .block {
     height:46px;
-    border-top: 1px solid #2a2a2a;
-    margin-bottom: 4px;
+    padding-bottom: 4px;
     padding-top: 4px;
 }
 
 .player-sheets .wrap {
     vertical-align:top;
-    display: inline-block;
-    justify-content: start;
+    float:left;
+    display: flex;
+    justify-content: center;
     height:100%;
 }
 
@@ -64,9 +72,8 @@
     cursor: pointer;
     text-decoration: none;
     color: inherit;
-    margin: 0 10px 12px 0px;
+    margin-right: 10px;
     padding-left: 10px;
-    border: 1px solid rgb(255, 255, 255);
 }
 
 .player-sheets .sheet-stats:hover {
@@ -91,7 +98,9 @@
 
 .player-sheets .sheet-stat {
     display: inline-block;
+    text-align: left;
     font-weight: 600;
+    margin: auto;
 }
 
 .player-sheets .sheet.buttons {
@@ -121,11 +130,12 @@
 
 .sheet-stat.button {
     width:100px;
+    position:relative;
     margin-right: 35px;
+    height:100%;
 }
 
-.sheet-stat.button-last {
-    width:100px;
+.sheet-stat.button.last {
     margin-right: 10px;
 }
 

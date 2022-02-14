@@ -82,6 +82,8 @@ class Delete(MethodView):
     decorators = [login_required]
 
     def delete(self, id):
+        access = user_or_admin(self.Sheet, id)
+        if access is not None: return access
         sheet = self.Sheet.query.get_or_404(id)
         try:
             db.session.delete(sheet)
@@ -90,7 +92,6 @@ class Delete(MethodView):
             db.session.rollback()
             flash("Could not delete sheet", 'error')
         return jsonify(success=True)
-
 
 
 ## process form from sheet, get specific row from sheet and update variables based on form data and commit
