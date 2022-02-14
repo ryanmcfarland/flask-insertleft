@@ -1,5 +1,6 @@
+from urllib import response
 from app import db
-from flask import request, render_template, flash, redirect, url_for, jsonify, current_app
+from flask import request, render_template, flash, redirect, url_for, jsonify, Response, current_app
 from flask.views import MethodView
 from flask_login import current_user, login_required
 from werkzeug.exceptions import Forbidden
@@ -19,28 +20,38 @@ def user_or_admin(Sheet, id):
 
 
 class Home(MethodView):
+
+    def get(self):
+        return render_template('rpg/home.html')
+
+
+class UserSheets(MethodView):
     def __init__(self, Sheet):
         self.Sheet = Sheet
 
     def get(self):
-        if current_user.check_roles('Admin'):
+        if current_user.is_anonymous:
+            return Response(status=401)
+        elif current_user.check_roles("Admin"):
             sheets = self.Sheet.query.all()
         else:
             sheets = self.Sheet.query.filter_by(user_id=current_user.id).all()
-        return render_template('rpg/home.html', sheets=sheets)
-
-
-class Sheets(MethodView):
-    def __init__(self, Sheet):
-        self.Sheet = Sheet
-
-    def get(self):
-        if current_user.check_roles('Admin'):
-            sheets = self.Sheet.query.all()
-        else:
-            sheets = self.Sheet.query.filter_by(user_id=current_user.id).all()
-        res=1+1
         return jsonify(sheets=[dict(r.as_dict(), user=[r.user.serializable]) for r in sheets])    
+
+
+class PlayerSheets(MethodView):
+    def __init__(self, Sheet):
+        self.Sheet = Sheet
+
+    def get(self):
+        page = request.args.get('page', 1, type=int)
+        if current_user.is_anonymous:
+            sheets = self.Sheet.query.paginate(page,2,False)
+        else:
+            sheets = self.Sheet.query.filter(self.Sheet.user_id !=current_user.id).paginate(page,2,False)
+        iter = [str(i) for i in sheets.iter_pages(left_edge=0, right_edge=0, left_current=2, right_current=3)]
+        pn = dict(has_next=sheets.has_next, has_prev=sheets.has_prev, page=sheets.page, iter=iter)
+        return jsonify(sheets=[dict(r.as_dict(), user=[r.user.serializable]) for r in sheets.items], iter=pn) 
 
 
 class Show(MethodView):
@@ -74,6 +85,7 @@ class Create(MethodView):
         return jsonify(sheets=dict(sheet.as_dict(), user=[sheet.user.serializable]))
 
 
+# http://127.0.0.1:5000/swn/delete/C76p1SnUSEaktTxQPkzdZw
 class Delete(MethodView):
     def __init__(self, Sheet, route):
         self.Sheet = Sheet
@@ -161,8 +173,9 @@ class Weapon(MethodView):
 
 
 def register_urls(bp, Sheet, SheetForm, Weapons, Config):
-    home = Home.as_view('home', Sheet)
-    sheets = Sheets.as_view('sheets', Sheet)
+    home = Home.as_view('home')
+    user_sheets = UserSheets.as_view('user_sheets', Sheet)
+    player_sheets = PlayerSheets.as_view('player_sheets', Sheet)
     show = Show.as_view('show', Sheet, Config)
     create = Create.as_view('create', Sheet, bp.name)
     delete = Delete.as_view('delete', Sheet, bp.name)
@@ -170,7 +183,8 @@ def register_urls(bp, Sheet, SheetForm, Weapons, Config):
     weapon = Weapon.as_view('weapons', Sheet, Weapons, bp.name)
 
     bp.add_url_rule('/home', view_func=home)
-    bp.add_url_rule('/sheets', view_func=sheets)
+    bp.add_url_rule('/usersheets', view_func=user_sheets)
+    bp.add_url_rule('/playersheets', view_func=player_sheets)
     bp.add_url_rule('/sheet/<id>', view_func=show)
     bp.add_url_rule('/sheet/<id>/<slug>', view_func=show)
     bp.add_url_rule('/create', view_func=create)

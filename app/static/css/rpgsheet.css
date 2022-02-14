@@ -6,13 +6,12 @@
     width: 1200px;
 }
 
-
-
-.player-block {
+.sheet-block {
     margin:0px 50px 0px 50px;
+    width:1047px;
 }
 
-.player-block .header {
+.sheet-block .header {
     font-size: 14px;
     font-weight: 700;
     padding: 10px 0;
@@ -21,12 +20,12 @@
     border-bottom: 1px solid #6b6b6b;
 }
 
-.player-sheets .sheet {
+.sheet {
     padding-bottom: 4px;
     border-bottom: 1px solid #6b6b6b;
 }
 
-.player-block .header  .stat{
+.sheet-block .header  .stat{
     float:left;
     font-weight: 700;
 }
@@ -50,16 +49,21 @@
 
 .header .hp {
     width:20px;
+    margin-right:60px;
+}
+
+.header .User {
+    width:20px;
     margin-right:35px;
 }
 
-.player-sheets .block {
+.block {
     height:46px;
     padding-bottom: 4px;
     padding-top: 4px;
 }
 
-.player-sheets .wrap {
+.wrap {
     vertical-align:top;
     float:left;
     display: flex;
@@ -67,20 +71,20 @@
     height:100%;
 }
 
-.player-sheets .sheet-stats {
+.sheet-stats {
     height: 40px;
     cursor: pointer;
     text-decoration: none;
     color: inherit;
     margin-right: 10px;
     padding-left: 10px;
+    border: 2px solid transparent;
 }
 
-.player-sheets .sheet-stats:hover {
-    background-color:rgb(222, 245, 240);
+.sheet-stats:hover {
     border-radius: 5px;
-    border: 1px solid orange;
-    box-shadow: 0 0 4px 0 rgb(221 143 0 / 50%);
+    border: 2px solid rgb(0, 110, 255);
+    box-shadow: rgba(0, 110, 255, 0.25) 0px 13px 27px -5px, rgba(0, 110, 255, 0.3) 0px 8px 16px -8px;
     transition: background .15s ease-in-out!important;
 }
 
@@ -96,14 +100,14 @@
     color: inherit;
 }
 
-.player-sheets .sheet-stat {
+.sheet-stat {
     display: inline-block;
     text-align: left;
     font-weight: 600;
     margin: auto;
 }
 
-.player-sheets .sheet.buttons {
+.user-sheets .sheet.buttons {
     float:right;
 }
 
@@ -123,9 +127,15 @@
     width:9px;
     margin-right: 57px;
 }
+
 .sheet-stat.hp {
-    width:41px;
-    margin-right: 35px;
+    width:70px;
+    margin-right: 10px;
+}
+
+.sheet-stat.user {
+    width:239px;
+    margin-right: 10px;
 }
 
 .sheet-stat.button {

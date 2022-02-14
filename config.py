@@ -14,7 +14,6 @@ class Config(object):
     SHEETS_PER_USER=5
     BLOG_SNAPSHOT=3
     SHEETS_PER_PAGE=6
-    POSTS_PER_PAGE=5
     UPLOAD_IMAGES_FOLDER = os.path.join(mediadir, 'images')
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
     
@@ -42,6 +41,8 @@ class DevelopmentConfig(Config):
     DEBUG = True
     #SQLALCHEMY_ECHO = True
     TEMPLATES_AUTO_RELOAD = True
+    POSTS_PER_PAGE=2
+
 
 
 class ProductionConfig(Config):
@@ -49,6 +50,7 @@ class ProductionConfig(Config):
     Production configurations
     """
     DEBUG = False
+    POSTS_PER_PAGE=5
 
 app_config = {
     'development': DevelopmentConfig,
