@@ -11,6 +11,10 @@
     width:1047px;
 }
 
+#player-paginate {
+    margin-top: 1rem;
+}
+
 .sheet-block .header {
     font-size: 14px;
     font-weight: 700;

@@ -114,12 +114,32 @@ function queryUserSheets () {
     })
 }
 
-function queryPlayerSheets () {
+/*
+var searchParams = new URLSearchParams(window.location.search);
+    searchParams.set("foo", "bar");
+    window.location.search = searchParams.toString()
+*/
+function queryPlayerSheetsIter (page) {
+    var url = '/'+home+'/home';
+    var searchParams = new URLSearchParams(window.location.search);
+    var query = searchParams.get("page");
+    if (page !== undefined) {
+        searchParams.set("page", page);
+        query=searchParams.toString();
+        window.history.pushState(url,'',url+'?'+query);
+    } else if (query == null) {
+        query = '';
+    } else {
+        query=searchParams.toString();
+    };
     $.ajax({
         type: "GET",
-        url: '/'+home+'/playersheets',
+        url: '/'+home+'/playersheets?'+query,
         dataType: 'json',
         success: function(data) {
+            $('.player-sheets').remove();
+            $('#nav-player-paginate').remove();
+            $('#player-block').append('<div class="player-sheets"></div>');
             console.log(data);
             if (data['sheets'].length == 0){
                 $('.player-sheets').append('<div id="no-player-sheets" class="justify-content-center"><p>There are no other player sheets!</p></div>')
@@ -139,25 +159,26 @@ function queryPlayerSheets () {
 /* 
 */ 
 function generatePaginate(iter) {
-    var pagStr = '<nav aria-label="..."><ul class="pagination">';
+    var pagStr = '<nav id="nav-player-paginate" aria-label="..."><ul class="pagination">';
     if (!iter['has_prev']) {
         pagStr += '<li class="page-item disabled"><span class="page-link">Previous</span></li></li>';
     } else {
-        pagStr += '<li class="page-item"><a class="page-link" href="/'+home+'/playersheets?page='+iter['prev_num']+'">Previous</a></li>';
+        pagStr += '<li class="page-item"><button class="page-link" onclick="queryPlayerSheetsIter('+(iter['page']-1)+')">Previous</button></li>';
     };
     for (let i = 0; i < iter['iter'].length;i ++) {
-        if (i == iter['page'] ) {
-            pagStr += '<li class="page-item active"><span class="page-link">'+i+'<span class="sr-only">(current)</span></span></li>';
-        } else if (!i) {
+        pg = iter['iter'][i];
+        if (pg == iter['page'] ) {
+            pagStr += '<li class="page-item active"><span class="page-link">'+pg+'<span class="sr-only">(current)</span></span></li>';
+        } else if ('None' == pg) {
             null
         } else {
-            pagStr += '<li class="page-item"><a class="page-link" href="/'+home+'/playersheets?page='+i+'">'+i+'</a></li>';
+            pagStr += '<li class="page-item"><button class="page-link" onclick="queryPlayerSheetsIter('+pg+')">'+pg+'</button></li>';
         };
     };
-    if (!iter['next_num']) {
+    if (!iter['has_next']) {
         pagStr += '<li class="page-item disabled"><span class="page-link">Next</span></li></li>';
     } else {
-        pagStr += '<li class="page-item"><a class="page-link" href="/'+home+'/playersheets?page='+iter['next_num']+'">next</a></li>';
+        pagStr += '<li class="page-item"><button class="page-link" onclick="queryPlayerSheetsIter('+(iter['page']+1)+')">Next</button></li>';
     };
     return pagStr += '</ul></nav>'
 }
@@ -166,6 +187,6 @@ function generatePaginate(iter) {
 When the document is ready, query the backend to get all character sheets
 */
 $( document ).ready(function() {
-    queryUserSheets(); 
-    queryPlayerSheets();
+    if(document.getElementById("user-block") !== null){ queryUserSheets(); };
+    queryPlayerSheetsIter();
 });

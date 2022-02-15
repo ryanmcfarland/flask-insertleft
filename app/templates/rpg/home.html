@@ -19,13 +19,14 @@
     <div class="row py-3 justify-content-center">
         <h1 class="my-4">{{ bp_name }}</h1>
     </div>
+    {% if current_user.is_authenticated %}
     <div class="row justify-content-center mb-3">
         <div class="col-md-3"><button class="btn btn-success btn-block" name="something" onclick="createNewSheet()">Create</button></div>
         <div class="col-md-3"><a class="btn btn-info btn-block" href="{{ url_for( bp_route+'.weapons') }}" role="button">Weapons</a></div>
     </div>
     <h1>Your Sheets</h1>
     <hr>
-    <div class="row sheet-block">
+    <div id="user-block" class="row sheet-block">
         <header class="header">
             <div class="stat name">Name</div>
             <div class="stat class">Class</div>
@@ -39,9 +40,10 @@
         </div>
     </div>
     <hr>
+    {% endif %}
     <h1>Player Sheets</h1>
     <hr>
-    <div class="row sheet-block">
+    <div id="player-block" class="row sheet-block">
         <header class="header">
             <div class="stat name">Name</div>
             <div class="stat class">Class</div>

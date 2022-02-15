@@ -99,7 +99,6 @@ def load_user(id):
 
 @login.request_loader
 def load_user_from_request(request):
-    print("hello")
     # first, try to login using the api_key url arg
     api_key = request.args.get('api_key')
     if api_key:

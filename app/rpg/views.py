@@ -32,8 +32,6 @@ class UserSheets(MethodView):
     def get(self):
         if current_user.is_anonymous:
             return Response(status=401)
-        elif current_user.check_roles("Admin"):
-            sheets = self.Sheet.query.all()
         else:
             sheets = self.Sheet.query.filter_by(user_id=current_user.id).all()
         return jsonify(sheets=[dict(r.as_dict(), user=[r.user.serializable]) for r in sheets])    
@@ -46,9 +44,9 @@ class PlayerSheets(MethodView):
     def get(self):
         page = request.args.get('page', 1, type=int)
         if current_user.is_anonymous:
-            sheets = self.Sheet.query.paginate(page,2,False)
+            sheets = self.Sheet.query.paginate(page,5,False)
         else:
-            sheets = self.Sheet.query.filter(self.Sheet.user_id !=current_user.id).paginate(page,2,False)
+            sheets = self.Sheet.query.filter(self.Sheet.user_id !=current_user.id).paginate(page,5,False)
         iter = [str(i) for i in sheets.iter_pages(left_edge=0, right_edge=0, left_current=2, right_current=3)]
         pn = dict(has_next=sheets.has_next, has_prev=sheets.has_prev, page=sheets.page, iter=iter)
         return jsonify(sheets=[dict(r.as_dict(), user=[r.user.serializable]) for r in sheets.items], iter=pn) 
