@@ -17,7 +17,7 @@ $.getJSON('/'+home+'/sheets', function(data) {
 */
 
 function createButtonGroup (name, id) {
-    var btnG = '<div class="sheet-stat button"><a class="btn btn-secondary btn-block" href="/'+home+'/edit/'+id+'" role="button">Edit</a></div>';
+    var btnG = '<div class="sheet-stat button"><a class="btn btn-primary btn-block" href="/'+home+'/edit/'+id+'" role="button">Edit</a></div>';
     return btnG+= '<div class="sheet-stat button last"><button class="btn btn-danger btn-block" name="delete" onclick="deleteSheet(\''+name+'\',\''+id+'\')">Delete</button></div>';
 }
 
@@ -29,9 +29,12 @@ function formatName(name){
 };
 
 function addSheetHitPoints(ch,mh){
-    var hstr = '<div class="sheet-stat hp">';
-    hstr += '<span class="green">'+ch+'</span>';
-    hstr += ' / ';
+    var perc = ch / mh;
+    var clr = "green";
+    if ( perc < 0.2 ) { clr = "red"} else if ( perc < 1.0 ) { clr = "yellow" } else { };
+    var hstr = '<div class="sheet-stat hp"><div class="small-header">HP</div>';
+    hstr += '<span class="'+clr+'">'+ch+'</span>';
+    hstr += '<span style="font-weight:100;"> / </span>';
     hstr += '<span class="green">'+mh+'</span>';
     return hstr += '</div>'
 }
@@ -40,10 +43,10 @@ function appendUserRow (data){
     $('#no-user-sheets').remove();
     var rowString = '<div id=row_'+data['id']+' class="sheet"><div class="block">';
     rowString += '<div class="wrap sheet-stats"><a class="sheet-show" href="/'+home+'/sheet/'+data['id']+'"><div class="wrap justify-content-left">';
-    rowString += '<div class="sheet-stat name">'+formatName(data['name'])+'</div>';
-    rowString += '<div class="sheet-stat class">'+data['character_class']+'</div>';
-    rowString += '<div class="sheet-stat background">'+data['background']+'</div>';
-    rowString += '<div class="sheet-stat level">'+data['level']+'</div>';
+    rowString += '<div class="sheet-stat name"><div class="small-header">Name</div>'+formatName(data['name'])+'</div>';
+    rowString += '<div class="sheet-stat class"><div class="small-header">Class</div>'+data['character_class']+'</div>';
+    rowString += '<div class="sheet-stat background"><div class="small-header">Background</div>'+data['background']+'</div>';
+    rowString += '<div class="sheet-stat level"><div class="small-header">Level</div>'+data['level']+'</div>';
     rowString += addSheetHitPoints(data['current_hp'],data['max_hp']);
     rowString += '</div></a></div>';
     rowString += createButtonGroup(data['name'], data['id']);
@@ -55,12 +58,12 @@ function appendPlayerRow (data){
     $('#no-player-sheets').remove();
     var rowString = '<div id=row_'+data['id']+' class="sheet"><div class="block">';
     rowString += '<div class="wrap sheet-stats"><a class="sheet-show" href="/'+home+'/sheet/'+data['id']+'"><div class="wrap justify-content-left">';
-    rowString += '<div class="sheet-stat name">'+formatName(data['name'])+'</div>';
-    rowString += '<div class="sheet-stat class">'+data['character_class']+'</div>';
-    rowString += '<div class="sheet-stat background">'+data['background']+'</div>';
-    rowString += '<div class="sheet-stat level">'+data['level']+'</div>';
+    rowString += '<div class="sheet-stat name"><div class="small-header">Name</div>'+formatName(data['name'])+'</div>';
+    rowString += '<div class="sheet-stat class"><div class="small-header">Class</div>'+data['character_class']+'</div>';
+    rowString += '<div class="sheet-stat background"><div class="small-header">Background</div>'+data['background']+'</div>';
+    rowString += '<div class="sheet-stat level"><div class="small-header">Level</div>'+data['level']+'</div>';
     rowString += addSheetHitPoints(data['current_hp'],data['max_hp']);
-    rowString += '<div class="sheet-stat user">'+data['user'][0]['username']+'</div>'
+    rowString += '<div class="sheet-stat user"><div class="small-header">User</div>'+data['user'][0]['username']+'</div>'
     rowString += '</div></a></div>';
     rowString += '</div></div>';
     $('.player-sheets').append(rowString);
@@ -100,6 +103,7 @@ function queryUserSheets () {
         url: '/'+home+'/usersheets',
         dataType: 'json',
         success: function(data) {
+            console.log(data);
             if (data['sheets'].length == 0){
                 $('.user-sheets').append('<div id="no-user-sheets" class="justify-content-center"><p>You have no characters saved!</p></div>')
             } else {
@@ -140,7 +144,6 @@ function queryPlayerSheetsIter (page) {
             $('.player-sheets').remove();
             $('#nav-player-paginate').remove();
             $('#player-block').append('<div class="player-sheets"></div>');
-            console.log(data);
             if (data['sheets'].length == 0){
                 $('.player-sheets').append('<div id="no-player-sheets" class="justify-content-center"><p>There are no other player sheets!</p></div>')
             } else {
