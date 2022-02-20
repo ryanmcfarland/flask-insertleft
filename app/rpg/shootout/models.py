@@ -36,7 +36,6 @@ class ShootoutSheet(SheetMixin, db.Model):
     trade = db.Column(db.Integer, default=-1)   
     work = db.Column(db.Integer, default=-1)     
     weapons = db.relationship("ShootoutWeapon", secondary=shootout_weapon_identifier, backref=db.backref('shootout_weapon_identifier', lazy='dynamic'),lazy='dynamic')
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     Config = Config
     Weapon = ShootoutWeapon

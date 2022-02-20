@@ -20,13 +20,12 @@
 {% block content %}
 <div class="container">
     <div class="row py-3 justify-content-center">
-        <h2>{{ bp_name }} - Form fillable Character Sheet</h2>
+        <h2>{{ bp_name }} | Form fillable Character Sheet</h2>
     </div>
     <form action="{{ url_for( bp_route+'.edit' , id=id) }}" method="post">
         <div class="row justify-content-center mb-3">
             <div class="col-md-3"><input class="btn btn-primary btn-block" type="submit" name="submit" value="Save"></div>
             <div class="col-md-3"><a class="btn btn-secondary btn-block" href="{{ url_for( bp_route+'.weapons' , id=id) }}" role="button">Add Weapons</a></div>
-            <div class="col-md-3"><a class="btn btn-danger btn-block" href="{{ url_for( bp_route+'.delete' , id=id) }}" role="button">Delete</a></div>
         </div>
         <div class="row py-3 justify-content-center border">
             <label class="col-sm-2 col-form-label font-weight-bold">Name</label>

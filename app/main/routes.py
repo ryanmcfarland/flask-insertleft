@@ -1,7 +1,7 @@
 import datetime
 
 from datetime import datetime
-from flask import  request, render_template, flash, redirect, url_for, current_app
+from flask import  request, render_template, make_response, current_app
 from flask_login import current_user, login_required
 from app import db
 from app.main import bp
@@ -22,7 +22,8 @@ def index():
     entries = Entry.query.filter_by(published=True).filter(Entry.slug != None).order_by(Entry.created_at.desc()).paginate(page,current_app.config['POSTS_PER_PAGE'],False)
     for entry in entries.items:
         entry.output_md()
-    return render_template('home.html', entries=entries)
+    resp = make_response(render_template('home.html', entries=entries))
+    return resp
 
 # create way to edit, delete and publish posts through this page?
 @bp.route('/test', methods=['GET','POST'])

@@ -4,53 +4,41 @@
 {{ bp_name }}
 {% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/rpgsheet.css') }}">
+{% endblock %}
+
+{% block extra_scripts %}
+<script>var home = '{{ bp_route }}';</script>
+<script src="{{ url_for('static', filename='js/rpghome.js') }}"></script>
+{% endblock %}
+
+
 {% block content %}
-<div class="container">
+<div class="container-fluid rpghome">
     <div class="row py-3 justify-content-center">
         <h1 class="my-4">{{ bp_name }}</h1>
     </div>
-    <form action="{{ url_for( bp_route+'.create') }}" method="post" id="myForm"></form>
+    {% if current_user.is_authenticated %}
     <div class="row justify-content-center mb-3">
-        <div class="col-md-3"><button type="submit" form="myForm" class="btn btn-success btn-block" name="something"><i></i>Create</button></div>
+        <div class="col-md-3"><button class="btn btn-success btn-block" name="something" onclick="createNewSheet()">Create</button></div>
         <div class="col-md-3"><a class="btn btn-info btn-block" href="{{ url_for( bp_route+'.weapons') }}" role="button">Weapons</a></div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-        {% if sheets|length < 1 %}
-            <p>There are no characters sheets saved for this user</p>
-        {% else %}
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Class</th>
-                    <th>Background</th>
-                    <th>Level</th>
-                    <th>Author</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for sheet in sheets %}
-                <tr>
-                    <td>{{ sheet.name }}</td>
-                    <td>{{ sheet.character_class }}</td>
-                    <td>{{ sheet.background }}</td>
-                    <td>{{ sheet.level }}</td>
-                    <td>{{ sheet.author.username }}</td>
-                    <td>
-                        <div class="btn-group btn-block" role="group">
-                            <a class="btn btn-primary" href="{{ url_for( bp_route+'.show' , id=sheet.id, slug=sheet.name) }}" role="button">Show</a>
-                            <a class="btn btn-secondary" href="{{ url_for( bp_route+'.edit' , id=sheet.id) }}" role="button">Edit</a>
-                            <a class="btn btn-danger" href="{{ url_for( bp_route+'.delete' , id=sheet.id) }}" role="button">Delete</a>
-                        </div>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-            </table>
-        {% endif %}
+    <h1>Your Sheets</h1>
+    <hr>
+    <div id="user-block" class="row sheet-block">
+        <div class="user-sheets">
         </div>
     </div>
+    <hr>
+    {% endif %}
+    <h1>Player Sheets</h1>
+    <hr>
+    <div id="player-block" class="row sheet-block">
+        <div class="player-sheets">
+        </div>
+    </div>
+    <div class = "row justify-content-center" id="player-paginate"></div>
     <hr>
 </div>
 {% endblock %}

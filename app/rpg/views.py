@@ -1,5 +1,6 @@
+from urllib import response
 from app import db
-from flask import request, render_template, flash, redirect, url_for, current_app
+from flask import request, render_template, flash, redirect, url_for, jsonify, Response, current_app
 from flask.views import MethodView
 from flask_login import current_user, login_required
 from werkzeug.exceptions import Forbidden
@@ -19,25 +20,42 @@ def user_or_admin(Sheet, id):
 
 
 class Home(MethodView):
-    def __init__(self, Sheet, route):
-        self.Sheet = Sheet
-        self.route = route
 
-
-    @login_required
     def get(self):
-        if current_user.check_roles('Admin'):
-            sheets = self.Sheet.query.all()
+        return render_template('rpg/home.html')
+
+
+class UserSheets(MethodView):
+    def __init__(self, Sheet):
+        self.Sheet = Sheet
+
+    def get(self):
+        if current_user.is_anonymous:
+            return Response(status=401)
         else:
             sheets = self.Sheet.query.filter_by(user_id=current_user.id).all()
-        return render_template('rpg/home.html', sheets=sheets)
+        return jsonify(sheets=[dict(r.as_dict(), user=[r.user.serializable]) for r in sheets])    
+
+
+class PlayerSheets(MethodView):
+    def __init__(self, Sheet):
+        self.Sheet = Sheet
+
+    def get(self):
+        page = request.args.get('page', 1, type=int)
+        if current_user.is_anonymous:
+            sheets = self.Sheet.query.paginate(page,5,False)
+        else:
+            sheets = self.Sheet.query.filter(self.Sheet.user_id !=current_user.id).paginate(page,5,False)
+        iter = [str(i) for i in sheets.iter_pages(left_edge=0, right_edge=0, left_current=2, right_current=3)]
+        pn = dict(has_next=sheets.has_next, has_prev=sheets.has_prev, page=sheets.page, iter=iter)
+        return jsonify(sheets=[dict(r.as_dict(), user=[r.user.serializable]) for r in sheets.items], iter=pn) 
 
 
 class Show(MethodView):
-    def __init__(self, Sheet, Config, route):
+    def __init__(self, Sheet, Config):
         self.Sheet = Sheet
         self.Config = Config
-        self.route = route
 
     def get(self, id, slug = None):
         sheet = self.Sheet.query.get_or_404(id)
@@ -53,7 +71,8 @@ class Create(MethodView):
         self.Sheet = Sheet
         self.route = route
 
-    @login_required
+    decorators = [login_required]
+
     def post(self):
         count_sheets = self.Sheet.query.filter_by(user_id=current_user.id).count()
         if count_sheets < current_app.config['SHEETS_PER_USER'] or current_user.check_roles(["Admin", "Power"]):
@@ -61,9 +80,10 @@ class Create(MethodView):
             sheet.save()
         else:
             flash(('Sheet limit: Cannot create more than '+str(current_app.config['SHEETS_PER_USER'])), 'Warning')
-        return redirect(url_for(self.route+'.home'))
+        return jsonify(sheets=dict(sheet.as_dict(), user=[sheet.user.serializable]))
 
-# TODO - ajax call?
+
+# http://127.0.0.1:5000/swn/delete/C76p1SnUSEaktTxQPkzdZw
 class Delete(MethodView):
     def __init__(self, Sheet, route):
         self.Sheet = Sheet
@@ -71,7 +91,9 @@ class Delete(MethodView):
 
     decorators = [login_required]
 
-    def get(self, id):
+    def delete(self, id):
+        access = user_or_admin(self.Sheet, id)
+        if access is not None: return access
         sheet = self.Sheet.query.get_or_404(id)
         try:
             db.session.delete(sheet)
@@ -79,17 +101,7 @@ class Delete(MethodView):
         except:
             db.session.rollback()
             flash("Could not delete sheet", 'error')
-        return redirect(url_for(self.route+'.home'))
-
-    def post(self, id):
-        sheet = self.Sheet.query.get_or_404(id)
-        try:
-            db.session.delete(sheet)
-            db.session.commit()
-        except:
-            db.session.rollback()
-            flash("Could not delete sheet", 'error')
-        return redirect(url_for(self.route+'.home'))
+        return jsonify(success=True)
 
 
 ## process form from sheet, get specific row from sheet and update variables based on form data and commit
@@ -159,14 +171,18 @@ class Weapon(MethodView):
 
 
 def register_urls(bp, Sheet, SheetForm, Weapons, Config):
-    home = Home.as_view('home', Sheet, bp.name)
-    show = Show.as_view('show', Sheet, Config, bp.name)
+    home = Home.as_view('home')
+    user_sheets = UserSheets.as_view('user_sheets', Sheet)
+    player_sheets = PlayerSheets.as_view('player_sheets', Sheet)
+    show = Show.as_view('show', Sheet, Config)
     create = Create.as_view('create', Sheet, bp.name)
     delete = Delete.as_view('delete', Sheet, bp.name)
     edit = Edit.as_view('edit', Sheet, SheetForm, Config, bp.name)
     weapon = Weapon.as_view('weapons', Sheet, Weapons, bp.name)
 
     bp.add_url_rule('/home', view_func=home)
+    bp.add_url_rule('/usersheets', view_func=user_sheets)
+    bp.add_url_rule('/playersheets', view_func=player_sheets)
     bp.add_url_rule('/sheet/<id>', view_func=show)
     bp.add_url_rule('/sheet/<id>/<slug>', view_func=show)
     bp.add_url_rule('/create', view_func=create)

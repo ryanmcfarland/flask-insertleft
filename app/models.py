@@ -30,6 +30,10 @@ class User(UserMixin, db.Model):
     swn_sheets = db.relationship('StarsSheet', backref='author', lazy='dynamic')
     posts = db.relationship('Entry', backref='author', lazy='dynamic')
 
+    @property
+    def serializable(self):
+        return {'id': self.id, 'username': self.username}
+
     @hybrid_property
     def lowercase_username(self):
         return self.username.lower()
@@ -95,7 +99,6 @@ def load_user(id):
 
 @login.request_loader
 def load_user_from_request(request):
-    print("hello")
     # first, try to login using the api_key url arg
     api_key = request.args.get('api_key')
     if api_key:

@@ -1,6 +1,8 @@
 from app import db
 from app.rpg.models import WeaponMixin, SheetMixin
 from app.rpg.swn import Config
+from app.models import User
+
 
 ## Many-to-many relationship table between weapon and sheet
 ## allows for a sheet to have multiple weapons
@@ -40,7 +42,6 @@ class StarsSheet(SheetMixin, db.Model):
     telepathy = db.Column(db.Integer, default=-1)
     teleportation = db.Column(db.Integer, default=-1)         
     weapons = db.relationship("StarsWeapon", secondary=swn_weapon_identifier, backref=db.backref('swn_weapon_identifier', lazy='dynamic'),lazy='dynamic')
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     Config = Config
     Weapon = StarsWeapon

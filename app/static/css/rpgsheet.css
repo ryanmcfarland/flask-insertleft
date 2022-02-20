@@ -1,3 +1,136 @@
+.green {
+    color: #67ad3e;
+}
+
+.yellow {
+    color: yellow;
+}
+
+.red {
+    color: red;
+}
+
+.rpghome {
+    width: 1200px;
+}
+
+.small-header {
+    font-size: 60%;
+    font-weight: 300;
+}
+
+.sheet-block {
+    margin:0px 50px 0px 50px;
+    width:1047px;
+}
+
+#player-paginate {
+    margin-top: 1rem;
+}
+
+.sheet {
+    padding-bottom: 5px;
+}
+
+.block {
+    min-height:46px;
+    padding-bottom: 4px;
+    padding-top: 4px;
+    overflow:hidden;
+    align-items: center;
+    display: flex;
+  justify-content: center;
+}
+
+.wrap {
+    vertical-align:top;
+    float:left;
+    display: flex;
+    justify-content: center;
+    height:100%;
+    background-color: #383838;
+    border-radius: 5px;
+}
+
+.sheet-stats {
+    min-height: 50px;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    margin-right: 10px;
+    padding-left: 10px;
+    border: 3px solid transparent;
+}
+
+.sheet-stats:hover {
+    border-radius: 5px;
+    border: 3px solid orange;
+    box-shadow: 0 0 4px 0 rgb(221 143 0 / 50%);
+    transition: background .15s ease-in-out!important;
+}
+
+.sheet-show {
+    display:block;
+    min-height: 40px;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
+
+.sheet-show:hover {
+    color: inherit;
+}
+
+.sheet-stat {
+    display: inline-block;
+    text-align: left;
+    font-weight: 600;
+    margin: auto;
+    color:white;
+}
+
+.user-sheets .sheet.buttons {
+    float:right;
+}
+
+.sheet-stat.name {
+    width:300px;
+}
+
+.sheet-stat.class {
+    min-width:166px;
+    width:166px;
+}
+.sheet-stat.background {
+    width:166px;
+}
+
+.sheet-stat.level {
+    width:9px;
+    margin-right: 57px;
+}
+
+.sheet-stat.hp {
+    width:70px;
+    margin-right: 10px;
+}
+
+.sheet-stat.user {
+    width:239px;
+    margin-right: 10px;
+}
+
+.sheet-stat.button {
+    width:100px;
+    position:relative;
+    margin-right: 10px;
+    height:100%;
+}
+
+.sheet-stat.button.last {
+    margin-right: 10px;
+}
+
 #cb-weap,#cb-note {
     overflow-y: auto;
   }

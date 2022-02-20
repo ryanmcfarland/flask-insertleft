@@ -38,7 +38,6 @@ class BeatCopsSheet(SheetMixin, db.Model):
     survive = db.Column(db.Integer, default=-1)   
     talk = db.Column(db.Integer, default=-1)   
     work = db.Column(db.Integer, default=-1)     
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     weapons = db.relationship("BeatCopsWeapon", secondary=beatcops_weapon_identifier, backref=db.backref('beatcops_weapon_identifier', lazy='dynamic'),lazy='dynamic')
 
     Config = Config
