@@ -103,7 +103,6 @@ function queryUserSheets () {
         url: '/'+home+'/usersheets',
         dataType: 'json',
         success: function(data) {
-            console.log(data);
             if (data['sheets'].length == 0){
                 $('.user-sheets').append('<div id="no-user-sheets" class="justify-content-center"><p>You have no characters saved!</p></div>')
             } else {
